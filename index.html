@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1780589255 -->
+  <!-- build: 1780591446 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -1989,6 +1989,14 @@ function Alimentacion(_ref20) {
     _useState22 = _slicedToArray(_useState21, 2),
     f = _useState22[0],
     setF = _useState22[1];
+  var _useState23 = useState(null),
+    _useState24 = _slicedToArray(_useState23, 2),
+    editId = _useState24[0],
+    setEditId = _useState24[1];
+  var _useState25 = useState(null),
+    _useState26 = _slicedToArray(_useState25, 2),
+    editF = _useState26[0],
+    setEditF = _useState26[1];
   var STORE_TYPES = ["Supermercado", "Almacén/Minimarket", "Feria/Verdulería", "Carnicería", "Panadería", "Otro"];
   var addItem = function addItem() {
     return setF(_objectSpread(_objectSpread({}, f), {}, {
@@ -2016,6 +2024,10 @@ function Alimentacion(_ref20) {
   var total = f.items.reduce(function (s, it) {
     return s + (parseFloat(it.amount) || 0);
   }, 0);
+  var cmrCards = data.cards.filter(function (c) {
+    return c.bank === "CMR Falabella" || c.name.toLowerCase().includes("cmr") || c.name.toLowerCase().includes("falabella");
+  });
+  var allCards = data.cards;
   var save = function save() {
     var valid = f.items.filter(function (it) {
       return it.name && it.amount;
@@ -2040,6 +2052,7 @@ function Alimentacion(_ref20) {
       store: "",
       storeType: "Supermercado",
       payMethod: "Débito",
+      cardId: "",
       items: [{
         name: "",
         amount: ""
@@ -2053,6 +2066,21 @@ function Alimentacion(_ref20) {
         return g.id !== id;
       })
     }));
+  };
+  var saveEdit = function saveEdit() {
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      groceries: data.groceries.map(function (g) {
+        return g.id === editId ? _objectSpread(_objectSpread({}, g), {}, {
+          date: editF.date,
+          store: editF.store,
+          storeType: editF.storeType,
+          payMethod: editF.payMethod,
+          cardId: editF.cardId
+        }) : g;
+      })
+    }));
+    setEditId(null);
+    setEditF(null);
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-4"
@@ -2109,10 +2137,26 @@ function Alimentacion(_ref20) {
     value: f.payMethod,
     onChange: function onChange(v) {
       return setF(_objectSpread(_objectSpread({}, f), {}, {
-        payMethod: v
+        payMethod: v,
+        cardId: ""
       }));
     },
     options: PAYS
+  }), f.payMethod === "CMR/Crédito" && allCards.length > 0 && /*#__PURE__*/React.createElement(Sel, {
+    label: "Tarjeta",
+    value: f.cardId,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        cardId: v
+      }));
+    },
+    options: allCards.map(function (c) {
+      return {
+        value: c.id,
+        label: c.name
+      };
+    }),
+    placeholder: "Selecciona tarjeta"
   }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-2"
   }, /*#__PURE__*/React.createElement("label", {
@@ -2164,6 +2208,83 @@ function Alimentacion(_ref20) {
   }, "Guardar"))), data.groceries.sort(function (a, b) {
     return b.date.localeCompare(a.date);
   }).map(function (g) {
+    var linkedCard = data.cards.find(function (c) {
+      return c.id === g.cardId;
+    });
+    if (editId === g.id) return /*#__PURE__*/React.createElement(Card, {
+      key: g.id,
+      className: "border border-blue-700/50"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+    }, "\u270F\uFE0F Editar compra"), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2"
+    }, /*#__PURE__*/React.createElement(Inp, {
+      label: "Fecha",
+      type: "date",
+      value: editF.date,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          date: v
+        }));
+      }
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Nombre del local",
+      value: editF.store,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          store: v
+        }));
+      }
+    }), /*#__PURE__*/React.createElement(Sel, {
+      label: "Tipo de local",
+      value: editF.storeType,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          storeType: v
+        }));
+      },
+      options: STORE_TYPES
+    }), /*#__PURE__*/React.createElement(Sel, {
+      label: "Medio de pago",
+      value: editF.payMethod,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          payMethod: v,
+          cardId: ""
+        }));
+      },
+      options: PAYS
+    }), editF.payMethod === "CMR/Crédito" && allCards.length > 0 && /*#__PURE__*/React.createElement(Sel, {
+      label: "Tarjeta",
+      value: editF.cardId,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          cardId: v
+        }));
+      },
+      options: allCards.map(function (c) {
+        return {
+          value: c.id,
+          label: c.name
+        };
+      }),
+      placeholder: "Selecciona tarjeta"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2 pt-1"
+    }, /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      full: true,
+      color: "blue",
+      onClick: saveEdit
+    }, "Guardar"), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      full: true,
+      color: "red",
+      onClick: function onClick() {
+        setEditId(null);
+        setEditF(null);
+      }
+    }, "Cancelar"))));
     return /*#__PURE__*/React.createElement(Card, {
       key: g.id
     }, /*#__PURE__*/React.createElement("div", {
@@ -2171,14 +2292,28 @@ function Alimentacion(_ref20) {
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
       className: "text-white font-bold"
     }, g.storeType || "Compra", g.store ? " \u2014 ".concat(g.store) : ""), /*#__PURE__*/React.createElement("div", {
-      className: "flex gap-2 mt-1"
+      className: "flex gap-2 mt-1 flex-wrap"
     }, /*#__PURE__*/React.createElement(Badge, null, fmt(g.date)), /*#__PURE__*/React.createElement(Badge, {
       color: g.payMethod === "CMR/Crédito" ? "amber" : "gray"
-    }, g.payMethod))), /*#__PURE__*/React.createElement("div", {
+    }, g.payMethod), linkedCard && /*#__PURE__*/React.createElement(Badge, {
+      color: "blue"
+    }, linkedCard.name))), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-white font-bold text-lg"
     }, CLP(g.total)), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setEditId(g.id);
+        setEditF({
+          date: g.date,
+          store: g.store || "",
+          storeType: g.storeType || "Supermercado",
+          payMethod: g.payMethod,
+          cardId: g.cardId || ""
+        });
+      },
+      className: "text-slate-500 hover:text-blue-400 text-sm"
+    }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return del(g.id);
       },
@@ -2252,15 +2387,15 @@ function CardVisual(_ref21) {
 function Tarjetas(_ref22) {
   var data = _ref22.data,
     onChange = _ref22.onChange;
-  var _useState23 = useState("list"),
-    _useState24 = _slicedToArray(_useState23, 2),
-    view = _useState24[0],
-    setView = _useState24[1];
-  var _useState25 = useState(null),
-    _useState26 = _slicedToArray(_useState25, 2),
-    selCard = _useState26[0],
-    setSelCard = _useState26[1];
-  var _useState27 = useState({
+  var _useState27 = useState("list"),
+    _useState28 = _slicedToArray(_useState27, 2),
+    view = _useState28[0],
+    setView = _useState28[1];
+  var _useState29 = useState(null),
+    _useState30 = _slicedToArray(_useState29, 2),
+    selCard = _useState30[0],
+    setSelCard = _useState30[1];
+  var _useState31 = useState({
       name: "",
       bank: "BancoEstado",
       lastFour: "",
@@ -2268,10 +2403,10 @@ function Tarjetas(_ref22) {
       billingDay: "19",
       color: CARD_COLORS[0]
     }),
-    _useState28 = _slicedToArray(_useState27, 2),
-    cardF = _useState28[0],
-    setCardF = _useState28[1];
-  var _useState29 = useState({
+    _useState32 = _slicedToArray(_useState31, 2),
+    cardF = _useState32[0],
+    setCardF = _useState32[1];
+  var _useState33 = useState({
       cardId: "",
       desc: "",
       totalAmount: "",
@@ -2284,17 +2419,17 @@ function Tarjetas(_ref22) {
       subcat: "Otro",
       isWife: false
     }),
-    _useState30 = _slicedToArray(_useState29, 2),
-    purF = _useState30[0],
-    setPurF = _useState30[1];
-  var _useState31 = useState(null),
-    _useState32 = _slicedToArray(_useState31, 2),
-    cardEditId = _useState32[0],
-    setCardEditId = _useState32[1];
-  var _useState33 = useState(null),
     _useState34 = _slicedToArray(_useState33, 2),
-    cardEditF = _useState34[0],
-    setCardEditF = _useState34[1];
+    purF = _useState34[0],
+    setPurF = _useState34[1];
+  var _useState35 = useState(null),
+    _useState36 = _slicedToArray(_useState35, 2),
+    cardEditId = _useState36[0],
+    setCardEditId = _useState36[1];
+  var _useState37 = useState(null),
+    _useState38 = _slicedToArray(_useState37, 2),
+    cardEditF = _useState38[0],
+    setCardEditF = _useState38[1];
   var saveCard = function saveCard() {
     if (!cardF.name || !cardF.creditLimit) return;
     var card = _objectSpread(_objectSpread({}, cardF), {}, {
@@ -3175,10 +3310,10 @@ function Tarjetas(_ref22) {
 // ═══════════════════════════════════════════════════
 function Estadisticas(_ref25) {
   var data = _ref25.data;
-  var _useState35 = useState("6m"),
-    _useState36 = _slicedToArray(_useState35, 2),
-    period = _useState36[0],
-    setPeriod = _useState36[1];
+  var _useState39 = useState("6m"),
+    _useState40 = _slicedToArray(_useState39, 2),
+    period = _useState40[0],
+    setPeriod = _useState40[1];
   var n = period === "3m" ? 3 : period === "6m" ? 6 : 12;
   var months = lastNMonths(n);
   var TT = function TT(_ref26) {
@@ -3412,35 +3547,35 @@ function Estadisticas(_ref25) {
 function Futuro(_ref29) {
   var data = _ref29.data,
     onChange = _ref29.onChange;
-  var _useState37 = useState("ahorro"),
-    _useState38 = _slicedToArray(_useState37, 2),
-    tab2 = _useState38[0],
-    setTab2 = _useState38[1];
-  var _useState39 = useState(null),
-    _useState40 = _slicedToArray(_useState39, 2),
-    activeF = _useState40[0],
-    setActiveF = _useState40[1];
-  var _useState41 = useState(null),
+  var _useState41 = useState("ahorro"),
     _useState42 = _slicedToArray(_useState41, 2),
-    confirmReset = _useState42[0],
-    setConfirmReset = _useState42[1];
-  var _useState43 = useState({
+    tab2 = _useState42[0],
+    setTab2 = _useState42[1];
+  var _useState43 = useState(null),
+    _useState44 = _slicedToArray(_useState43, 2),
+    activeF = _useState44[0],
+    setActiveF = _useState44[1];
+  var _useState45 = useState(null),
+    _useState46 = _slicedToArray(_useState45, 2),
+    confirmReset = _useState46[0],
+    setConfirmReset = _useState46[1];
+  var _useState47 = useState({
       amount: "",
       desc: "",
       type: "deposito"
     }),
-    _useState44 = _slicedToArray(_useState43, 2),
-    op = _useState44[0],
-    setOp = _useState44[1];
-  var _useState45 = useState({}),
-    _useState46 = _slicedToArray(_useState45, 2),
-    editTarget = _useState46[0],
-    setEditTarget = _useState46[1];
-  var _useState47 = useState(false),
     _useState48 = _slicedToArray(_useState47, 2),
-    showInv = _useState48[0],
-    setShowInv = _useState48[1];
-  var _useState49 = useState({
+    op = _useState48[0],
+    setOp = _useState48[1];
+  var _useState49 = useState({}),
+    _useState50 = _slicedToArray(_useState49, 2),
+    editTarget = _useState50[0],
+    setEditTarget = _useState50[1];
+  var _useState51 = useState(false),
+    _useState52 = _slicedToArray(_useState51, 2),
+    showInv = _useState52[0],
+    setShowInv = _useState52[1];
+  var _useState53 = useState({
       name: "",
       amount: "",
       returnAmount: "",
@@ -3448,9 +3583,9 @@ function Futuro(_ref29) {
       maturityDate: "",
       autoReinvest: false
     }),
-    _useState50 = _slicedToArray(_useState49, 2),
-    invF = _useState50[0],
-    setInvF = _useState50[1];
+    _useState54 = _slicedToArray(_useState53, 2),
+    invF = _useState54[0],
+    setInvF = _useState54[1];
   var mo = curMo();
   var totalAhorro = Object.values(data.savings).reduce(function (s, f) {
     return s + f.balance;
@@ -3946,23 +4081,23 @@ function Config(_ref34) {
   var _data$config2;
   var data = _ref34.data,
     onChange = _ref34.onChange;
-  var _useState51 = useState(""),
-    _useState52 = _slicedToArray(_useState51, 2),
-    importError = _useState52[0],
-    setImportError = _useState52[1];
-  var _useState53 = useState(false),
-    _useState54 = _slicedToArray(_useState53, 2),
-    importSuccess = _useState54[0],
-    setImportSuccess = _useState54[1];
-  var _useState55 = useState(false),
+  var _useState55 = useState(""),
     _useState56 = _slicedToArray(_useState55, 2),
-    showExport = _useState56[0],
-    setShowExport = _useState56[1];
-  var base = ((_data$config2 = data.config) === null || _data$config2 === void 0 ? void 0 : _data$config2.budgetBase) || 750000;
-  var _useState57 = useState(String(base)),
+    importError = _useState56[0],
+    setImportError = _useState56[1];
+  var _useState57 = useState(false),
     _useState58 = _slicedToArray(_useState57, 2),
-    newBase = _useState58[0],
-    setNewBase = _useState58[1];
+    importSuccess = _useState58[0],
+    setImportSuccess = _useState58[1];
+  var _useState59 = useState(false),
+    _useState60 = _slicedToArray(_useState59, 2),
+    showExport = _useState60[0],
+    setShowExport = _useState60[1];
+  var base = ((_data$config2 = data.config) === null || _data$config2 === void 0 ? void 0 : _data$config2.budgetBase) || 750000;
+  var _useState61 = useState(String(base)),
+    _useState62 = _slicedToArray(_useState61, 2),
+    newBase = _useState62[0],
+    setNewBase = _useState62[1];
   var saveBase = function saveBase() {
     return onChange(_objectSpread(_objectSpread({}, data), {}, {
       config: _objectSpread(_objectSpread({}, data.config || {}), {}, {
@@ -4126,22 +4261,22 @@ var TABS = [{
   label: "Config"
 }];
 function App() {
-  var _useState59 = useState("dashboard"),
-    _useState60 = _slicedToArray(_useState59, 2),
-    tab = _useState60[0],
-    setTab = _useState60[1];
-  var _useState61 = useState(INIT),
-    _useState62 = _slicedToArray(_useState61, 2),
-    data = _useState62[0],
-    setData = _useState62[1];
-  var _useState63 = useState(false),
+  var _useState63 = useState("dashboard"),
     _useState64 = _slicedToArray(_useState63, 2),
-    loaded = _useState64[0],
-    setLoaded = _useState64[1];
-  var _useState65 = useState("loading"),
+    tab = _useState64[0],
+    setTab = _useState64[1];
+  var _useState65 = useState(INIT),
     _useState66 = _slicedToArray(_useState65, 2),
-    gsStatus = _useState66[0],
-    setGsStatus = _useState66[1]; // "loading"|"ok"|"error"
+    data = _useState66[0],
+    setData = _useState66[1];
+  var _useState67 = useState(false),
+    _useState68 = _slicedToArray(_useState67, 2),
+    loaded = _useState68[0],
+    setLoaded = _useState68[1];
+  var _useState69 = useState("loading"),
+    _useState70 = _slicedToArray(_useState69, 2),
+    gsStatus = _useState70[0],
+    setGsStatus = _useState70[1]; // "loading"|"ok"|"error"
   var navRef = useRef(null);
   useEffect(function () {
     var link = document.createElement("link");
