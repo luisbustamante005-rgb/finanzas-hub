@@ -1,0 +1,4172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanzasHub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body style="margin:0;background:#0f172a">
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+  <script>
+    const { useState, useEffect, useCallback, useRef } = React;
+    const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } = Recharts;
+  </script>
+  <script>
+"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+// ═══════════════════════════════════════════════════
+// GOOGLE SHEETS SYNC
+// ═══════════════════════════════════════════════════
+var SHEET_ID = "1JIbLL7jcFr5POLKS18ZgEeE7knBE4xEQ7_1s8dilPt0";
+var CLIENT_EMAIL = "finanza@finanzas2026-498222.iam.gserviceaccount.com";
+var PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2w6/ePYt3hSCU\n590tJ3gf/qzlGNuAYBkjt7gRb+/4cWe9Lfj4MzrBebSS4aXfb3O+wthkBcMv1oAF\njYlk2CLtyjxC0kgW541/jvPCximNl/wEf8x7Y0iFkUT0GFdjKGDQMkDXGUY8384h\na69Satc8GnFNSf0eMTUrQ1T9NWEbJmiCYm828uqSbVQCGhaQfMSCW+EodBiOikBN\nXjcCAvPRfe+GOawtWk2eKtOsBiHZvy3GyW2gD2Ji0n2HFSCBTr/v7RrLK3Cg5zFe\nTcqXgueCmjZt/xs5LRk+I6v+kFATmEafDuxdNtdXpVsJ9OBColtD4D8ACayKOsOj\nYVizJaHzAgMBAAECggEASUCyry1UxoFd10D9tdjxfUVqz+JALDqYKOg8hwSqFpaB\noWIZPYXvAVgCB7MYdC8sIaPf7mse2gArzM33aSt2CH/72j6FNWT2ok9OJV2ejwmB\nMd51O2lGSn64t+s/r1ciQqA5u9z9+W0spdmO6kY3YXgpvHQw1xaa/G2e1WQ9OQ9k\n/lDwLrh8AeGd7A8RFJVFqnOccbz9KdwcmGaLXzP/MbbO2a4YnvoQAI19aLIJt441\n5YfnsQ0WGoFj4PzQsHUKMOzNThNLe3F1HU91+g3mn3RBo2Nhfna/Mo17gonuXu0d\nFTI71hcDneal2KIrC0q9tCZkS+yLLTRnN+mK1JfUjQKBgQDb1JtHitvXXSLPPN3p\nxRVrurRRQ8wDJvKrf+B4twNKf+bhpAfu7cQNvKjPIL7CEJyS5ux+Y8rye2TerNlm\nv0hcC+pD6BpAdJP4lIMWW6si5kLAA6LZfSWzfS+Kjh03CwcARf5E7jyz3CxjCR20\ns1ha5kA8bByPpSOf/SS7HwUhbQKBgQDU1dWN9WbkP7pLzJajyRNsLUlq+O29B8wR\ncpNJ8HcvmG7QFwR7NuWMEDcRQXlHYE8k5e/H6AVtsNiwntNL98axzLLx/dGRBUJh\nYJMTnJim5ZzE/sBCq+5kkRICycpqus9iniGMV3d0O4+y2T9qTxmS/R2RGnq9M9da\nawwoGbUU3wKBgGiF8YMV0ivXe+qfnUA+1k2Py5bsLn+9MBs9RUUAd88fe28EKEWB\nxftmHbnGbw0lCt2KcR4zYtbitvZtpz0EbGpfu/an0HufMpA6RQ4Hbhq88zYLRI42\nxAtQ1Z8CrX9zfdOydBDgWfqHEI/SUM6Pi85EtnxER1xBf+vdWG6kdDMNAoGBAKI+\nq//+jcP7jKGRwVfzxXmWgDwqrNiH5Bl81SjtRX4j3n2EvmbLL2t5RPFDjxdJJKwF\nGKe0iMbYpCbnvD1SEcaiO9tbWPELKFIhE51Ep926dap6ZMeuVxmUuT0k5Mg9xi/w\nSbS5TJdvfBijocMBr4Ysq+hcXipzJXyI1AiRqEfTAoGBAM6l5fijlhTALNXlc6+p\nytcqQ6XIE2dhDwPlluR3T/T4kf27AgMsQN9JhA+hC8a/ULBfYFEF0ZZZO87tzFx4\n0Ddu320u36so9fnxuCFbzHngygI0vAzvQc4XAHUtDtb2wd/bLPWKlWLZDrgHKqF1\nlecxandfa0hNC/VJlfzxjWNo\n-----END PRIVATE KEY-----";
+var _gsToken = null;
+var _gsTokenExpiry = 0;
+function withTimeout(promise, ms) {
+  return Promise.race([promise, new Promise(function (_, rej) {
+    return setTimeout(function () {
+      return rej(new Error("timeout"));
+    }, ms);
+  })]);
+}
+function gsGetToken() {
+  return _gsGetToken.apply(this, arguments);
+}
+function _gsGetToken() {
+  _gsGetToken = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+    var now, header, iat, exp, payload, signing, keyData, binaryKey, cryptoKey, sig, sigB64, jwt, resp, d, _t3;
+    return _regenerator().w(function (_context3) {
+      while (1) switch (_context3.p = _context3.n) {
+        case 0:
+          now = Math.floor(Date.now() / 1000);
+          if (!(_gsToken && _gsTokenExpiry > now + 60)) {
+            _context3.n = 1;
+            break;
+          }
+          return _context3.a(2, _gsToken);
+        case 1:
+          _context3.p = 1;
+          header = btoa(JSON.stringify({
+            alg: "RS256",
+            typ: "JWT"
+          })).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+          iat = now, exp = now + 3600;
+          payload = btoa(JSON.stringify({
+            iss: CLIENT_EMAIL,
+            scope: "https://www.googleapis.com/auth/spreadsheets",
+            aud: "https://oauth2.googleapis.com/token",
+            exp: exp,
+            iat: iat
+          })).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+          signing = "".concat(header, ".").concat(payload);
+          keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|\n/g, "");
+          binaryKey = Uint8Array.from(atob(keyData), function (c) {
+            return c.charCodeAt(0);
+          });
+          _context3.n = 2;
+          return crypto.subtle.importKey("pkcs8", binaryKey.buffer, {
+            name: "RSASSA-PKCS1-v1_5",
+            hash: "SHA-256"
+          }, false, ["sign"]);
+        case 2:
+          cryptoKey = _context3.v;
+          _context3.n = 3;
+          return crypto.subtle.sign("RSASSA-PKCS1-v1_5", cryptoKey, new TextEncoder().encode(signing));
+        case 3:
+          sig = _context3.v;
+          sigB64 = btoa(String.fromCharCode.apply(String, _toConsumableArray(new Uint8Array(sig)))).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+          jwt = "".concat(signing, ".").concat(sigB64);
+          _context3.n = 4;
+          return withTimeout(fetch("https://oauth2.googleapis.com/token", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=".concat(jwt)
+          }), 5000);
+        case 4:
+          resp = _context3.v;
+          _context3.n = 5;
+          return resp.json();
+        case 5:
+          d = _context3.v;
+          _gsToken = d.access_token;
+          _gsTokenExpiry = now + (d.expires_in || 3600);
+          return _context3.a(2, _gsToken);
+        case 6:
+          _context3.p = 6;
+          _t3 = _context3.v;
+          return _context3.a(2, null);
+      }
+    }, _callee3, null, [[1, 6]]);
+  }));
+  return _gsGetToken.apply(this, arguments);
+}
+function gsLoad() {
+  return _gsLoad.apply(this, arguments);
+}
+function _gsLoad() {
+  _gsLoad = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    var tk, url, r, d, rows, _t4;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.p = _context4.n) {
+        case 0:
+          _context4.p = 0;
+          _context4.n = 1;
+          return gsGetToken();
+        case 1:
+          tk = _context4.v;
+          if (tk) {
+            _context4.n = 2;
+            break;
+          }
+          return _context4.a(2, null);
+        case 2:
+          url = "https://sheets.googleapis.com/v4/spreadsheets/".concat(SHEET_ID, "/values/").concat(encodeURIComponent("Finanzas!A1:A2"));
+          _context4.n = 3;
+          return withTimeout(fetch(url, {
+            headers: {
+              Authorization: "Bearer ".concat(tk)
+            }
+          }), 5000);
+        case 3:
+          r = _context4.v;
+          if (r.ok) {
+            _context4.n = 4;
+            break;
+          }
+          return _context4.a(2, null);
+        case 4:
+          _context4.n = 5;
+          return r.json();
+        case 5:
+          d = _context4.v;
+          rows = d.values;
+          if (!(!rows || rows.length < 2 || !rows[1][0])) {
+            _context4.n = 6;
+            break;
+          }
+          return _context4.a(2, null);
+        case 6:
+          return _context4.a(2, JSON.parse(rows[1][0]));
+        case 7:
+          _context4.p = 7;
+          _t4 = _context4.v;
+          return _context4.a(2, null);
+      }
+    }, _callee4, null, [[0, 7]]);
+  }));
+  return _gsLoad.apply(this, arguments);
+}
+function gsSave(_x) {
+  return _gsSave.apply(this, arguments);
+} // ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function _gsSave() {
+  _gsSave = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(data) {
+    var tk, url, r, _t5;
+    return _regenerator().w(function (_context5) {
+      while (1) switch (_context5.p = _context5.n) {
+        case 0:
+          _context5.p = 0;
+          _context5.n = 1;
+          return gsGetToken();
+        case 1:
+          tk = _context5.v;
+          if (tk) {
+            _context5.n = 2;
+            break;
+          }
+          return _context5.a(2, false);
+        case 2:
+          url = "https://sheets.googleapis.com/v4/spreadsheets/".concat(SHEET_ID, "/values/").concat(encodeURIComponent("Finanzas!A1"), "?valueInputOption=RAW");
+          _context5.n = 3;
+          return fetch(url, {
+            method: "PUT",
+            headers: {
+              Authorization: "Bearer ".concat(tk),
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              range: "Finanzas!A1",
+              majorDimension: "ROWS",
+              values: [["data"], [JSON.stringify(data)]]
+            })
+          });
+        case 3:
+          r = _context5.v;
+          return _context5.a(2, r.ok);
+        case 4:
+          _context5.p = 4;
+          _t5 = _context5.v;
+          return _context5.a(2, false);
+      }
+    }, _callee5, null, [[0, 4]]);
+  }));
+  return _gsSave.apply(this, arguments);
+}
+var CLP = function CLP(n) {
+  return "$".concat(Math.round(n || 0).toLocaleString("es-CL"));
+};
+var pct = function pct(a, b) {
+  return b > 0 ? Math.min(999, Math.round(a / b * 100)) : 0;
+};
+var toDay = function toDay() {
+  return new Date().toISOString().split("T")[0];
+};
+var uid = function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+};
+var fmt = function fmt(s) {
+  return s ? new Date(s + "T12:00").toLocaleDateString("es-CL", {
+    day: "2-digit",
+    month: "short"
+  }) : "";
+};
+var fmtMo = function fmtMo(s) {
+  return s ? new Date(s + "-01T12:00").toLocaleDateString("es-CL", {
+    month: "long",
+    year: "numeric"
+  }) : "";
+};
+var fmtMoShort = function fmtMoShort(s) {
+  return s ? new Date(s + "-01T12:00").toLocaleDateString("es-CL", {
+    month: "short"
+  }) : "";
+};
+var curMo = function curMo() {
+  return toDay().slice(0, 7);
+};
+var lastNMonths = function lastNMonths(n) {
+  var r = [];
+  var d = new Date();
+  for (var i = n - 1; i >= 0; i--) {
+    var m = new Date(d.getFullYear(), d.getMonth() - i, 1);
+    r.push("".concat(m.getFullYear(), "-").concat(String(m.getMonth() + 1).padStart(2, "0")));
+  }
+  return r;
+};
+var addMonths = function addMonths(dateStr, n) {
+  var d = new Date(dateStr + "T12:00");
+  d.setMonth(d.getMonth() + n);
+  return "".concat(d.getFullYear(), "-").concat(String(d.getMonth() + 1).padStart(2, "0"));
+};
+function cutDateForBD(bd, y, mo) {
+  var d = new Date(y, mo, bd);
+  var w = d.getDay();
+  if (w === 6) return new Date(y, mo, bd - 1);
+  if (w === 0) return new Date(y, mo, bd - 2);
+  return d;
+}
+function cardCycle(card) {
+  var n = new Date();
+  var y = n.getFullYear(),
+    mo = n.getMonth();
+  var bd = card.billingDay || 19;
+  var cutThis = cutDateForBD(bd, y, mo);
+  cutThis.setHours(23, 59, 59);
+  if (n > cutThis) {
+    var ny = mo === 11 ? y + 1 : y,
+      nm = mo === 11 ? 0 : mo + 1;
+    var start = new Date(cutThis);
+    start.setDate(start.getDate() + 1);
+    start.setHours(0, 0, 0);
+    var end = cutDateForBD(bd, ny, nm);
+    end.setHours(23, 59, 59);
+    return {
+      start: start,
+      end: end
+    };
+  } else {
+    var py = mo === 0 ? y - 1 : y,
+      pm = mo === 0 ? 11 : mo - 1;
+    var prevCut = cutDateForBD(bd, py, pm);
+    prevCut.setHours(23, 59, 59);
+    var _start = new Date(prevCut);
+    _start.setDate(_start.getDate() + 1);
+    _start.setHours(0, 0, 0);
+    return {
+      start: _start,
+      end: cutThis
+    };
+  }
+}
+function calcInstAmt(principal, annualRate, n) {
+  if (!annualRate || annualRate === 0) return Math.round(principal / n);
+  var r = annualRate / 100 / 12;
+  return Math.round(principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+}
+function paidInsts(p) {
+  var now = new Date();
+  if (p.firstPaymentMonth) {
+    // firstPaymentMonth = month cuota was generated
+    // Payment happens the following month, so a cuota is "paid" when we're past its payment month
+    var _p$firstPaymentMonth$ = p.firstPaymentMonth.split("-").map(Number),
+      _p$firstPaymentMonth$2 = _slicedToArray(_p$firstPaymentMonth$, 2),
+      fy = _p$firstPaymentMonth$2[0],
+      fm = _p$firstPaymentMonth$2[1];
+    // How many cuotas have been billed (payment received) = months since firstPaymentMonth - 1 (because payment is next month)
+    var _diff = (now.getFullYear() - fy) * 12 + (now.getMonth() - (fm - 1)) - 1;
+    return Math.min(Math.max(0, _diff), p.installments);
+  }
+  var start = new Date(p.date + "T12:00");
+  var diff = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  return Math.min(Math.max(0, diff), p.installments);
+}
+function remainBal(p) {
+  return (p.installments - paidInsts(p)) * p.installmentAmt;
+}
+function instForMonth(purchase, yearMonth) {
+  var _yearMonth$split$map = yearMonth.split("-").map(Number),
+    _yearMonth$split$map2 = _slicedToArray(_yearMonth$split$map, 2),
+    y = _yearMonth$split$map2[0],
+    m = _yearMonth$split$map2[1];
+  // If firstPaymentMonth is set, use it as reference instead of purchase date
+  var ref = purchase.firstPaymentMonth || null;
+  var diff;
+  if (ref) {
+    var _ref$split$map = ref.split("-").map(Number),
+      _ref$split$map2 = _slicedToArray(_ref$split$map, 2),
+      ry = _ref$split$map2[0],
+      rm = _ref$split$map2[1];
+    diff = (y - ry) * 12 + (m - rm) + 1; // 1=first month, 2=second, etc.
+  } else {
+    var d = new Date(purchase.date + "T12:00");
+    diff = (y - d.getFullYear()) * 12 + (m - (d.getMonth() + 1));
+  }
+  if (diff >= 1 && diff <= purchase.installments) return {
+    num: diff,
+    amount: purchase.installmentAmt
+  };
+  return null;
+}
+function cardUsed(card, purchases) {
+  return purchases.filter(function (p) {
+    return p.cardId === card.id && !p.cancelled;
+  }).reduce(function (s, p) {
+    return s + remainBal(p);
+  }, 0);
+}
+function cardDirectCharges(card, expenses, groceries) {
+  // All direct charges linked to this card (not filtered by cycle — shows full unpaid balance)
+  var exp = expenses.filter(function (e) {
+    return e.cardId === card.id && e.payMethod === "CMR/Crédito";
+  }).reduce(function (s, e) {
+    return s + e.amount;
+  }, 0);
+  var grc = groceries.filter(function (g) {
+    return g.cardId === card.id && g.payMethod === "CMR/Crédito";
+  }).reduce(function (s, g) {
+    return s + g.total;
+  }, 0);
+  return exp + grc;
+}
+function cardTotalUsed(card, purchases, expenses, groceries, cardPayments) {
+  var paid = (cardPayments || []).filter(function (p) {
+    return p.cardId === card.id;
+  }).reduce(function (s, p) {
+    return s + p.amount;
+  }, 0);
+  return Math.max(0, cardUsed(card, purchases) + cardDirectCharges(card, expenses, groceries) - paid);
+}
+
+// For a direct expense/grocery paid with CMR/Crédito, return the billing month
+// (i.e. the cycle it belongs to, not the calendar month of the date).
+// If date > billingDay of its month → belongs to NEXT month's cycle.
+// For non-credit payments, billing month = calendar month of date.
+function expenseBillingMonth(dateStr, payMethod, cardId, cards) {
+  if (payMethod !== "CMR/Crédito" || !cardId) return dateStr.slice(0, 7);
+  var card = cards.find(function (c) {
+    return c.id === cardId;
+  });
+  var bd = (card === null || card === void 0 ? void 0 : card.billingDay) || 19;
+  var d = new Date(dateStr + "T12:00");
+  var cutDay = cutDateForBD(bd, d.getFullYear(), d.getMonth()).getDate();
+  if (d.getDate() > cutDay) {
+    // After cut → next month's cycle
+    var next = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+    return "".concat(next.getFullYear(), "-").concat(String(next.getMonth() + 1).padStart(2, "0"));
+  }
+  return dateStr.slice(0, 7);
+}
+
+// ═══════════════════════════════════════════════════
+// BUCKETS & CATEGORIES
+// ═══════════════════════════════════════════════════
+var BUCKETS = {
+  necesidades: {
+    label: "Necesidades",
+    emoji: "🔵",
+    target: 50,
+    color: "#3B82F6",
+    bg: "bg-blue-500",
+    light: "bg-blue-900/30",
+    border: "border-blue-700/50",
+    text: "text-blue-400"
+  },
+  estilo: {
+    label: "Estilo de vida",
+    emoji: "🟡",
+    target: 30,
+    color: "#F59E0B",
+    bg: "bg-amber-500",
+    light: "bg-amber-900/30",
+    border: "border-amber-700/50",
+    text: "text-amber-400"
+  },
+  futuro: {
+    label: "Futuro",
+    emoji: "🟢",
+    target: 20,
+    color: "#10B981",
+    bg: "bg-emerald-500",
+    light: "bg-emerald-900/30",
+    border: "border-emerald-700/50",
+    text: "text-emerald-400"
+  }
+};
+var CATS = {
+  necesidades: [{
+    id: "vivienda",
+    label: "🏠 Vivienda",
+    subs: ["Arriendo", "Dividendo", "Agua", "Luz", "Gas", "Gastos comunes", "Otro vivienda"]
+  }, {
+    id: "servicios",
+    label: "📱 Servicios fijos",
+    subs: ["Plan celular", "Internet hogar", "Cable/TV", "Teléfono fijo", "Otro servicio"]
+  }, {
+    id: "salud",
+    label: "🏥 Salud",
+    subs: ["Médico/Consulta", "Farmacia", "Dentista", "Exámenes", "Isapre complementaria", "Seguro médico", "Otro salud"]
+  }, {
+    id: "alimentos",
+    label: "🛒 Alimentación básica",
+    subs: ["Supermercado", "Almacén/Minimarket", "Feria/Verdulería", "Carnicería", "Panadería", "Otro alimento"]
+  }, {
+    id: "transporte",
+    label: "🚗 Transporte",
+    subs: ["Bencina", "TAG/Peajes", "Locomoción/Metro/Bus", "Revisión técnica", "SOAP", "Otro transporte"]
+  }, {
+    id: "educacion",
+    label: "📚 Educación",
+    subs: ["Mensualidad/Matrícula", "Materiales", "Jardín/Colegio", "Cursos", "Otro educación"]
+  }, {
+    id: "seguros",
+    label: "🛡️ Seguros",
+    subs: ["Seguro auto", "Seguro de vida", "Seguro hogar", "Seguro de viaje", "Otro seguro"]
+  }, {
+    id: "deudas",
+    label: "💳 Deudas mínimas",
+    subs: ["Cuota mínima TC", "Crédito de consumo", "Crédito hipotecario", "Otro"]
+  }],
+  estilo: [{
+    id: "restaurantes",
+    label: "🍽️ Restaurantes/Delivery",
+    subs: ["Restaurante", "Delivery (PY/Rappi)", "Café", "Sushi", "Comida rápida", "Otro restaurante"]
+  }, {
+    id: "streaming",
+    label: "🎬 Entretenimiento digital",
+    subs: ["Netflix", "Spotify", "Amazon Prime", "Disney+", "YouTube Premium", "Videojuegos", "Otra suscripción"]
+  }, {
+    id: "salidas",
+    label: "🎉 Salidas/Ocio",
+    subs: ["Cine", "Eventos/Conciertos", "Bar/Discoteca", "Paseos", "Otro ocio"]
+  }, {
+    id: "ropa",
+    label: "👗 Ropa/Accesorios",
+    subs: ["Ropa", "Calzado", "Accesorios", "Otro ropa"]
+  }, {
+    id: "antojos",
+    label: "🍫 Antojos/Snacks",
+    subs: ["Dulces", "Bebidas extra", "Snacks", "Helado", "Otro antojo"]
+  }, {
+    id: "varios",
+    label: "✨ Varios",
+    subs: ["Regalos", "Mascotas", "Hobbies", "Peluquería", "Farmacia no esencial", "Otro"]
+  }]
+};
+var ALL_CATS = [].concat(_toConsumableArray(CATS.necesidades), _toConsumableArray(CATS.estilo));
+var getCatBucket = function getCatBucket(catId) {
+  return CATS.necesidades.find(function (c) {
+    return c.id === catId;
+  }) ? "necesidades" : "estilo";
+};
+var getCat = function getCat(catId) {
+  return ALL_CATS.find(function (c) {
+    return c.id === catId;
+  });
+};
+var PAYS = ["Débito", "Efectivo", "Transferencia", "CMR/Crédito"];
+var CARD_COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899", "#06B6D4", "#84CC16"];
+var BANKS = ["BancoEstado", "Banco Chile", "Santander", "BCI", "Scotiabank", "Itaú", "CMR Falabella", "Ripley", "MACH", "Otro"];
+var PIE_COLORS = ["#3B82F6", "#F59E0B", "#10B981", "#EF4444", "#8B5CF6", "#EC4899", "#06B6D4", "#84CC16", "#F97316", "#A855F7"];
+var INIT = {
+  incomes: [],
+  expenses: [],
+  groceries: [],
+  investments: [],
+  cards: [],
+  purchases: [],
+  wifePayments: [],
+  cardPayments: [],
+  savings: {
+    viaje: {
+      label: "Viaje 2027",
+      emoji: "✈️",
+      target: 0,
+      balance: 0,
+      history: []
+    },
+    emergencia: {
+      label: "Emergencia",
+      emoji: "🛡️",
+      target: 0,
+      balance: 0,
+      history: []
+    },
+    universidad: {
+      label: "Universidad",
+      emoji: "🎓",
+      target: 0,
+      balance: 0,
+      history: []
+    },
+    casa: {
+      label: "Casa",
+      emoji: "🏡",
+      target: 0,
+      balance: 0,
+      history: []
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// FINANCIAL CALCULATIONS
+// ═══════════════════════════════════════════════════
+function calcDistribution(data, mo) {
+  // Use budgetMonth if set, otherwise fall back to date month
+  var incomes = data.incomes.filter(function (i) {
+    return (i.budgetMonth || i.date.slice(0, 7)) === mo;
+  });
+  var totalIncome = incomes.reduce(function (s, i) {
+    return s + i.amount;
+  }, 0);
+
+  // Necesidades: direct expenses + groceries + installments from necesidades purchases
+  var directNec = data.expenses.filter(function (e) {
+    return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "necesidades";
+  }).reduce(function (s, e) {
+    return s + e.amount;
+  }, 0);
+  var groceriesMo = data.groceries.filter(function (g) {
+    return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
+  }).reduce(function (s, g) {
+    return s + g.total;
+  }, 0);
+  var instNec = data.purchases.filter(function (p) {
+    return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "necesidades";
+  }).reduce(function (s, p) {
+    var i = instForMonth(p, mo);
+    return s + (i ? i.amount : 0);
+  }, 0);
+  var totalNec = directNec + groceriesMo + instNec;
+
+  // Estilo: direct expenses + installments from estilo purchases
+  var directEst = data.expenses.filter(function (e) {
+    return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "estilo";
+  }).reduce(function (s, e) {
+    return s + e.amount;
+  }, 0);
+  var instEst = data.purchases.filter(function (p) {
+    return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "estilo";
+  }).reduce(function (s, p) {
+    var i = instForMonth(p, mo);
+    return s + (i ? i.amount : 0);
+  }, 0);
+  var totalEst = directEst + instEst;
+
+  // Futuro: savings deposits + investments this month
+  var savingsMo = Object.values(data.savings).reduce(function (s, f) {
+    return s + f.history.filter(function (h) {
+      return h.date.startsWith(mo) && h.amount > 0;
+    }).reduce(function (ss, h) {
+      return ss + h.amount;
+    }, 0);
+  }, 0);
+  var investMo = data.investments.filter(function (i) {
+    return i.startDate.startsWith(mo);
+  }).reduce(function (s, i) {
+    return s + i.amount;
+  }, 0);
+  var totalFut = savingsMo + investMo;
+  var totalSpent = totalNec + totalEst + totalFut;
+  return {
+    totalIncome: totalIncome,
+    totalNec: totalNec,
+    totalEst: totalEst,
+    totalFut: totalFut,
+    totalSpent: totalSpent,
+    pctNec: pct(totalNec, totalIncome),
+    pctEst: pct(totalEst, totalIncome),
+    pctFut: pct(totalFut, totalIncome),
+    pctNecOfSpent: pct(totalNec, totalSpent),
+    pctEstOfSpent: pct(totalEst, totalSpent),
+    pctFutOfSpent: pct(totalFut, totalSpent)
+  };
+}
+function getInsights(dist) {
+  var insights = [];
+  if (dist.totalIncome === 0) return insights;
+  var devNec = dist.pctNec - 50,
+    devEst = dist.pctEst - 30,
+    devFut = dist.pctFut - 20;
+  if (devNec > 10) insights.push({
+    type: "warn",
+    msg: "Tus necesidades consumen ".concat(dist.pctNec, "% del ingreso \u2014 ").concat(devNec, "pts sobre el objetivo")
+  });
+  if (devEst > 8) insights.push({
+    type: "warn",
+    msg: "Estilo de vida en ".concat(dist.pctEst, "% \u2014 ").concat(devEst, "pts sobre el objetivo del 30%")
+  });
+  if (dist.pctFut < 10 && dist.totalIncome > 0) insights.push({
+    type: "danger",
+    msg: "Estás ahorrando menos del 10% — el objetivo es 20%"
+  });
+  if (devFut < -10) insights.push({
+    type: "info",
+    msg: "Llevas ".concat(dist.pctFut, "% en ahorro \u2014 podr\xEDas subir al 20%")
+  });
+  if (dist.pctNec <= 50 && dist.pctEst <= 30 && dist.pctFut >= 20) insights.push({
+    type: "good",
+    msg: "¡Distribución 50/30/20 en regla este mes! 🎉"
+  });
+  var daysInMo = new Date(parseInt(curMo().split("-")[0]), parseInt(curMo().split("-")[1]), 0).getDate();
+  var dayOfMo = new Date().getDate();
+  var projSpent = Math.round(dist.totalSpent / (dayOfMo || 1) * daysInMo);
+  if (projSpent > dist.totalIncome && dist.totalIncome > 0) insights.push({
+    type: "danger",
+    msg: "Proyecci\xF3n: gastar\xE1s ".concat(CLP(projSpent), " vs ").concat(CLP(dist.totalIncome), " de ingresos")
+  });
+  return insights;
+}
+
+// ═══════════════════════════════════════════════════
+// SHARED COMPONENTS
+// ═══════════════════════════════════════════════════
+var Card = function Card(_ref) {
+  var children = _ref.children,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? "" : _ref$className;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "bg-slate-800 rounded-2xl p-4 shadow-lg ".concat(className)
+  }, children);
+};
+var Btn = function Btn(_ref2) {
+  var onClick = _ref2.onClick,
+    children = _ref2.children,
+    _ref2$color = _ref2.color,
+    color = _ref2$color === void 0 ? "blue" : _ref2$color,
+    _ref2$sm = _ref2.sm,
+    sm = _ref2$sm === void 0 ? false : _ref2$sm,
+    _ref2$full = _ref2.full,
+    full = _ref2$full === void 0 ? false : _ref2$full,
+    _ref2$disabled = _ref2.disabled,
+    disabled = _ref2$disabled === void 0 ? false : _ref2$disabled;
+  var c = {
+    blue: "bg-blue-600 hover:bg-blue-500",
+    green: "bg-emerald-600 hover:bg-emerald-500",
+    red: "bg-rose-600 hover:bg-rose-500",
+    gray: "bg-slate-600 hover:bg-slate-500",
+    amber: "bg-amber-600 hover:bg-amber-500",
+    purple: "bg-violet-600 hover:bg-violet-500"
+  };
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onClick,
+    disabled: disabled,
+    className: "".concat(c[color], " text-white font-semibold rounded-xl transition-all active:scale-95 ").concat(sm ? "px-3 py-1.5 text-sm" : "px-4 py-2.5 text-base", " ").concat(full ? "w-full" : "", " ").concat(disabled ? "opacity-40 cursor-not-allowed" : "")
+  }, children);
+};
+var Inp = function Inp(_ref3) {
+  var label = _ref3.label,
+    value = _ref3.value,
+    _onChange = _ref3.onChange,
+    _ref3$type = _ref3.type,
+    type = _ref3$type === void 0 ? "text" : _ref3$type,
+    _ref3$placeholder = _ref3.placeholder,
+    placeholder = _ref3$placeholder === void 0 ? "" : _ref3$placeholder,
+    min = _ref3.min,
+    max = _ref3.max,
+    step = _ref3.step,
+    _ref3$className = _ref3.className,
+    className = _ref3$className === void 0 ? "" : _ref3$className;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-1 ".concat(className)
+  }, label && /*#__PURE__*/React.createElement("label", {
+    className: "text-xs text-slate-400 font-medium"
+  }, label), /*#__PURE__*/React.createElement("input", {
+    type: type,
+    value: value,
+    onChange: function onChange(e) {
+      return _onChange(e.target.value);
+    },
+    placeholder: placeholder,
+    min: min,
+    max: max,
+    step: step,
+    className: "bg-slate-700 text-white rounded-xl px-3 py-2.5 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none w-full"
+  }));
+};
+var Sel = function Sel(_ref4) {
+  var label = _ref4.label,
+    value = _ref4.value,
+    _onChange2 = _ref4.onChange,
+    options = _ref4.options,
+    _ref4$placeholder = _ref4.placeholder,
+    placeholder = _ref4$placeholder === void 0 ? "" : _ref4$placeholder;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-1"
+  }, label && /*#__PURE__*/React.createElement("label", {
+    className: "text-xs text-slate-400 font-medium"
+  }, label), /*#__PURE__*/React.createElement("select", {
+    value: value,
+    onChange: function onChange(e) {
+      return _onChange2(e.target.value);
+    },
+    className: "bg-slate-700 text-white rounded-xl px-3 py-2.5 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none w-full"
+  }, placeholder && /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, placeholder), options.map(function (o) {
+    return typeof o === "string" ? /*#__PURE__*/React.createElement("option", {
+      key: o,
+      value: o
+    }, o) : /*#__PURE__*/React.createElement("option", {
+      key: o.value,
+      value: o.value
+    }, o.label);
+  })));
+};
+var Badge = function Badge(_ref5) {
+  var children = _ref5.children,
+    _ref5$color = _ref5.color,
+    color = _ref5$color === void 0 ? "gray" : _ref5$color;
+  var c = {
+    blue: "bg-blue-900/50 text-blue-300",
+    green: "bg-emerald-900/50 text-emerald-300",
+    red: "bg-rose-900/50 text-rose-300",
+    amber: "bg-amber-900/50 text-amber-300",
+    gray: "bg-slate-700/80 text-slate-300",
+    purple: "bg-violet-900/50 text-violet-300"
+  };
+  return /*#__PURE__*/React.createElement("span", {
+    className: "text-xs px-2 py-0.5 rounded-full font-medium ".concat(c[color])
+  }, children);
+};
+var Toggle = function Toggle(_ref6) {
+  var value = _ref6.value,
+    onChange = _ref6.onChange,
+    label = _ref6.label;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return onChange(!value);
+    },
+    className: "w-10 h-6 rounded-full transition-all relative flex-shrink-0 ".concat(value ? "bg-blue-600" : "bg-slate-600")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ".concat(value ? "left-4" : "left-0.5")
+  })), label && /*#__PURE__*/React.createElement("span", {
+    className: "text-sm text-slate-300"
+  }, label));
+};
+var SectionHeader = function SectionHeader(_ref7) {
+  var title = _ref7.title,
+    sub = _ref7.sub;
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "text-xl font-bold text-white"
+  }, title), sub && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-400 mt-0.5"
+  }, sub));
+};
+var EmptyState = function EmptyState(_ref8) {
+  var msg = _ref8.msg;
+  return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-500 text-sm text-center py-10"
+  }, msg));
+};
+var ProgressBar = function ProgressBar(_ref9) {
+  var value = _ref9.value,
+    max = _ref9.max,
+    color = _ref9.color,
+    _ref9$height = _ref9.height,
+    height = _ref9$height === void 0 ? "h-2" : _ref9$height;
+  var p = max > 0 ? Math.min(100, value / max * 100) : 0;
+  var auto = !color ? p >= 100 ? "bg-rose-500" : p >= 80 ? "bg-amber-500" : "bg-emerald-500" : color;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "".concat(height, " bg-slate-700 rounded-full overflow-hidden")
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-full ".concat(auto, " rounded-full transition-all duration-500"),
+    style: {
+      width: "".concat(p, "%")
+    }
+  }));
+};
+
+// Bucket pill
+function BucketPill(_ref0) {
+  var bucketId = _ref0.bucketId;
+  var b = BUCKETS[bucketId];
+  if (!b) return null;
+  return /*#__PURE__*/React.createElement("span", {
+    className: "text-xs px-2 py-0.5 rounded-full font-semibold ".concat(b.light, " ").concat(b.text, " border ").concat(b.border)
+  }, b.emoji, " ", b.label);
+}
+
+// 50/30/20 widget
+function DistWidget(_ref1) {
+  var dist = _ref1.dist,
+    _ref1$compact = _ref1.compact,
+    compact = _ref1$compact === void 0 ? false : _ref1$compact;
+  var bars = [{
+    key: "necesidades",
+    val: dist.pctNec,
+    target: 50,
+    amt: dist.totalNec
+  }, {
+    key: "estilo",
+    val: dist.pctEst,
+    target: 30,
+    amt: dist.totalEst
+  }, {
+    key: "futuro",
+    val: dist.pctFut,
+    target: 20,
+    amt: dist.totalFut
+  }];
+  if (compact) return /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1.5"
+  }, bars.map(function (_ref10) {
+    var key = _ref10.key,
+      val = _ref10.val,
+      target = _ref10.target;
+    var b = BUCKETS[key];
+    var dev = val - target;
+    return /*#__PURE__*/React.createElement("div", {
+      key: key,
+      className: "flex-1 text-center"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-lg font-black ".concat(Math.abs(dev) > 5 ? dev > 0 ? "text-rose-400" : "text-emerald-400" : b.text)
+    }, val, "%"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, target, "%"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 truncate"
+    }, b.label.split(" ")[0]));
+  }));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, bars.map(function (_ref11) {
+    var key = _ref11.key,
+      val = _ref11.val,
+      target = _ref11.target,
+      amt = _ref11.amt;
+    var b = BUCKETS[key];
+    var dev = val - target;
+    var isOver = dev > 5;
+    var isUnder = dev < -5;
+    return /*#__PURE__*/React.createElement("div", {
+      key: key
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-center mb-1.5"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-base"
+    }, b.emoji), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm text-white font-semibold"
+    }, b.label), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, "objetivo ", target, "%"))), /*#__PURE__*/React.createElement("div", {
+      className: "text-right"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-lg font-black ".concat(isOver ? "text-rose-400" : isUnder && key === "futuro" ? "text-amber-400" : b.text)
+    }, val, "%"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, CLP(amt)))), /*#__PURE__*/React.createElement("div", {
+      className: "relative h-3 bg-slate-700 rounded-full overflow-hidden"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "h-full rounded-full transition-all duration-700 ".concat(isOver ? "bg-rose-500" : b.bg),
+      style: {
+        width: "".concat(Math.min(100, val * 2), "%")
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "absolute top-0 h-full w-0.5 bg-white/30",
+      style: {
+        left: "".concat(Math.min(100, target * 2), "%")
+      }
+    })), (isOver || isUnder) && /*#__PURE__*/React.createElement("p", {
+      className: "text-xs mt-1 ".concat(isOver ? "text-rose-400" : "text-emerald-400")
+    }, isOver ? "\u25B2 ".concat(dev, "pts sobre objetivo") : "\u25BC ".concat(Math.abs(dev), "pts bajo objetivo")));
+  }));
+}
+
+// ═══════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════
+function Dashboard(_ref12) {
+  var _data$config;
+  var data = _ref12.data;
+  var mo = curMo();
+  var dist = calcDistribution(data, mo);
+  var insights = getInsights(dist);
+  var allDates = [].concat(_toConsumableArray(data.incomes), _toConsumableArray(data.expenses), _toConsumableArray(data.groceries)).map(function (r) {
+    return r.date;
+  }).sort().reverse();
+  var lastDate = allDates[0];
+  var daysSince = lastDate ? Math.floor((new Date() - new Date(lastDate + "T12:00")) / 86400000) : null;
+
+  // Disponible real = presupuesto base - todo lo gastado
+  var base = ((_data$config = data.config) === null || _data$config === void 0 ? void 0 : _data$config.budgetBase) || 750000;
+  var realAvailable = base - dist.totalSpent;
+  var instDue = data.purchases.filter(function (p) {
+    return !p.cancelled;
+  }).reduce(function (s, p) {
+    var i = instForMonth(p, mo);
+    return s + (i ? i.amount : 0);
+  }, 0);
+
+  // Credit
+  var totalUsed = data.cards.reduce(function (s, c) {
+    return s + cardTotalUsed(c, data.purchases, data.expenses, data.groceries, data.cardPayments);
+  }, 0);
+  var totalLimit = data.cards.reduce(function (s, c) {
+    return s + (c.creditLimit || 0);
+  }, 0);
+  var recent = [].concat(_toConsumableArray(data.incomes.map(function (i) {
+    return _objectSpread(_objectSpread({}, i), {}, {
+      _k: "in"
+    });
+  })), _toConsumableArray(data.expenses.map(function (e) {
+    return _objectSpread(_objectSpread({}, e), {}, {
+      _k: "out"
+    });
+  })), _toConsumableArray(data.groceries.map(function (g) {
+    return _objectSpread(_objectSpread({}, g), {}, {
+      _k: "out",
+      amount: g.total,
+      subcat: "Alimentación"
+    });
+  }))).sort(function (a, b) {
+    return b.date.localeCompare(a.date);
+  }).slice(0, 6);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, daysSince === null || daysSince >= 1 ? /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-3.5 border flex items-center gap-3 ".concat(daysSince !== null && daysSince >= 3 ? "bg-rose-900/30 border-rose-700/50" : "bg-amber-900/30 border-amber-700/50")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xl"
+  }, daysSince !== null && daysSince >= 3 ? "⚠️" : "🔔"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "font-semibold text-sm ".concat(daysSince !== null && daysSince >= 3 ? "text-rose-300" : "text-amber-300")
+  }, daysSince === null ? "Sin movimientos registrados aún" : "\xDAltimo registro hace ".concat(daysSince, " d\xEDa").concat(daysSince !== 1 ? "s" : "")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Recuerda registrar los movimientos de hoy"))) : /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-3 bg-emerald-900/30 border border-emerald-700/50 flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", null, "\u2705"), /*#__PURE__*/React.createElement("p", {
+    className: "text-emerald-300 text-sm font-medium"
+  }, "Al d\xEDa \u2014 \xFAltima entrada hoy")), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-start mb-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "text-white font-bold text-base"
+  }, "Distribuci\xF3n 50/30/20"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 mt-0.5"
+  }, fmtMo(mo))), dist.totalIncome > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "text-right"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500"
+  }, "Ingreso"), /*#__PURE__*/React.createElement("p", {
+    className: "text-white font-bold text-sm"
+  }, CLP(dist.totalIncome)))), dist.totalIncome === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-500 text-sm text-center py-6"
+  }, "Registra ingresos para ver tu distribuci\xF3n") : /*#__PURE__*/React.createElement(DistWidget, {
+    dist: dist
+  })), insights.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, insights.map(function (ins, i) {
+    var s = {
+      warn: {
+        bg: "bg-amber-900/30",
+        border: "border-amber-700/50",
+        text: "text-amber-300",
+        icon: "⚡"
+      },
+      danger: {
+        bg: "bg-rose-900/30",
+        border: "border-rose-700/50",
+        text: "text-rose-300",
+        icon: "🚨"
+      },
+      good: {
+        bg: "bg-emerald-900/30",
+        border: "border-emerald-700/50",
+        text: "text-emerald-300",
+        icon: "✅"
+      },
+      info: {
+        bg: "bg-blue-900/30",
+        border: "border-blue-700/50",
+        text: "text-blue-300",
+        icon: "💡"
+      }
+    }[ins.type];
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "rounded-xl p-3 border flex items-start gap-2 ".concat(s.bg, " ").concat(s.border)
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-sm mt-0.5"
+    }, s.icon), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm ".concat(s.text)
+    }, ins.msg));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-3 gap-2"
+  }, [{
+    l: "Ingresos",
+    v: dist.totalIncome,
+    c: "text-emerald-400"
+  }, {
+    l: "Gastos",
+    v: dist.totalSpent,
+    c: "text-rose-400"
+  }, {
+    l: "Balance",
+    v: dist.totalIncome - dist.totalSpent,
+    c: dist.totalIncome - dist.totalSpent >= 0 ? "text-blue-400" : "text-rose-400"
+  }].map(function (_ref13) {
+    var l = _ref13.l,
+      v = _ref13.v,
+      c = _ref13.c;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: l,
+      className: "text-center !p-3"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 mb-1"
+    }, l), /*#__PURE__*/React.createElement("p", {
+      className: "font-bold text-sm ".concat(c)
+    }, CLP(v)));
+  })), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+  }, "\uD83D\uDCA1 Presupuesto disponible"), /*#__PURE__*/React.createElement("p", {
+    className: "text-3xl font-black mb-3 ".concat(realAvailable >= 0 ? "text-emerald-400" : "text-rose-400")
+  }, CLP(realAvailable)), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-1.5 text-xs text-slate-400"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, "Presupuesto base"), /*#__PURE__*/React.createElement("span", {
+    className: "text-white"
+  }, CLP(base))), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, "\u2212 Total gastado"), /*#__PURE__*/React.createElement("span", {
+    className: "text-rose-400"
+  }, CLP(dist.totalSpent))), instDue > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-500"
+  }, "\u21B3 incluye ", CLP(instDue), " en cuotas TC"), /*#__PURE__*/React.createElement("span", null)))), data.cards.length > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+  }, "\uD83D\uDCB3 Cr\xE9dito total"), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-300 text-sm"
+  }, "Deuda vigente"), /*#__PURE__*/React.createElement("span", {
+    className: "text-amber-400 font-bold text-lg"
+  }, CLP(totalUsed))), totalLimit > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ProgressBar, {
+    value: totalUsed,
+    max: totalLimit
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 mt-1.5"
+  }, pct(totalUsed, totalLimit), "% del cupo total \xB7 ", CLP(Math.max(0, totalLimit - totalUsed)), " disponible"))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+  }, "\uD83D\uDFE2 Fondos (Futuro)"), Object.entries(data.savings).map(function (_ref14) {
+    var _ref15 = _slicedToArray(_ref14, 2),
+      f = _ref15[1];
+    var p2 = f.target > 0 ? Math.min(100, f.balance / f.target * 100) : 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: f.label,
+      className: "mb-3 last:mb-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between text-sm mb-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-300"
+    }, f.emoji, " ", f.label), /*#__PURE__*/React.createElement("span", {
+      className: "text-emerald-400 font-semibold"
+    }, CLP(f.balance))), f.target > 0 && /*#__PURE__*/React.createElement(ProgressBar, {
+      value: f.balance,
+      max: f.target,
+      color: "bg-emerald-500"
+    }));
+  })), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+  }, "\xDAltimos movimientos"), recent.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-500 text-sm text-center py-4"
+  }, "Sin movimientos") : recent.map(function (r, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: r.id + i,
+      className: "flex justify-between items-center py-2.5 border-b border-slate-700/60 last:border-0"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm text-white"
+    }, r.desc || r.subcat || {
+      sueldo: "Sueldo",
+      uber: "Uber",
+      extra: "Ingreso extra"
+    }[r.type] || ""), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, fmt(r.date), " \xB7 ", r.payMethod || r.type)), /*#__PURE__*/React.createElement("span", {
+      className: "font-semibold text-sm ".concat(r._k === "in" ? "text-emerald-400" : "text-rose-400")
+    }, r._k === "in" ? "+" : "−", CLP(r.amount)));
+  })));
+}
+
+// ═══════════════════════════════════════════════════
+// INGRESOS
+// ═══════════════════════════════════════════════════
+// Compute previous month helper
+function prevMonth(mo) {
+  var _mo$split$map = mo.split("-").map(Number),
+    _mo$split$map2 = _slicedToArray(_mo$split$map, 2),
+    y = _mo$split$map2[0],
+    m = _mo$split$map2[1];
+  return m === 1 ? "".concat(y - 1, "-12") : "".concat(y, "-").concat(String(m - 1).padStart(2, "0"));
+}
+function Ingresos(_ref16) {
+  var data = _ref16.data,
+    onChange = _ref16.onChange;
+  var _useState = useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    show = _useState2[0],
+    setShow = _useState2[1];
+  var BLANK = {
+    type: "sueldo",
+    amount: "",
+    date: toDay(),
+    budgetMonth: prevMonth(curMo()),
+    desc: "",
+    isWifeDebt: false
+  };
+  var _useState3 = useState(BLANK),
+    _useState4 = _slicedToArray(_useState3, 2),
+    f = _useState4[0],
+    setF = _useState4[1];
+  var save = function save() {
+    if (!f.amount || !f.date) return;
+    var amt = parseFloat(f.amount);
+    var inc = _objectSpread(_objectSpread({}, f), {}, {
+      id: uid(),
+      amount: amt
+    });
+    var newData = _objectSpread(_objectSpread({}, data), {}, {
+      incomes: [].concat(_toConsumableArray(data.incomes), [inc])
+    });
+    // If marked as wife debt payment, register it in wifePayments and don't add to budget
+    if (f.isWifeDebt) {
+      newData = _objectSpread(_objectSpread({}, newData), {}, {
+        wifePayments: [].concat(_toConsumableArray(data.wifePayments || []), [{
+          amount: amt,
+          date: f.date,
+          id: uid(),
+          note: f.desc || "Pago deuda"
+        }]),
+        incomes: data.incomes // don't add to incomes — it's a debt repayment
+      });
+    } else {
+      newData = _objectSpread(_objectSpread({}, newData), {}, {
+        incomes: [].concat(_toConsumableArray(data.incomes), [inc])
+      });
+    }
+    onChange(newData);
+    setF(BLANK);
+    setShow(false);
+  };
+  var del = function del(id) {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      incomes: data.incomes.filter(function (i) {
+        return i.id !== id;
+      })
+    }));
+  };
+
+  // Group by budgetMonth for display
+  var grouped = data.incomes.reduce(function (acc, i) {
+    var mo = i.budgetMonth || i.date.slice(0, 7);
+    (acc[mo] = acc[mo] || []).push(i);
+    return acc;
+  }, {});
+  var TYPE = {
+    sueldo: {
+      label: "💼 Sueldo",
+      c: "blue"
+    },
+    uber: {
+      label: "🚗 Uber",
+      c: "green"
+    },
+    esposa: {
+      label: "👩 Esposa/Pareja",
+      c: "purple"
+    },
+    extra: {
+      label: "⭐ Extra",
+      c: "amber"
+    }
+  };
+  var TCOLORS = {
+    blue: "bg-blue-900/50 text-blue-300",
+    green: "bg-emerald-900/50 text-emerald-300",
+    purple: "bg-violet-900/50 text-violet-300",
+    amber: "bg-amber-900/50 text-amber-300"
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDCB0 Ingresos"
+  }), /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: show ? "gray" : "green",
+    onClick: function onClick() {
+      return setShow(!show);
+    }
+  }, show ? "Cancelar" : "+ Agregar")), show && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(Sel, {
+    label: "Tipo",
+    value: f.type,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        type: v
+      }));
+    },
+    options: [{
+      value: "sueldo",
+      label: "💼 Sueldo"
+    }, {
+      value: "uber",
+      label: "🚗 Uber"
+    }, {
+      value: "esposa",
+      label: "👩 Aporte esposa/pareja"
+    }, {
+      value: "extra",
+      label: "⭐ Ingreso extra"
+    }]
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Monto ($)",
+    type: "number",
+    min: "0",
+    step: "1000",
+    value: f.amount,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        amount: v
+      }));
+    },
+    placeholder: "0"
+  }), /*#__PURE__*/React.createElement(Inp, {
+    label: "Fecha real de ingreso",
+    type: "date",
+    value: f.date,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        date: v
+      }));
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "bg-blue-900/30 border border-blue-700/50 rounded-xl p-3 space-y-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-blue-300 font-semibold"
+  }, "\uD83D\uDCC5 \xBFA qu\xE9 mes corresponde este ingreso?"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "El dinero llega en ", fmt(f.date) || "…", " pero corresponde al trabajo/per\xEDodo de:"), /*#__PURE__*/React.createElement(Inp, {
+    value: f.budgetMonth,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        budgetMonth: v
+      }));
+    },
+    placeholder: "2026-05",
+    type: "month"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500"
+  }, "Este mes se usar\xE1 para calcular tu 50/30/20")), /*#__PURE__*/React.createElement(Inp, {
+    label: "Descripci\xF3n (opcional)",
+    value: f.desc,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        desc: v
+      }));
+    },
+    placeholder: "Ej: Sueldo mayo \u2014 llega junio"
+  }), f.type === "esposa" && /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, /*#__PURE__*/React.createElement(Toggle, {
+    value: f.isWifeDebt || false,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        isWifeDebt: v
+      }));
+    },
+    label: "\uD83D\uDC9C Es pago de deuda pendiente"
+  }), f.isWifeDebt && /*#__PURE__*/React.createElement("div", {
+    className: "bg-violet-900/30 border border-violet-700/50 rounded-xl p-3"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-violet-300"
+  }, "Este monto se registrar\xE1 como pago de deuda de tu esposa \u2014 ", /*#__PURE__*/React.createElement("strong", null, "no entra al presupuesto 50/30/20"))), !f.isWifeDebt && /*#__PURE__*/React.createElement("div", {
+    className: "bg-slate-700/40 rounded-xl p-3"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Este monto entrar\xE1 a tu presupuesto y podr\xE1s distribuirlo normalmente"))), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "green",
+    onClick: save,
+    disabled: !f.amount || !f.budgetMonth
+  }, "Guardar ingreso"))), data.incomes.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "bg-slate-700/40 rounded-2xl p-4 border border-slate-600/50"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-300 text-sm font-semibold mb-1"
+  }, "\uD83D\uDCA1 C\xF3mo funciona el desfase"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Tu sueldo llega en junio pero corresponde a mayo. Al registrarlo, asigna \"mes presupuestal = mayo\" \u2014 as\xED los gastos de mayo se comparan contra ese ingreso correctamente.")), Object.entries(grouped).sort(function (a, b) {
+    return b[0].localeCompare(a[0]);
+  }).map(function (_ref17) {
+    var _ref18 = _slicedToArray(_ref17, 2),
+      mo = _ref18[0],
+      items = _ref18[1];
+    return /*#__PURE__*/React.createElement("div", {
+      key: mo
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-center px-1 mb-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 uppercase tracking-wider"
+    }, "Presupuesto ", fmtMo(mo)), /*#__PURE__*/React.createElement("p", {
+      className: "text-emerald-400 font-bold text-sm"
+    }, CLP(items.reduce(function (s, i) {
+      return s + i.amount;
+    }, 0)))), items.sort(function (a, b) {
+      return b.date.localeCompare(a.date);
+    }).map(function (i) {
+      var t = TYPE[i.type] || TYPE.extra;
+      return /*#__PURE__*/React.createElement(Card, {
+        key: i.id,
+        className: "mb-2 !p-3"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between items-start"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-1"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex gap-2 mb-1.5 flex-wrap"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs px-2 py-0.5 rounded-full font-medium ".concat(TCOLORS[t.c])
+      }, t.label), i.date.slice(0, 7) !== (i.budgetMonth || i.date.slice(0, 7)) && /*#__PURE__*/React.createElement("span", {
+        className: "text-xs px-2 py-0.5 rounded-full bg-amber-900/40 text-amber-300"
+      }, "Recibido ", fmt(i.date))), /*#__PURE__*/React.createElement("p", {
+        className: "text-white font-bold text-lg"
+      }, CLP(i.amount)), i.desc && /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400"
+      }, i.desc)), /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          return del(i.id);
+        },
+        className: "text-slate-600 hover:text-rose-400 text-xl ml-2"
+      }, "\xD7")));
+    }));
+  }), data.incomes.length === 0 && /*#__PURE__*/React.createElement(EmptyState, {
+    msg: "Sin ingresos registrados"
+  }));
+}
+
+// ═══════════════════════════════════════════════════
+// GASTOS
+// ═══════════════════════════════════════════════════
+function Gastos(_ref19) {
+  var _BUCKETS$filterBucket;
+  var data = _ref19.data,
+    onChange = _ref19.onChange;
+  var _useState5 = useState(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    show = _useState6[0],
+    setShow = _useState6[1];
+  var _useState7 = useState("all"),
+    _useState8 = _slicedToArray(_useState7, 2),
+    filterBucket = _useState8[0],
+    setFilterBucket = _useState8[1];
+  var _useState9 = useState(false),
+    _useState0 = _slicedToArray(_useState9, 2),
+    showWifeDetail = _useState0[0],
+    setShowWifeDetail = _useState0[1];
+  var _useState1 = useState(""),
+    _useState10 = _slicedToArray(_useState1, 2),
+    wifePayAmt = _useState10[0],
+    setWifePayAmt = _useState10[1];
+  var _useState11 = useState(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    editingId = _useState12[0],
+    setEditingId = _useState12[1];
+  var _useState13 = useState(null),
+    _useState14 = _slicedToArray(_useState13, 2),
+    editF = _useState14[0],
+    setEditF = _useState14[1];
+  var _useState15 = useState(curMo()),
+    _useState16 = _slicedToArray(_useState15, 2),
+    filterMo = _useState16[0],
+    setFilterMo = _useState16[1];
+  var _useState17 = useState({
+      bucket: "necesidades",
+      catId: "",
+      subcat: "",
+      desc: "",
+      amount: "",
+      payMethod: "Débito",
+      date: toDay(),
+      cardId: ""
+    }),
+    _useState18 = _slicedToArray(_useState17, 2),
+    f = _useState18[0],
+    setF = _useState18[1];
+  var curBucketCats = CATS[f.bucket] || [];
+  var selCat = curBucketCats.find(function (c) {
+    return c.id === f.catId;
+  });
+  var BLANK_GASTO = {
+    bucket: "necesidades",
+    catId: "",
+    subcat: "",
+    desc: "",
+    amount: "",
+    payMethod: "Débito",
+    date: toDay(),
+    cardId: "",
+    isWife: false
+  };
+  var save = function save() {
+    if (!f.amount || !f.catId || !f.subcat) return;
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      expenses: [].concat(_toConsumableArray(data.expenses), [_objectSpread(_objectSpread({}, f), {}, {
+        id: uid(),
+        amount: parseFloat(f.amount)
+      })])
+    }));
+    setF(BLANK_GASTO);
+    setShow(false);
+  };
+  var del = function del(id) {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      expenses: data.expenses.filter(function (e) {
+        return e.id !== id;
+      })
+    }));
+  };
+  var startEdit = function startEdit(e) {
+    setEditingId(e.id);
+    setEditF(_objectSpread(_objectSpread({}, e), {}, {
+      amount: String(e.amount)
+    }));
+  };
+  var saveEdit = function saveEdit() {
+    if (!editF.amount || !editF.catId || !editF.subcat) return;
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      expenses: data.expenses.map(function (e) {
+        return e.id === editingId ? _objectSpread(_objectSpread({}, editF), {}, {
+          amount: parseFloat(editF.amount)
+        }) : e;
+      })
+    }));
+    setEditingId(null);
+    setEditF(null);
+  };
+  var months = _toConsumableArray(new Set(data.expenses.map(function (e) {
+    return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards);
+  }))).sort().reverse();
+  if (!months.includes(filterMo)) months.unshift(filterMo);
+  var filtered = data.expenses.filter(function (e) {
+    return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === filterMo && (filterBucket === "all" || e.bucket === filterBucket);
+  }).sort(function (a, b) {
+    return b.date.localeCompare(a.date);
+  });
+  var total = filtered.reduce(function (s, e) {
+    return s + e.amount;
+  }, 0);
+  var mo = filterMo;
+  var dist = calcDistribution(data, mo);
+  var moIncome = dist.totalIncome;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDCB8 Gastos",
+    sub: "Total: ".concat(CLP(total))
+  }), /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: show ? "gray" : "red",
+    onClick: function onClick() {
+      return setShow(!show);
+    }
+  }, show ? "Cancelar" : "+ Agregar")), moIncome > 0 && /*#__PURE__*/React.createElement(Card, {
+    className: "!p-3"
+  }, /*#__PURE__*/React.createElement(DistWidget, {
+    dist: dist,
+    compact: true
+  })), show && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold text-white mb-3"
+  }, "Nuevo gasto"), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-xs text-slate-400 font-medium block mb-2"
+  }, "Bucket"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, ["necesidades", "estilo"].map(function (k) {
+    var b = BUCKETS[k];
+    return /*#__PURE__*/React.createElement("button", {
+      key: k,
+      onClick: function onClick() {
+        return setF(_objectSpread(_objectSpread({}, f), {}, {
+          bucket: k,
+          catId: "",
+          subcat: ""
+        }));
+      },
+      className: "flex-1 py-2 rounded-xl text-xs font-semibold transition-all ".concat(f.bucket === k ? "".concat(b.bg, " text-white") : "bg-slate-700 text-slate-400")
+    }, b.emoji, " ", b.label);
+  }))), /*#__PURE__*/React.createElement(Sel, {
+    label: "Categor\xEDa",
+    value: f.catId,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        catId: v,
+        subcat: ""
+      }));
+    },
+    options: curBucketCats.map(function (c) {
+      return {
+        value: c.id,
+        label: c.label
+      };
+    }),
+    placeholder: "Selecciona categor\xEDa"
+  }), selCat && /*#__PURE__*/React.createElement(Sel, {
+    label: "Subcategor\xEDa",
+    value: f.subcat,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        subcat: v
+      }));
+    },
+    options: selCat.subs,
+    placeholder: "Subcategor\xEDa"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Monto ($)",
+    type: "number",
+    min: "0",
+    step: "100",
+    value: f.amount,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        amount: v
+      }));
+    },
+    placeholder: "0"
+  }), /*#__PURE__*/React.createElement(Inp, {
+    label: "Fecha",
+    type: "date",
+    value: f.date,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        date: v
+      }));
+    }
+  })), /*#__PURE__*/React.createElement(Sel, {
+    label: "Medio de pago",
+    value: f.payMethod,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        payMethod: v,
+        cardId: ""
+      }));
+    },
+    options: PAYS
+  }), f.payMethod === "CMR/Crédito" && data.cards.length > 0 && /*#__PURE__*/React.createElement(Sel, {
+    label: "\xBFA qu\xE9 tarjeta?",
+    value: f.cardId,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        cardId: v
+      }));
+    },
+    options: data.cards.map(function (c) {
+      return {
+        value: c.id,
+        label: "".concat(c.name, " (\u2022\u2022\u2022").concat(c.lastFour, ")")
+      };
+    }),
+    placeholder: "Selecciona tarjeta"
+  }), f.payMethod === "CMR/Crédito" && data.cards.length === 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-400 bg-amber-900/30 px-3 py-2 rounded-xl"
+  }, "\u26A0\uFE0F Agrega una tarjeta en \uD83D\uDCB3 para vincularla"), /*#__PURE__*/React.createElement(Inp, {
+    label: "Descripci\xF3n (opcional)",
+    value: f.desc,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        desc: v
+      }));
+    },
+    placeholder: "Ej: Luz de mayo"
+  }), /*#__PURE__*/React.createElement(Toggle, {
+    value: f.isWife,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        isWife: v
+      }));
+    },
+    label: "\uD83D\uDC69 Gasto de mi esposa (no afecta mi presupuesto)"
+  }), f.isWife && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-300 bg-amber-900/30 px-3 py-2 rounded-xl"
+  }, "Se excluye del 50/30/20 y suma a lo que te debe tu esposa"), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "red",
+    onClick: save,
+    disabled: !f.amount || !f.catId || !f.subcat
+  }, "Guardar gasto"))), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, /*#__PURE__*/React.createElement(Sel, {
+    value: filterMo,
+    onChange: setFilterMo,
+    options: months.map(function (m) {
+      return {
+        value: m,
+        label: fmtMo(m)
+      };
+    })
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 overflow-x-auto pb-1",
+    style: {
+      scrollbarWidth: "none"
+    }
+  }, ["all", "necesidades", "estilo"].map(function (k) {
+    var b = k === "all" ? null : BUCKETS[k];
+    return /*#__PURE__*/React.createElement("button", {
+      key: k,
+      onClick: function onClick() {
+        return setFilterBucket(k);
+      },
+      className: "flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ".concat(filterBucket === k ? b ? "".concat(b.bg, " text-white") : "bg-white text-slate-900" : "bg-slate-700 text-slate-400")
+    }, b ? "".concat(b.emoji, " ").concat(b.label) : "Todos");
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, filtered.map(function (e) {
+    var cat = getCat(e.catId);
+    var isEditing = editingId === e.id;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: e.id,
+      className: "!p-3"
+    }, isEditing && editF ? /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-semibold mb-2"
+    }, "Editando gasto"), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-2"
+    }, /*#__PURE__*/React.createElement(Inp, {
+      label: "Monto ($)",
+      type: "number",
+      min: "0",
+      step: "100",
+      value: editF.amount,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          amount: v
+        }));
+      }
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Fecha",
+      type: "date",
+      value: editF.date,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          date: v
+        }));
+      }
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+      className: "text-xs text-slate-400 font-medium block mb-1"
+    }, "Bucket"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, ["necesidades", "estilo"].map(function (k) {
+      var b = BUCKETS[k];
+      return /*#__PURE__*/React.createElement("button", {
+        key: k,
+        onClick: function onClick() {
+          return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+            bucket: k,
+            catId: "",
+            subcat: ""
+          }));
+        },
+        className: "flex-1 py-1.5 rounded-xl text-xs font-semibold ".concat(editF.bucket === k ? "".concat(b.bg, " text-white") : "bg-slate-700 text-slate-400")
+      }, b.emoji, " ", b.label);
+    }))), /*#__PURE__*/React.createElement(Sel, {
+      label: "Categor\xEDa",
+      value: editF.catId,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          catId: v,
+          subcat: ""
+        }));
+      },
+      options: (CATS[editF.bucket] || []).map(function (c) {
+        return {
+          value: c.id,
+          label: c.label
+        };
+      }),
+      placeholder: "Categor\xEDa"
+    }), (CATS[editF.bucket] || []).find(function (c) {
+      return c.id === editF.catId;
+    }) && /*#__PURE__*/React.createElement(Sel, {
+      label: "Subcategor\xEDa",
+      value: editF.subcat,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          subcat: v
+        }));
+      },
+      options: (CATS[editF.bucket] || []).find(function (c) {
+        return c.id === editF.catId;
+      }).subs,
+      placeholder: "Subcategor\xEDa"
+    }), /*#__PURE__*/React.createElement(Sel, {
+      label: "Medio de pago",
+      value: editF.payMethod,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          payMethod: v
+        }));
+      },
+      options: PAYS
+    }), editF.payMethod === "CMR/Crédito" && data.cards.length > 0 && /*#__PURE__*/React.createElement(Sel, {
+      label: "Tarjeta",
+      value: editF.cardId || "",
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          cardId: v
+        }));
+      },
+      options: data.cards.map(function (c) {
+        return {
+          value: c.id,
+          label: "".concat(c.name, " (\u2022\u2022\u2022").concat(c.lastFour, ")")
+        };
+      }),
+      placeholder: "Selecciona tarjeta"
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Descripci\xF3n",
+      value: editF.desc || "",
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          desc: v
+        }));
+      },
+      placeholder: "Descripci\xF3n"
+    }), /*#__PURE__*/React.createElement(Toggle, {
+      value: editF.isWife || false,
+      onChange: function onChange(v) {
+        return setEditF(_objectSpread(_objectSpread({}, editF), {}, {
+          isWife: v
+        }));
+      },
+      label: "\uD83D\uDC69 Gasto de mi esposa"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2 pt-1"
+    }, /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      full: true,
+      color: "blue",
+      onClick: saveEdit
+    }, "Guardar cambios"), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "gray",
+      onClick: function onClick() {
+        setEditingId(null);
+        setEditF(null);
+      }
+    }, "Cancelar"))) : /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-start"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-1.5 flex-wrap mb-1.5"
+    }, /*#__PURE__*/React.createElement(BucketPill, {
+      b: e.bucket
+    }), e.payMethod === "CMR/Crédito" && /*#__PURE__*/React.createElement(Badge, {
+      color: "amber"
+    }, "\uD83D\uDCB3 CMR"), e.isWife && /*#__PURE__*/React.createElement(Badge, {
+      color: "purple"
+    }, "\uD83D\uDC69 Esposa")), /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold"
+    }, CLP(e.amount)), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm text-slate-300"
+    }, (cat === null || cat === void 0 ? void 0 : cat.label.replace(/^\S+\s/, "")) || "", " \u203A ", e.subcat, e.desc ? " \u2014 ".concat(e.desc) : ""), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, fmt(e.date))), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2 ml-2 flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return startEdit(e);
+      },
+      className: "text-slate-500 hover:text-blue-400 text-sm px-1"
+    }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return del(e.id);
+      },
+      className: "text-slate-600 hover:text-rose-400 text-xl"
+    }, "\xD7"))));
+  }), filtered.length === 0 && /*#__PURE__*/React.createElement(EmptyState, {
+    msg: "Sin gastos".concat(filterBucket !== "all" ? " en ".concat((_BUCKETS$filterBucket = BUCKETS[filterBucket]) === null || _BUCKETS$filterBucket === void 0 ? void 0 : _BUCKETS$filterBucket.label) : "", " \u2014 ").concat(fmtMo(filterMo))
+  })), function () {
+    var wifeExp = data.expenses.filter(function (e) {
+      return e.isWife;
+    });
+    var totalOwed = wifeExp.reduce(function (s, e) {
+      return s + e.amount;
+    }, 0);
+    var totalPaid = (data.wifePayments || []).reduce(function (s, p) {
+      return s + p.amount;
+    }, 0);
+    var balance = totalOwed - totalPaid;
+    if (wifeExp.length === 0) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "mt-2"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowWifeDetail(!showWifeDetail);
+      },
+      className: "w-full rounded-2xl p-4 border transition-all text-left ".concat(balance > 0 ? "bg-violet-900/30 border-violet-700/50" : "bg-emerald-900/20 border-emerald-700/40")
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-center"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm font-bold text-white"
+    }, "\uD83D\uDC69 Tu esposa te debe"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400"
+    }, wifeExp.length, " gasto", wifeExp.length !== 1 ? "s" : "", " \xB7 toca para ver")), /*#__PURE__*/React.createElement("div", {
+      className: "text-right"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-2xl font-black ".concat(balance > 0 ? "text-violet-400" : "text-emerald-400")
+    }, CLP(balance)), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500"
+    }, balance <= 0 ? "Al día ✅" : "pendiente")))), showWifeDetail && /*#__PURE__*/React.createElement(Card, {
+      className: "mt-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+    }, "Detalle deuda esposa"), wifeExp.sort(function (a, b) {
+      return b.date.localeCompare(a.date);
+    }).map(function (e) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: e.id,
+        className: "flex justify-between py-2 border-b border-slate-700/50 last:border-0"
+      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-slate-300"
+      }, e.desc || e.subcat || "Gasto"), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-500"
+      }, fmt(e.date))), /*#__PURE__*/React.createElement("span", {
+        className: "text-violet-400 font-semibold"
+      }, CLP(e.amount)));
+    }), (data.wifePayments || []).map(function (p, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "flex justify-between py-2 border-b border-slate-700/50 last:border-0"
+      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-emerald-400"
+      }, "Pago recibido"), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-500"
+      }, fmt(p.date))), /*#__PURE__*/React.createElement("span", {
+        className: "text-emerald-400 font-semibold"
+      }, "\u2212", CLP(p.amount)));
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between font-bold pt-3 border-t border-slate-700 mt-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-300"
+    }, "Saldo pendiente"), /*#__PURE__*/React.createElement("span", {
+      className: balance > 0 ? "text-violet-400" : "text-emerald-400"
+    }, CLP(balance))), balance > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "mt-3 space-y-2 border-t border-slate-700 pt-3"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400"
+    }, "Registrar pago de tu esposa"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      min: "0",
+      step: "1000",
+      value: wifePayAmt,
+      onChange: function onChange(e) {
+        return setWifePayAmt(e.target.value);
+      },
+      placeholder: "Monto ($)",
+      className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:outline-none"
+    }), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "green",
+      onClick: function onClick() {
+        if (!wifePayAmt) return;
+        onChange(_objectSpread(_objectSpread({}, data), {}, {
+          wifePayments: [].concat(_toConsumableArray(data.wifePayments || []), [{
+            amount: parseFloat(wifePayAmt),
+            date: toDay(),
+            id: uid()
+          }])
+        }));
+        setWifePayAmt("");
+      }
+    }, "\u2713")))));
+  }());
+}
+
+// ═══════════════════════════════════════════════════
+// ALIMENTACION (replaces Supermercado — now broader)
+// ═══════════════════════════════════════════════════
+function Alimentacion(_ref20) {
+  var data = _ref20.data,
+    onChange = _ref20.onChange;
+  var _useState19 = useState(false),
+    _useState20 = _slicedToArray(_useState19, 2),
+    show = _useState20[0],
+    setShow = _useState20[1];
+  var _useState21 = useState({
+      date: toDay(),
+      store: "",
+      storeType: "Supermercado",
+      payMethod: "Débito",
+      cardId: "",
+      items: [{
+        name: "",
+        amount: ""
+      }]
+    }),
+    _useState22 = _slicedToArray(_useState21, 2),
+    f = _useState22[0],
+    setF = _useState22[1];
+  var STORE_TYPES = ["Supermercado", "Almacén/Minimarket", "Feria/Verdulería", "Carnicería", "Panadería", "Otro"];
+  var addItem = function addItem() {
+    return setF(_objectSpread(_objectSpread({}, f), {}, {
+      items: [].concat(_toConsumableArray(f.items), [{
+        name: "",
+        amount: ""
+      }])
+    }));
+  };
+  var rmItem = function rmItem(i) {
+    return setF(_objectSpread(_objectSpread({}, f), {}, {
+      items: f.items.filter(function (_, idx) {
+        return idx !== i;
+      })
+    }));
+  };
+  var setItem = function setItem(i, field, val) {
+    var items = f.items.map(function (it, idx) {
+      return idx === i ? _objectSpread(_objectSpread({}, it), {}, _defineProperty({}, field, val)) : it;
+    });
+    setF(_objectSpread(_objectSpread({}, f), {}, {
+      items: items
+    }));
+  };
+  var total = f.items.reduce(function (s, it) {
+    return s + (parseFloat(it.amount) || 0);
+  }, 0);
+  var save = function save() {
+    var valid = f.items.filter(function (it) {
+      return it.name && it.amount;
+    });
+    if (!valid.length || !f.date) return;
+    var p = _objectSpread(_objectSpread({}, f), {}, {
+      id: uid(),
+      items: valid.map(function (it) {
+        return _objectSpread(_objectSpread({}, it), {}, {
+          amount: parseFloat(it.amount)
+        });
+      }),
+      total: valid.reduce(function (s, it) {
+        return s + parseFloat(it.amount);
+      }, 0)
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      groceries: [].concat(_toConsumableArray(data.groceries), [p])
+    }));
+    setF({
+      date: toDay(),
+      store: "",
+      storeType: "Supermercado",
+      payMethod: "Débito",
+      items: [{
+        name: "",
+        amount: ""
+      }]
+    });
+    setShow(false);
+  };
+  var del = function del(id) {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      groceries: data.groceries.filter(function (g) {
+        return g.id !== id;
+      })
+    }));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDED2 Alimentaci\xF3n",
+    sub: "Supermercado, feria, almac\xE9n\u2026"
+  }), /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: show ? "gray" : "blue",
+    onClick: function onClick() {
+      return setShow(!show);
+    }
+  }, show ? "Cancelar" : "+ Compra")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 px-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-slate-500"
+  }, "Clasificado autom\xE1ticamente como"), /*#__PURE__*/React.createElement(BucketPill, {
+    bucketId: "necesidades"
+  })), show && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Fecha",
+    type: "date",
+    value: f.date,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        date: v
+      }));
+    }
+  }), /*#__PURE__*/React.createElement(Sel, {
+    label: "Tipo de local",
+    value: f.storeType,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        storeType: v
+      }));
+    },
+    options: STORE_TYPES
+  })), /*#__PURE__*/React.createElement(Inp, {
+    label: "Nombre del local (opcional)",
+    value: f.store,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        store: v
+      }));
+    },
+    placeholder: "Ej: L\xEDder Express"
+  }), /*#__PURE__*/React.createElement(Sel, {
+    label: "Medio de pago",
+    value: f.payMethod,
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        payMethod: v
+      }));
+    },
+    options: PAYS
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "text-xs text-slate-400 font-medium"
+  }, "\xCDtems"), /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: "gray",
+    onClick: addItem
+  }, "+ \xCDtem")), f.items.map(function (it, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "flex gap-2 mb-2 items-center"
+    }, /*#__PURE__*/React.createElement("input", {
+      value: it.name,
+      onChange: function onChange(e) {
+        return setItem(i, "name", e.target.value);
+      },
+      placeholder: "Producto",
+      className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none min-w-0"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      value: it.amount,
+      onChange: function onChange(e) {
+        return setItem(i, "amount", e.target.value);
+      },
+      placeholder: "$",
+      min: "0",
+      step: "100",
+      className: "w-24 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none"
+    }), f.items.length > 1 && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return rmItem(i);
+      },
+      className: "text-slate-500 hover:text-rose-400 text-lg"
+    }, "\xD7"));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between mt-3 pt-3 border-t border-slate-700"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-sm text-slate-400"
+  }, "Total"), /*#__PURE__*/React.createElement("span", {
+    className: "text-white font-bold text-lg"
+  }, CLP(total)))), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "blue",
+    onClick: save,
+    disabled: !f.items.some(function (it) {
+      return it.name && it.amount;
+    })
+  }, "Guardar"))), data.groceries.sort(function (a, b) {
+    return b.date.localeCompare(a.date);
+  }).map(function (g) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: g.id
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-start mb-3"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold"
+    }, g.storeType || "Compra", g.store ? " \u2014 ".concat(g.store) : ""), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2 mt-1"
+    }, /*#__PURE__*/React.createElement(Badge, null, fmt(g.date)), /*#__PURE__*/React.createElement(Badge, {
+      color: g.payMethod === "CMR/Crédito" ? "amber" : "gray"
+    }, g.payMethod))), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold text-lg"
+    }, CLP(g.total)), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return del(g.id);
+      },
+      className: "text-slate-600 hover:text-rose-400 text-xl"
+    }, "\xD7"))), /*#__PURE__*/React.createElement("div", {
+      className: "border-t border-slate-700 pt-2 space-y-1"
+    }, g.items.map(function (it, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "flex justify-between text-sm"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-300"
+      }, it.name), /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-400"
+      }, CLP(it.amount)));
+    })));
+  }), data.groceries.length === 0 && /*#__PURE__*/React.createElement(EmptyState, {
+    msg: "Sin compras registradas"
+  }));
+}
+
+// ═══════════════════════════════════════════════════
+// TARJETAS
+// ═══════════════════════════════════════════════════
+function CardVisual(_ref21) {
+  var card = _ref21.card,
+    used = _ref21.used;
+  var avail = Math.max(0, (card.creditLimit || 0) - used);
+  var p = pct(used, card.creditLimit || 1);
+  var bg = card.color || "#3B82F6";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 relative overflow-hidden select-none",
+    style: {
+      background: "linear-gradient(135deg,".concat(bg, "ee,").concat(bg, "77)")
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "absolute inset-0 opacity-10",
+    style: {
+      backgroundImage: "radial-gradient(circle,white 1px,transparent 1px)",
+      backgroundSize: "20px 20px"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-start mb-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "text-white/60 text-xs"
+  }, card.bank || "Banco"), /*#__PURE__*/React.createElement("p", {
+    className: "text-white font-bold"
+  }, card.name)), /*#__PURE__*/React.createElement("p", {
+    className: "text-white/70 font-mono text-sm"
+  }, "\u2022\u2022\u2022 ", card.lastFour || "0000")), /*#__PURE__*/React.createElement("p", {
+    className: "text-white text-2xl font-black"
+  }, CLP(card.creditLimit || 0)), /*#__PURE__*/React.createElement("p", {
+    className: "text-white/50 text-xs mb-2"
+  }, "l\xEDmite de cr\xE9dito"), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between text-xs mb-1.5"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-white/70"
+  }, "Usado: ", CLP(used), " (", p, "%)"), /*#__PURE__*/React.createElement("span", {
+    className: "text-white/70"
+  }, "Libre: ", CLP(avail))), /*#__PURE__*/React.createElement("div", {
+    className: "h-1.5 bg-white/20 rounded-full overflow-hidden"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-full rounded-full ".concat(p > 80 ? "bg-rose-400" : p > 60 ? "bg-amber-400" : "bg-white/80"),
+    style: {
+      width: "".concat(p, "%")
+    }
+  }))));
+}
+function Tarjetas(_ref22) {
+  var data = _ref22.data,
+    onChange = _ref22.onChange;
+  var _useState23 = useState("list"),
+    _useState24 = _slicedToArray(_useState23, 2),
+    view = _useState24[0],
+    setView = _useState24[1];
+  var _useState25 = useState(null),
+    _useState26 = _slicedToArray(_useState25, 2),
+    selCard = _useState26[0],
+    setSelCard = _useState26[1];
+  var _useState27 = useState({
+      name: "",
+      bank: "BancoEstado",
+      lastFour: "",
+      creditLimit: "",
+      billingDay: "19",
+      color: CARD_COLORS[0]
+    }),
+    _useState28 = _slicedToArray(_useState27, 2),
+    cardF = _useState28[0],
+    setCardF = _useState28[1];
+  var _useState29 = useState({
+      cardId: "",
+      desc: "",
+      totalAmount: "",
+      installments: "1",
+      annualRate: "0",
+      date: toDay(),
+      firstPaymentMonth: curMo(),
+      bucket: "estilo",
+      catId: "varios",
+      subcat: "Otro",
+      isWife: false
+    }),
+    _useState30 = _slicedToArray(_useState29, 2),
+    purF = _useState30[0],
+    setPurF = _useState30[1];
+  var saveCard = function saveCard() {
+    if (!cardF.name || !cardF.creditLimit) return;
+    var card = _objectSpread(_objectSpread({}, cardF), {}, {
+      id: uid(),
+      creditLimit: parseFloat(cardF.creditLimit),
+      billingDay: parseInt(cardF.billingDay) || 19
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      cards: [].concat(_toConsumableArray(data.cards), [card])
+    }));
+    setCardF({
+      name: "",
+      bank: "BancoEstado",
+      lastFour: "",
+      creditLimit: "",
+      billingDay: "19",
+      color: CARD_COLORS[0]
+    });
+    setView("list");
+  };
+  var delCard = function delCard(id) {
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      cards: data.cards.filter(function (c) {
+        return c.id !== id;
+      }),
+      purchases: data.purchases.filter(function (p) {
+        return p.cardId !== id;
+      })
+    }));
+    if (selCard === id) {
+      setSelCard(null);
+      setView("list");
+    }
+  };
+  var savePurchase = function savePurchase() {
+    var n = parseInt(purF.installments) || 1;
+    var principal = parseFloat(purF.totalAmount) || 0;
+    var rate = parseFloat(purF.annualRate) || 0;
+    if (!principal || !purF.cardId || !purF.desc) return;
+    var installmentAmt = calcInstAmt(principal, rate, n);
+    var p = _objectSpread(_objectSpread({}, purF), {}, {
+      id: uid(),
+      totalAmount: principal,
+      installments: n,
+      annualRate: rate,
+      installmentAmt: installmentAmt,
+      cancelled: false
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      purchases: [].concat(_toConsumableArray(data.purchases), [p])
+    }));
+    setPurF({
+      cardId: selCard || "",
+      desc: "",
+      totalAmount: "",
+      installments: "1",
+      annualRate: "0",
+      date: toDay(),
+      firstPaymentMonth: curMo(),
+      bucket: "estilo",
+      catId: "varios",
+      subcat: "Otro",
+      isWife: false
+    });
+    setView(selCard ? "cardDetail" : "list");
+  };
+  var cancelPurchase = function cancelPurchase(id) {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      purchases: data.purchases.map(function (p) {
+        return p.id === id ? _objectSpread(_objectSpread({}, p), {}, {
+          cancelled: true
+        }) : p;
+      })
+    }));
+  };
+  if (view === "cardDetail" && selCard) {
+    var card = data.cards.find(function (c) {
+      return c.id === selCard;
+    });
+    if (!card) return /*#__PURE__*/React.createElement("div", null);
+    var cycle = cardCycle(card);
+    var daysLeft = Math.max(0, Math.ceil((cycle.end - new Date()) / 86400000));
+    var activePurchases = data.purchases.filter(function (p) {
+      return p.cardId === selCard && !p.cancelled;
+    });
+    var used = cardTotalUsed(card, data.purchases, data.expenses, data.groceries, data.cardPayments);
+    var avail = Math.max(0, (card.creditLimit || 0) - used);
+    var nextMos = [curMo()].concat(_toConsumableArray([1, 2, 3].map(function (i) {
+      return addMonths(curMo() + "-01", i).slice(0, 7);
+    })));
+    var monthlyDue = nextMos.map(function (mo) {
+      return {
+        mo: mo,
+        total: activePurchases.reduce(function (s, p) {
+          var i = instForMonth(p, mo);
+          return s + (i ? i.amount : 0);
+        }, 0)
+      };
+    });
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setView("list");
+        setSelCard(null);
+      },
+      className: "text-slate-400 hover:text-white text-2xl"
+    }, "\u2190"), /*#__PURE__*/React.createElement(SectionHeader, {
+      title: card.name,
+      sub: card.bank
+    })), /*#__PURE__*/React.createElement(CardVisual, {
+      card: card,
+      used: used
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-2"
+    }, [{
+      l: "Deuda total",
+      v: CLP(used),
+      c: "text-amber-400"
+    }, {
+      l: "Cupo libre",
+      v: CLP(avail),
+      c: "text-emerald-400"
+    }, {
+      l: "Corte en",
+      v: "".concat(daysLeft, "d"),
+      c: daysLeft <= 3 ? "text-rose-400" : daysLeft <= 7 ? "text-amber-400" : "text-white"
+    }, {
+      l: "Fecha corte",
+      v: fmt(cycle.end.toISOString().split("T")[0]),
+      c: "text-slate-300"
+    }].map(function (_ref23) {
+      var l = _ref23.l,
+        v = _ref23.v,
+        c = _ref23.c;
+      return /*#__PURE__*/React.createElement(Card, {
+        key: l,
+        className: "text-center !p-3"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400 mb-1"
+      }, l), /*#__PURE__*/React.createElement("p", {
+        className: "font-bold ".concat(c)
+      }, v));
+    })), function () {
+      var payments = (data.cardPayments || []).filter(function (p) {
+        return p.cardId === selCard;
+      });
+      var totalPaid = payments.reduce(function (s, p) {
+        return s + p.amount;
+      }, 0);
+      return /*#__PURE__*/React.createElement(Card, {
+        className: "border border-emerald-700/40"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+      }, "\uD83D\uDCB3 Pago de tarjeta"), payments.length > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "mb-3 space-y-1"
+      }, payments.slice(-3).reverse().map(function (p, i) {
+        return /*#__PURE__*/React.createElement("div", {
+          key: i,
+          className: "flex justify-between text-sm"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "text-slate-400"
+        }, fmt(p.date)), /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-2"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "text-emerald-400 font-semibold"
+        }, "\u2212", CLP(p.amount)), /*#__PURE__*/React.createElement("button", {
+          onClick: function onClick() {
+            return onChange(_objectSpread(_objectSpread({}, data), {}, {
+              cardPayments: (data.cardPayments || []).filter(function (_, idx) {
+                return idx !== (data.cardPayments || []).findIndex(function (x) {
+                  return x === p;
+                });
+              })
+            }));
+          },
+          className: "text-slate-600 hover:text-rose-400 text-sm"
+        }, "\xD7")));
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between text-xs text-slate-500 pt-1 border-t border-slate-700"
+      }, /*#__PURE__*/React.createElement("span", null, "Total pagado"), /*#__PURE__*/React.createElement("span", {
+        className: "text-emerald-400"
+      }, CLP(totalPaid)))), /*#__PURE__*/React.createElement("div", {
+        className: "flex gap-2"
+      }, /*#__PURE__*/React.createElement("input", {
+        type: "number",
+        min: "0",
+        step: "1000",
+        id: "pay-".concat(selCard),
+        placeholder: "Monto pagado ($)",
+        className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
+      }), /*#__PURE__*/React.createElement(Btn, {
+        sm: true,
+        color: "green",
+        onClick: function onClick() {
+          var inp = document.getElementById("pay-".concat(selCard));
+          var amt = parseFloat((inp === null || inp === void 0 ? void 0 : inp.value) || 0);
+          if (!amt) return;
+          onChange(_objectSpread(_objectSpread({}, data), {}, {
+            cardPayments: [].concat(_toConsumableArray(data.cardPayments || []), [{
+              cardId: selCard,
+              amount: amt,
+              date: toDay(),
+              id: uid()
+            }])
+          }));
+          if (inp) inp.value = "";
+        }
+      }, "Registrar pago")));
+    }(), function () {
+      var dc = cardDirectCharges(card, data.expenses, data.groceries);
+      var instBal = cardUsed(card, data.purchases);
+      return dc > 0 ? /*#__PURE__*/React.createElement(Card, {
+        className: "border border-amber-700/40"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+      }, "\uD83D\uDCB3 Cargos ciclo actual"), /*#__PURE__*/React.createElement("div", {
+        className: "space-y-2 text-sm"
+      }, instBal > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-400"
+      }, "Saldo cuotas pendientes"), /*#__PURE__*/React.createElement("span", {
+        className: "text-white font-semibold"
+      }, CLP(instBal))), /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-400"
+      }, "Cargos directos (gastos/super)"), /*#__PURE__*/React.createElement("span", {
+        className: "text-amber-400 font-semibold"
+      }, CLP(dc))), /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between border-t border-slate-700 pt-2"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-300 font-semibold"
+      }, "Total usado"), /*#__PURE__*/React.createElement("span", {
+        className: "text-amber-400 font-bold"
+      }, CLP(dc + instBal))))) : null;
+    }(), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+    }, "Cuotas por mes"), monthlyDue.filter(function (m) {
+      return m.total > 0;
+    }).map(function (_ref24) {
+      var mo = _ref24.mo,
+        total = _ref24.total;
+      return /*#__PURE__*/React.createElement("div", {
+        key: mo,
+        className: "flex justify-between py-2 border-b border-slate-700/50 last:border-0"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-300 text-sm capitalize"
+      }, fmtMo(mo)), /*#__PURE__*/React.createElement("span", {
+        className: "font-bold ".concat(mo === curMo() ? "text-amber-400" : "text-white")
+      }, CLP(total)));
+    }), monthlyDue.every(function (m) {
+      return m.total === 0;
+    }) && /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-500 text-sm text-center py-3"
+    }, "Sin cuotas pendientes")), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-center"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm font-bold text-white"
+    }, "Compras activas (", activePurchases.length, ")"), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "blue",
+      onClick: function onClick() {
+        setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          cardId: selCard
+        }));
+        setView("addPurchase");
+      }
+    }, "+ Compra")), activePurchases.map(function (p) {
+      var paid = paidInsts(p);
+      var remaining = p.installments - paid;
+      var balance = remainBal(p);
+      var interest = Math.round(p.installmentAmt * p.installments - p.totalAmount);
+      return /*#__PURE__*/React.createElement(Card, {
+        key: p.id,
+        className: "!p-3"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between items-start mb-2"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-1"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-white font-semibold text-sm"
+      }, p.desc), /*#__PURE__*/React.createElement("div", {
+        className: "flex gap-1.5 mt-1"
+      }, /*#__PURE__*/React.createElement(BucketPill, {
+        bucketId: p.bucket
+      }))), /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          return cancelPurchase(p.id);
+        },
+        className: "text-slate-600 hover:text-rose-400 text-xs ml-2"
+      }, "Cancelar")), /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between text-xs text-slate-400 mb-2"
+      }, /*#__PURE__*/React.createElement("span", null, "Cuota ", paid, "/", p.installments), /*#__PURE__*/React.createElement("span", null, CLP(p.installmentAmt), "/mes"), /*#__PURE__*/React.createElement("span", {
+        className: "text-amber-400"
+      }, "Saldo: ", CLP(balance))), /*#__PURE__*/React.createElement(ProgressBar, {
+        value: paid,
+        max: p.installments,
+        color: "bg-blue-500",
+        height: "h-1.5"
+      }), interest > 0 && /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-rose-400/70 mt-1"
+      }, "Inter\xE9s total: ", CLP(interest)));
+    }), activePurchases.length === 0 && /*#__PURE__*/React.createElement(EmptyState, {
+      msg: "Sin compras en esta tarjeta"
+    }));
+  }
+  if (view === "addCard") return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setView("list");
+    },
+    className: "text-slate-400 hover:text-white text-2xl"
+  }, "\u2190"), /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "Nueva tarjeta"
+  })), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Nombre",
+    value: cardF.name,
+    onChange: function onChange(v) {
+      return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+        name: v
+      }));
+    },
+    placeholder: "Ej: Visa BCI Gold"
+  }), /*#__PURE__*/React.createElement(Sel, {
+    label: "Banco",
+    value: cardF.bank,
+    onChange: function onChange(v) {
+      return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+        bank: v
+      }));
+    },
+    options: BANKS
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "\xDAltimos 4 d\xEDgitos",
+    value: cardF.lastFour,
+    onChange: function onChange(v) {
+      return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+        lastFour: v.slice(0, 4)
+      }));
+    },
+    placeholder: "1234"
+  }), /*#__PURE__*/React.createElement(Inp, {
+    label: "L\xEDmite ($)",
+    type: "number",
+    min: "0",
+    step: "100000",
+    value: cardF.creditLimit,
+    onChange: function onChange(v) {
+      return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+        creditLimit: v
+      }));
+    },
+    placeholder: "1000000"
+  })), /*#__PURE__*/React.createElement(Inp, {
+    label: "D\xEDa de corte",
+    type: "number",
+    min: "1",
+    max: "31",
+    value: cardF.billingDay,
+    onChange: function onChange(v) {
+      return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+        billingDay: v
+      }));
+    },
+    placeholder: "19"
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-xs text-slate-400 font-medium block mb-2"
+  }, "Color"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 flex-wrap"
+  }, CARD_COLORS.map(function (c) {
+    return /*#__PURE__*/React.createElement("button", {
+      key: c,
+      onClick: function onClick() {
+        return setCardF(_objectSpread(_objectSpread({}, cardF), {}, {
+          color: c
+        }));
+      },
+      className: "w-8 h-8 rounded-full transition-all ".concat(cardF.color === c ? "ring-2 ring-white scale-110" : ""),
+      style: {
+        background: c
+      }
+    });
+  }))), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "blue",
+    onClick: saveCard,
+    disabled: !cardF.name || !cardF.creditLimit
+  }, "Agregar tarjeta"))));
+  if (view === "addPurchase") {
+    var n = parseInt(purF.installments) || 1;
+    var principal = parseFloat(purF.totalAmount) || 0;
+    var rate = parseFloat(purF.annualRate) || 0;
+    var instAmt = principal > 0 ? calcInstAmt(principal, rate, n) : 0;
+    var purBucketCats = CATS[purF.bucket] || [];
+    var purSelCat = purBucketCats.find(function (c) {
+      return c.id === purF.catId;
+    });
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setView(selCard ? "cardDetail" : "list");
+      },
+      className: "text-slate-400 hover:text-white text-2xl"
+    }, "\u2190"), /*#__PURE__*/React.createElement(SectionHeader, {
+      title: "Nueva compra TC"
+    })), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, !selCard && /*#__PURE__*/React.createElement(Sel, {
+      label: "Tarjeta",
+      value: purF.cardId,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          cardId: v
+        }));
+      },
+      options: data.cards.map(function (c) {
+        return {
+          value: c.id,
+          label: "".concat(c.name, " (\u2022\u2022\u2022").concat(c.lastFour, ")")
+        };
+      }),
+      placeholder: "Selecciona tarjeta"
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Descripci\xF3n",
+      value: purF.desc,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          desc: v
+        }));
+      },
+      placeholder: "Ej: TV Samsung"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-3"
+    }, /*#__PURE__*/React.createElement(Inp, {
+      label: "Monto total ($)",
+      type: "number",
+      min: "0",
+      step: "1000",
+      value: purF.totalAmount,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          totalAmount: v
+        }));
+      },
+      placeholder: "0"
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Fecha",
+      type: "date",
+      value: purF.date,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          date: v
+        }));
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-3"
+    }, /*#__PURE__*/React.createElement(Inp, {
+      label: "N\xB0 cuotas",
+      type: "number",
+      min: "1",
+      max: "60",
+      value: purF.installments,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          installments: v
+        }));
+      },
+      placeholder: "1"
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "CAE anual (%)",
+      type: "number",
+      min: "0",
+      step: "0.5",
+      value: purF.annualRate,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          annualRate: v
+        }));
+      },
+      placeholder: "0"
+    })), /*#__PURE__*/React.createElement(Inp, {
+      label: "Mes en que se genera la 1\xAA cuota",
+      type: "month",
+      value: purF.firstPaymentMonth,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          firstPaymentMonth: v
+        }));
+      }
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500 -mt-2"
+    }, "El pago se cobra el mes siguiente (ej: cuota mayo \u2192 se paga en junio)"), instAmt > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-700/50 rounded-xl p-3 space-y-1 text-xs"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Cuota mensual"), /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-bold"
+    }, CLP(instAmt))), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Total a pagar"), /*#__PURE__*/React.createElement("span", {
+      className: "text-white"
+    }, CLP(instAmt * n))), instAmt * n > principal && /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Inter\xE9s total"), /*#__PURE__*/React.createElement("span", {
+      className: "text-rose-400"
+    }, CLP(Math.round(instAmt * n - principal))))), /*#__PURE__*/React.createElement(Toggle, {
+      value: purF.isWife,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          isWife: v
+        }));
+      },
+      label: "\uD83D\uDC69 Compra de mi esposa"
+    }), purF.isWife && /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-amber-300 bg-amber-900/30 px-3 py-2 rounded-xl"
+    }, "Se excluye del 50/30/20 y suma a la deuda de tu esposa"), !purF.isWife && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+      className: "text-xs text-slate-400 font-medium block mb-2"
+    }, "Clasificar en 50/30/20"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, ["necesidades", "estilo"].map(function (k) {
+      var b = BUCKETS[k];
+      return /*#__PURE__*/React.createElement("button", {
+        key: k,
+        onClick: function onClick() {
+          return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+            bucket: k,
+            catId: "",
+            subcat: ""
+          }));
+        },
+        className: "flex-1 py-2 rounded-xl text-xs font-semibold transition-all ".concat(purF.bucket === k ? "".concat(b.bg, " text-white") : "bg-slate-700 text-slate-400")
+      }, b.emoji, " ", b.label);
+    }))), /*#__PURE__*/React.createElement(Sel, {
+      label: "Categor\xEDa",
+      value: purF.catId,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          catId: v,
+          subcat: ""
+        }));
+      },
+      options: purBucketCats.map(function (c) {
+        return {
+          value: c.id,
+          label: c.label
+        };
+      }),
+      placeholder: "Categor\xEDa"
+    }), purSelCat && /*#__PURE__*/React.createElement(Sel, {
+      label: "Subcategor\xEDa",
+      value: purF.subcat,
+      onChange: function onChange(v) {
+        return setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          subcat: v
+        }));
+      },
+      options: purSelCat.subs,
+      placeholder: "Subcategor\xEDa"
+    }), /*#__PURE__*/React.createElement(Btn, {
+      full: true,
+      color: "blue",
+      onClick: savePurchase,
+      disabled: !purF.totalAmount || !purF.desc || !selCard && !purF.cardId
+    }, "Guardar compra"))));
+  }
+
+  // Card list
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDCB3 Tarjetas"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: "gray",
+    onClick: function onClick() {
+      setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+        cardId: ""
+      }));
+      setView("addPurchase");
+    }
+  }, "+ Compra"), /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: "blue",
+    onClick: function onClick() {
+      return setView("addCard");
+    }
+  }, "+ Tarjeta"))), data.cards.length === 0 && /*#__PURE__*/React.createElement(EmptyState, {
+    msg: "Agrega tu primera tarjeta de cr\xE9dito"
+  }), data.cards.map(function (card) {
+    var used = cardTotalUsed(card, data.purchases, data.expenses, data.groceries, data.cardPayments);
+    var active = data.purchases.filter(function (p) {
+      return p.cardId === card.id && !p.cancelled;
+    });
+    var cycle = cardCycle(card);
+    var daysLeft = Math.max(0, Math.ceil((cycle.end - new Date()) / 86400000));
+    return /*#__PURE__*/React.createElement("div", {
+      key: card.id,
+      className: "mb-4"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "w-full text-left",
+      onClick: function onClick() {
+        setSelCard(card.id);
+        setView("cardDetail");
+      }
+    }, /*#__PURE__*/React.createElement(CardVisual, {
+      card: card,
+      used: used
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-center px-1 mt-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-500"
+    }, active.length, " compra", active.length !== 1 ? "s" : "", " activa", active.length !== 1 ? "s" : "", " \xB7 Corte en ", daysLeft, "d"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setSelCard(card.id);
+        setPurF(_objectSpread(_objectSpread({}, purF), {}, {
+          cardId: card.id
+        }));
+        setView("addPurchase");
+      },
+      className: "text-xs text-blue-400"
+    }, "+ compra"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return delCard(card.id);
+      },
+      className: "text-xs text-slate-600 hover:text-rose-400"
+    }, "eliminar"))));
+  }), data.cards.length > 1 && function () {
+    var totalUsed2 = data.cards.reduce(function (s, c) {
+      return s + cardTotalUsed(c, data.purchases, data.expenses, data.groceries, data.cardPayments);
+    }, 0);
+    var totalLimit2 = data.cards.reduce(function (s, c) {
+      return s + (c.creditLimit || 0);
+    }, 0);
+    var totalDue = data.purchases.filter(function (p) {
+      return !p.cancelled;
+    }).reduce(function (s, p) {
+      var i = instForMonth(p, curMo());
+      return s + (i ? i.amount : 0);
+    }, 0);
+    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+    }, "Resumen total"), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2 text-sm"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Deuda total"), /*#__PURE__*/React.createElement("span", {
+      className: "text-amber-400 font-bold"
+    }, CLP(totalUsed2))), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Cuotas este mes"), /*#__PURE__*/React.createElement("span", {
+      className: "text-rose-400 font-bold"
+    }, CLP(totalDue))), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, "Cupo total libre"), /*#__PURE__*/React.createElement("span", {
+      className: "text-emerald-400 font-bold"
+    }, CLP(Math.max(0, totalLimit2 - totalUsed2))))), totalLimit2 > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "mt-3"
+    }, /*#__PURE__*/React.createElement(ProgressBar, {
+      value: totalUsed2,
+      max: totalLimit2,
+      color: undefined
+    })));
+  }());
+}
+
+// ═══════════════════════════════════════════════════
+// ESTADÍSTICAS
+// ═══════════════════════════════════════════════════
+function Estadisticas(_ref25) {
+  var data = _ref25.data;
+  var _useState31 = useState("6m"),
+    _useState32 = _slicedToArray(_useState31, 2),
+    period = _useState32[0],
+    setPeriod = _useState32[1];
+  var n = period === "3m" ? 3 : period === "6m" ? 6 : 12;
+  var months = lastNMonths(n);
+  var TT = function TT(_ref26) {
+    var active = _ref26.active,
+      payload = _ref26.payload,
+      label = _ref26.label;
+    if (!active || !(payload !== null && payload !== void 0 && payload.length)) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 border border-slate-600 rounded-xl p-3 text-xs shadow-xl"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold mb-2"
+    }, label), payload.map(function (p, i) {
+      return /*#__PURE__*/React.createElement("p", {
+        key: i,
+        style: {
+          color: p.color
+        }
+      }, p.name, ": ", CLP(p.value));
+    }));
+  };
+  var monthlyData = months.map(function (mo) {
+    var dist = calcDistribution(data, mo);
+    return {
+      mo: mo,
+      label: fmtMoShort(mo),
+      ingresos: dist.totalIncome,
+      necesidades: dist.totalNec,
+      estilo: dist.totalEst,
+      futuro: dist.totalFut,
+      balance: dist.totalIncome - dist.totalSpent
+    };
+  });
+  var mo = curMo();
+  var dist = calcDistribution(data, mo);
+  var catData = ALL_CATS.map(function (cat) {
+    var v = data.expenses.filter(function (e) {
+      return e.date.startsWith(mo) && e.catId === cat.id;
+    }).reduce(function (s, e) {
+      return s + e.amount;
+    }, 0) + (cat.id === "alimentos" ? data.groceries.filter(function (g) {
+      return g.date.startsWith(mo);
+    }).reduce(function (s, g) {
+      return s + g.total;
+    }, 0) : 0);
+    return {
+      name: cat.label.replace(/^\S+\s/, ""),
+      value: v,
+      bucket: getCatBucket(cat.id)
+    };
+  }).filter(function (c) {
+    return c.value > 0;
+  }).sort(function (a, b) {
+    return b.value - a.value;
+  });
+  var totalExp = catData.reduce(function (s, c) {
+    return s + c.value;
+  }, 0);
+  var prevMo = lastNMonths(2)[0];
+  var prevDist = calcDistribution(data, prevMo);
+  var delta = prevDist.totalSpent > 0 ? Math.round((dist.totalSpent - prevDist.totalSpent) / prevDist.totalSpent * 100) : 0;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDCCA Estad\xEDsticas"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, [["3m", "3 meses"], ["6m", "6 meses"], ["12m", "12 meses"]].map(function (_ref27) {
+    var _ref28 = _slicedToArray(_ref27, 2),
+      v = _ref28[0],
+      l = _ref28[1];
+    return /*#__PURE__*/React.createElement("button", {
+      key: v,
+      onClick: function onClick() {
+        return setPeriod(v);
+      },
+      className: "flex-1 py-2 rounded-xl text-sm font-semibold transition-all ".concat(period === v ? "bg-blue-600 text-white" : "bg-slate-700 text-slate-400")
+    }, l);
+  })), prevDist.totalSpent > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-3 flex items-center gap-3 ".concat(delta > 10 ? "bg-rose-900/30 border border-rose-700/50" : delta < -10 ? "bg-emerald-900/30 border border-emerald-700/50" : "bg-slate-800")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-2xl"
+  }, delta > 10 ? "📈" : delta < -10 ? "📉" : "➡️"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "text-white text-sm font-bold"
+  }, "Gasto vs mes anterior: ", /*#__PURE__*/React.createElement("span", {
+    className: delta > 0 ? "text-rose-400" : "text-emerald-400"
+  }, delta > 0 ? "+" : "", delta, "%")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, CLP(prevDist.totalSpent), " \u2192 ", CLP(dist.totalSpent)))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+  }, "Buckets 50/30/20 por mes"), monthlyData.some(function (m) {
+    return m.necesidades > 0 || m.estilo > 0 || m.futuro > 0;
+  }) ? /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 180
+  }, /*#__PURE__*/React.createElement(BarChart, {
+    data: monthlyData,
+    margin: {
+      top: 0,
+      right: 0,
+      left: -20,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fill: "#64748b",
+      fontSize: 11
+    },
+    axisLine: false,
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tick: {
+      fill: "#64748b",
+      fontSize: 10
+    },
+    axisLine: false,
+    tickLine: false,
+    tickFormatter: function tickFormatter(v) {
+      return v >= 1000000 ? "".concat((v / 1000000).toFixed(1), "M") : v >= 1000 ? "".concat(Math.round(v / 1000), "k") : v;
+    }
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(TT, null)
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "necesidades",
+    name: "Necesidades",
+    fill: "#3B82F6",
+    stackId: "a",
+    radius: [0, 0, 0, 0]
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "estilo",
+    name: "Estilo de vida",
+    fill: "#F59E0B",
+    stackId: "a",
+    radius: [0, 0, 0, 0]
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "futuro",
+    name: "Futuro",
+    fill: "#10B981",
+    stackId: "a",
+    radius: [4, 4, 0, 0]
+  }))) : /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-500 text-sm text-center py-10"
+  }, "Sin datos suficientes")), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+  }, "Balance mensual"), /*#__PURE__*/React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 100
+  }, /*#__PURE__*/React.createElement(BarChart, {
+    data: monthlyData,
+    margin: {
+      top: 0,
+      right: 0,
+      left: -20,
+      bottom: 0
+    }
+  }, /*#__PURE__*/React.createElement(XAxis, {
+    dataKey: "label",
+    tick: {
+      fill: "#64748b",
+      fontSize: 11
+    },
+    axisLine: false,
+    tickLine: false
+  }), /*#__PURE__*/React.createElement(YAxis, {
+    tick: {
+      fill: "#64748b",
+      fontSize: 10
+    },
+    axisLine: false,
+    tickLine: false,
+    tickFormatter: function tickFormatter(v) {
+      return v >= 1000 ? "".concat(Math.round(v / 1000), "k") : v;
+    }
+  }), /*#__PURE__*/React.createElement(Tooltip, {
+    content: /*#__PURE__*/React.createElement(TT, null)
+  }), /*#__PURE__*/React.createElement(Bar, {
+    dataKey: "balance",
+    name: "Balance",
+    radius: [4, 4, 0, 0]
+  }, monthlyData.map(function (e, i) {
+    return /*#__PURE__*/React.createElement(Cell, {
+      key: i,
+      fill: e.balance >= 0 ? "#10B981" : "#EF4444"
+    });
+  }))))), catData.length > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+  }, "Por categor\xEDa \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-4 items-center"
+  }, /*#__PURE__*/React.createElement(PieChart, {
+    width: 120,
+    height: 120
+  }, /*#__PURE__*/React.createElement(Pie, {
+    data: catData,
+    cx: 55,
+    cy: 55,
+    innerRadius: 30,
+    outerRadius: 55,
+    dataKey: "value",
+    paddingAngle: 2
+  }, catData.map(function (_, i) {
+    return /*#__PURE__*/React.createElement(Cell, {
+      key: i,
+      fill: PIE_COLORS[i % PIE_COLORS.length]
+    });
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 min-w-0"
+  }, catData.slice(0, 6).map(function (c, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "flex items-center gap-2 mb-1.5"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "w-2 h-2 rounded-full flex-shrink-0",
+      style: {
+        background: PIE_COLORS[i % PIE_COLORS.length]
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-300 truncate flex-1"
+    }, c.name), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-slate-400"
+    }, Math.round(c.value / totalExp * 100), "%"));
+  })))), dist.totalIncome > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+  }, "Distribuci\xF3n detallada \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement(DistWidget, {
+    dist: dist
+  })));
+}
+
+// ═══════════════════════════════════════════════════
+// FUTURO (Ahorro + Inversiones combined under Futuro)
+// ═══════════════════════════════════════════════════
+function Futuro(_ref29) {
+  var data = _ref29.data,
+    onChange = _ref29.onChange;
+  var _useState33 = useState("ahorro"),
+    _useState34 = _slicedToArray(_useState33, 2),
+    tab2 = _useState34[0],
+    setTab2 = _useState34[1];
+  var _useState35 = useState(null),
+    _useState36 = _slicedToArray(_useState35, 2),
+    activeF = _useState36[0],
+    setActiveF = _useState36[1];
+  var _useState37 = useState(null),
+    _useState38 = _slicedToArray(_useState37, 2),
+    confirmReset = _useState38[0],
+    setConfirmReset = _useState38[1];
+  var _useState39 = useState({
+      amount: "",
+      desc: "",
+      type: "deposito"
+    }),
+    _useState40 = _slicedToArray(_useState39, 2),
+    op = _useState40[0],
+    setOp = _useState40[1];
+  var _useState41 = useState({}),
+    _useState42 = _slicedToArray(_useState41, 2),
+    editTarget = _useState42[0],
+    setEditTarget = _useState42[1];
+  var _useState43 = useState(false),
+    _useState44 = _slicedToArray(_useState43, 2),
+    showInv = _useState44[0],
+    setShowInv = _useState44[1];
+  var _useState45 = useState({
+      name: "",
+      amount: "",
+      returnAmount: "",
+      startDate: toDay(),
+      maturityDate: "",
+      autoReinvest: false
+    }),
+    _useState46 = _slicedToArray(_useState45, 2),
+    invF = _useState46[0],
+    setInvF = _useState46[1];
+  var mo = curMo();
+  var totalAhorro = Object.values(data.savings).reduce(function (s, f) {
+    return s + f.balance;
+  }, 0);
+  var totalInvActivo = data.investments.filter(function (i) {
+    return i.status === "activo";
+  }).reduce(function (s, i) {
+    return s + i.amount;
+  }, 0);
+  var savMo = Object.values(data.savings).reduce(function (s, f) {
+    return s + f.history.filter(function (h) {
+      return h.date.startsWith(mo) && h.amount > 0;
+    }).reduce(function (ss, h) {
+      return ss + h.amount;
+    }, 0);
+  }, 0);
+  var invMo = data.investments.filter(function (i) {
+    return i.startDate.startsWith(mo);
+  }).reduce(function (s, i) {
+    return s + i.amount;
+  }, 0);
+  var totalFutMo = savMo + invMo;
+  var dist = calcDistribution(data, mo);
+  var targetFut = dist.totalIncome > 0 ? Math.round(dist.totalIncome * 0.2) : 0;
+  var doOp = function doOp(key) {
+    if (!op.amount) return;
+    var amt = parseFloat(op.amount) * (op.type === "retiro" ? -1 : 1);
+    var fund = _objectSpread(_objectSpread({}, data.savings[key]), {}, {
+      balance: data.savings[key].balance + amt,
+      history: [].concat(_toConsumableArray(data.savings[key].history), [{
+        date: toDay(),
+        amount: amt,
+        desc: op.desc,
+        type: op.type,
+        id: uid()
+      }])
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      savings: _objectSpread(_objectSpread({}, data.savings), {}, _defineProperty({}, key, fund))
+    }));
+    setOp({
+      amount: "",
+      desc: "",
+      type: "deposito"
+    });
+    setActiveF(null);
+  };
+  var resetFund = function resetFund(key) {
+    var fund = data.savings[key];
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      savings: _objectSpread(_objectSpread({}, data.savings), {}, _defineProperty({}, key, _objectSpread(_objectSpread({}, fund), {}, {
+        balance: 0,
+        history: []
+      })))
+    }));
+    setConfirmReset(null);
+  };
+  var delHistEntry = function delHistEntry(key, entryId, entryIdx) {
+    var fund = data.savings[key];
+    // Support both id-based and index-based deletion (for old entries without id)
+    var idx = entryId ? fund.history.findIndex(function (h) {
+      return h.id === entryId;
+    }) : entryIdx;
+    if (idx === -1 && entryId) return;
+    var realIdx = idx !== -1 ? idx : entryIdx;
+    var entry = fund.history[realIdx];
+    if (!entry) return;
+    var newHistory = fund.history.filter(function (_, i) {
+      return i !== realIdx;
+    });
+    var newBalance = fund.balance - entry.amount;
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      savings: _objectSpread(_objectSpread({}, data.savings), {}, _defineProperty({}, key, _objectSpread(_objectSpread({}, fund), {}, {
+        balance: newBalance,
+        history: newHistory
+      })))
+    }));
+  };
+  var saveTarget = function saveTarget(key) {
+    var t = parseFloat(editTarget[key]) || 0;
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      savings: _objectSpread(_objectSpread({}, data.savings), {}, _defineProperty({}, key, _objectSpread(_objectSpread({}, data.savings[key]), {}, {
+        target: t
+      })))
+    }));
+    setEditTarget(_objectSpread(_objectSpread({}, editTarget), {}, _defineProperty({}, key, "")));
+  };
+  var saveInv = function saveInv() {
+    if (!invF.amount || !invF.maturityDate) return;
+    var inv = _objectSpread(_objectSpread({}, invF), {}, {
+      id: uid(),
+      status: "activo",
+      amount: parseFloat(invF.amount),
+      returnAmount: parseFloat(invF.returnAmount) || 0,
+      history: [{
+        date: invF.startDate,
+        amount: parseFloat(invF.amount),
+        type: "deposit",
+        note: "Depósito inicial"
+      }]
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      investments: [].concat(_toConsumableArray(data.investments), [inv])
+    }));
+    setInvF({
+      name: "",
+      amount: "",
+      returnAmount: "",
+      startDate: toDay(),
+      maturityDate: "",
+      autoReinvest: false
+    });
+    setShowInv(false);
+  };
+  var mature = function mature(id) {
+    var investments = data.investments.map(function (inv) {
+      if (inv.id !== id) return inv;
+      var gain = {
+        date: toDay(),
+        amount: (inv.returnAmount || inv.amount) - inv.amount,
+        type: "gain",
+        note: "Interés al vencer"
+      };
+      if (inv.autoReinvest) {
+        var reinvest = {
+          date: toDay(),
+          amount: inv.returnAmount || inv.amount,
+          type: "reinvest",
+          note: "Reinversión automática"
+        };
+        return _objectSpread(_objectSpread({}, inv), {}, {
+          amount: inv.returnAmount || inv.amount,
+          startDate: toDay(),
+          status: "activo",
+          history: [].concat(_toConsumableArray(inv.history), [gain, reinvest])
+        });
+      }
+      return _objectSpread(_objectSpread({}, inv), {}, {
+        status: "cobrado",
+        history: [].concat(_toConsumableArray(inv.history), [gain])
+      });
+    });
+    onChange(_objectSpread(_objectSpread({}, data), {}, {
+      investments: investments
+    }));
+  };
+  var delInv = function delInv(id) {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      investments: data.investments.filter(function (i) {
+        return i.id !== id;
+      })
+    }));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\uD83D\uDFE2 Futuro",
+    sub: "Ahorro e inversiones \u2014 objetivo 20%"
+  }), /*#__PURE__*/React.createElement(Card, {
+    className: "border border-emerald-900/50"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-start mb-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Destinado al futuro este mes"), /*#__PURE__*/React.createElement("p", {
+    className: "text-emerald-400 text-2xl font-black"
+  }, CLP(totalFutMo)), targetFut > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 mt-0.5"
+  }, "objetivo ", CLP(targetFut), " (20% de ingresos)")), /*#__PURE__*/React.createElement("div", {
+    className: "text-right"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Patrimonio total"), /*#__PURE__*/React.createElement("p", {
+    className: "text-white font-bold"
+  }, CLP(totalAhorro + totalInvActivo)))), targetFut > 0 && /*#__PURE__*/React.createElement(ProgressBar, {
+    value: totalFutMo,
+    max: targetFut,
+    color: "bg-emerald-500"
+  }), targetFut > 0 && dist.pctFut < 20 && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-400 mt-1.5"
+  }, "\u26A1 Llevas ", dist.pctFut, "% \u2014 necesitas ", CLP(Math.max(0, targetFut - totalFutMo)), " m\xE1s para el 20%")), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, [["ahorro", "🐷 Fondos"], ["inversion", "📈 Inversiones"]].map(function (_ref30) {
+    var _ref31 = _slicedToArray(_ref30, 2),
+      v = _ref31[0],
+      l = _ref31[1];
+    return /*#__PURE__*/React.createElement("button", {
+      key: v,
+      onClick: function onClick() {
+        return setTab2(v);
+      },
+      className: "flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ".concat(tab2 === v ? "bg-emerald-700 text-white" : "bg-slate-700 text-slate-400")
+    }, l);
+  })), tab2 === "ahorro" && /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, Object.entries(data.savings).map(function (_ref32) {
+    var _ref33 = _slicedToArray(_ref32, 2),
+      key = _ref33[0],
+      fund = _ref33[1];
+    var p2 = fund.target > 0 ? Math.min(100, fund.balance / fund.target * 100) : 0;
+    var isOpen = activeF === key;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: key
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-start mb-2"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold"
+    }, fund.emoji, " ", fund.label), /*#__PURE__*/React.createElement("p", {
+      className: "text-2xl font-black mt-1 ".concat(fund.balance < 0 ? "text-rose-400" : "text-emerald-400")
+    }, CLP(fund.balance)), fund.target > 0 && /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 mt-0.5"
+    }, "Meta: ", CLP(fund.target), " \xB7 ", p2.toFixed(0), "%")), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, !isOpen && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setConfirmReset(key);
+      },
+      className: "text-xs text-slate-600 hover:text-rose-400 px-2 py-1 rounded-lg"
+    }, "Reset"), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: isOpen ? "gray" : "green",
+      onClick: function onClick() {
+        setActiveF(isOpen ? null : key);
+        setOp({
+          amount: "",
+          desc: "",
+          type: "deposito"
+        });
+      }
+    }, isOpen ? "Cerrar" : "Mover"))), fund.target > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "mb-3"
+    }, /*#__PURE__*/React.createElement(ProgressBar, {
+      value: fund.balance,
+      max: fund.target,
+      color: "bg-emerald-500"
+    })), confirmReset === key && /*#__PURE__*/React.createElement("div", {
+      className: "bg-rose-900/40 border border-rose-700/50 rounded-xl p-3 mb-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-rose-300 text-sm font-semibold mb-2"
+    }, "\xBFResetear saldo a $0 y borrar historial?"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "red",
+      onClick: function onClick() {
+        return resetFund(key);
+      }
+    }, "S\xED, resetear"), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "gray",
+      onClick: function onClick() {
+        return setConfirmReset(null);
+      }
+    }, "Cancelar"))), !isOpen && /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      min: "0",
+      step: "10000",
+      value: editTarget[key] !== undefined ? editTarget[key] : fund.target || "",
+      onChange: function onChange(e) {
+        return setEditTarget(_objectSpread(_objectSpread({}, editTarget), {}, _defineProperty({}, key, e.target.value)));
+      },
+      placeholder: "Establecer meta...",
+      className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
+    }), /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "gray",
+      onClick: function onClick() {
+        return saveTarget(key);
+      }
+    }, "\u2713")), isOpen && /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3 border-t border-slate-700 pt-3 mt-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, ["deposito", "retiro"].map(function (t) {
+      return /*#__PURE__*/React.createElement("button", {
+        key: t,
+        onClick: function onClick() {
+          return setOp(_objectSpread(_objectSpread({}, op), {}, {
+            type: t
+          }));
+        },
+        className: "flex-1 py-2 rounded-xl text-sm font-semibold transition-all ".concat(op.type === t ? t === "deposito" ? "bg-emerald-600 text-white" : "bg-rose-600 text-white" : "bg-slate-700 text-slate-400")
+      }, t === "deposito" ? "⬆️ Depositar" : "⬇️ Retirar");
+    })), /*#__PURE__*/React.createElement(Inp, {
+      label: "Monto ($)",
+      type: "number",
+      min: "0",
+      step: "1000",
+      value: op.amount,
+      onChange: function onChange(v) {
+        return setOp(_objectSpread(_objectSpread({}, op), {}, {
+          amount: v
+        }));
+      },
+      placeholder: "0"
+    }), /*#__PURE__*/React.createElement(Inp, {
+      label: "Nota",
+      value: op.desc,
+      onChange: function onChange(v) {
+        return setOp(_objectSpread(_objectSpread({}, op), {}, {
+          desc: v
+        }));
+      },
+      placeholder: "Ej: Ahorro mayo"
+    }), /*#__PURE__*/React.createElement(Btn, {
+      full: true,
+      color: op.type === "deposito" ? "green" : "red",
+      onClick: function onClick() {
+        return doOp(key);
+      },
+      disabled: !op.amount
+    }, "Confirmar ", op.type)), fund.history.length > 0 && !isOpen && /*#__PURE__*/React.createElement("div", {
+      className: "mt-3 border-t border-slate-700/60 pt-3"
+    }, _toConsumableArray(fund.history).reverse().map(function (h, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: h.id || i,
+        className: "flex justify-between items-center text-sm py-1 border-b border-slate-700/40 last:border-0"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0 mr-2"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-300 truncate block"
+      }, h.desc || h.type), /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-500 text-xs"
+      }, fmt(h.date))), /*#__PURE__*/React.createElement("span", {
+        className: "font-semibold flex-shrink-0 mr-2 ".concat(h.amount >= 0 ? "text-emerald-400" : "text-rose-400")
+      }, h.amount >= 0 ? "+" : "", CLP(h.amount)), /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          return delHistEntry(key, h.id, i);
+        },
+        className: "text-slate-600 hover:text-rose-400 text-base flex-shrink-0"
+      }, "\xD7"));
+    })));
+  })), tab2 === "inversion" && /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-end"
+  }, /*#__PURE__*/React.createElement(Btn, {
+    sm: true,
+    color: showInv ? "gray" : "green",
+    onClick: function onClick() {
+      return setShowInv(!showInv);
+    }
+  }, showInv ? "Cancelar" : "+ Nuevo depósito")), showInv && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Nombre / Banco",
+    value: invF.name,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        name: v
+      }));
+    },
+    placeholder: "Ej: BCI 30 d\xEDas"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Capital ($)",
+    type: "number",
+    min: "0",
+    step: "1000",
+    value: invF.amount,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        amount: v
+      }));
+    },
+    placeholder: "100000"
+  }), /*#__PURE__*/React.createElement(Inp, {
+    label: "Monto a recibir ($)",
+    type: "number",
+    min: "0",
+    step: "1000",
+    value: invF.returnAmount,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        returnAmount: v
+      }));
+    },
+    placeholder: "101000"
+  })), invF.amount && invF.returnAmount && parseFloat(invF.returnAmount) > parseFloat(invF.amount) && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-emerald-400"
+  }, "Ganancia: ", CLP(parseFloat(invF.returnAmount) - parseFloat(invF.amount))), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Inp, {
+    label: "Fecha dep\xF3sito",
+    type: "date",
+    value: invF.startDate,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        startDate: v
+      }));
+    }
+  }), /*#__PURE__*/React.createElement(Inp, {
+    label: "Fecha vencimiento",
+    type: "date",
+    value: invF.maturityDate,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        maturityDate: v
+      }));
+    }
+  })), /*#__PURE__*/React.createElement(Toggle, {
+    value: invF.autoReinvest,
+    onChange: function onChange(v) {
+      return setInvF(_objectSpread(_objectSpread({}, invF), {}, {
+        autoReinvest: v
+      }));
+    },
+    label: "Reinversi\xF3n autom\xE1tica al vencer"
+  }), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "green",
+    onClick: saveInv,
+    disabled: !invF.amount || !invF.maturityDate
+  }, "Guardar"))), data.investments.filter(function (i) {
+    return i.status === "activo";
+  }).map(function (inv) {
+    var gain = (inv.returnAmount || 0) - inv.amount;
+    var dLeft = Math.ceil((new Date(inv.maturityDate + "T12:00") - new Date()) / 86400000);
+    var expired = dLeft <= 0;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: inv.id
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-start mb-3"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold"
+    }, inv.name || "Depósito a plazo"), /*#__PURE__*/React.createElement("p", {
+      className: "text-emerald-400 text-2xl font-black"
+    }, CLP(inv.amount)), gain > 0 && /*#__PURE__*/React.createElement("p", {
+      className: "text-emerald-400 text-sm"
+    }, "+", CLP(gain), " al vencer"), inv.history.filter(function (h) {
+      return h.type === "reinvest";
+    }).length > 0 && /*#__PURE__*/React.createElement(Badge, {
+      color: "green"
+    }, "Reinvertido ", inv.history.filter(function (h) {
+      return h.type === "reinvest";
+    }).length, "\xD7")), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return delInv(inv.id);
+      },
+      className: "text-slate-600 hover:text-rose-400 text-xl"
+    }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between text-xs text-slate-400 mb-3"
+    }, /*#__PURE__*/React.createElement("span", null, "Desde: ", fmt(inv.startDate)), /*#__PURE__*/React.createElement("span", {
+      className: expired ? "text-rose-400 font-bold" : dLeft <= 7 ? "text-amber-400" : ""
+    }, "Vence: ", fmt(inv.maturityDate), " ", expired ? "(VENCIDO)" : dLeft <= 7 ? "(".concat(dLeft, "d)") : "")), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, inv.autoReinvest && /*#__PURE__*/React.createElement(Badge, {
+      color: "green"
+    }, "\uD83D\uDD04 Auto-reinvierte"), expired && /*#__PURE__*/React.createElement(Btn, {
+      sm: true,
+      color: "green",
+      onClick: function onClick() {
+        return mature(inv.id);
+      }
+    }, inv.autoReinvest ? "🔄 Reinvertir" : "💰 Cobrar")));
+  }), data.investments.filter(function (i) {
+    return i.status === "activo";
+  }).length === 0 && !showInv && /*#__PURE__*/React.createElement(EmptyState, {
+    msg: "Sin dep\xF3sitos a plazo activos"
+  }), data.investments.filter(function (i) {
+    return i.status === "cobrado";
+  }).length > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 uppercase tracking-wider px-1 mb-2"
+  }, "Historial cobrado"), data.investments.filter(function (i) {
+    return i.status === "cobrado";
+  }).map(function (inv) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: inv.id,
+      className: "mb-2 opacity-60 !p-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-300 font-semibold"
+    }, inv.name), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-sm"
+    }, CLP(inv.amount), " \xB7 cobrado ", fmt(inv.maturityDate))), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return delInv(inv.id);
+      },
+      className: "text-slate-600 hover:text-rose-400"
+    }, "\xD7")));
+  }))));
+}
+
+// ═══════════════════════════════════════════════════
+// APP
+// ═══════════════════════════════════════════════════
+// ═══ CONFIG ═══
+function Config(_ref34) {
+  var _data$config2;
+  var data = _ref34.data,
+    onChange = _ref34.onChange;
+  var _useState47 = useState(""),
+    _useState48 = _slicedToArray(_useState47, 2),
+    importError = _useState48[0],
+    setImportError = _useState48[1];
+  var _useState49 = useState(false),
+    _useState50 = _slicedToArray(_useState49, 2),
+    importSuccess = _useState50[0],
+    setImportSuccess = _useState50[1];
+  var _useState51 = useState(false),
+    _useState52 = _slicedToArray(_useState51, 2),
+    showExport = _useState52[0],
+    setShowExport = _useState52[1];
+  var base = ((_data$config2 = data.config) === null || _data$config2 === void 0 ? void 0 : _data$config2.budgetBase) || 750000;
+  var _useState53 = useState(String(base)),
+    _useState54 = _slicedToArray(_useState53, 2),
+    newBase = _useState54[0],
+    setNewBase = _useState54[1];
+  var saveBase = function saveBase() {
+    return onChange(_objectSpread(_objectSpread({}, data), {}, {
+      config: _objectSpread(_objectSpread({}, data.config || {}), {}, {
+        budgetBase: parseFloat(newBase) || 750000
+      })
+    }));
+  };
+  var exportJson = JSON.stringify(data, null, 2);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement(SectionHeader, {
+    title: "\u2699\uFE0F Configuraci\xF3n"
+  }), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold text-white mb-1"
+  }, "\uD83D\uDCE6 Exportar / Importar datos"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 mb-4"
+  }, "Exporta tus datos para hacer respaldo o para pasarlos a otro dispositivo. Importa para restaurarlos."), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "blue",
+    onClick: function onClick() {
+      return setShowExport(!showExport);
+    }
+  }, showExport ? "Ocultar datos" : "⬇️ Exportar — ver mis datos"), showExport && /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Copia todo el texto de abajo y gu\xE1rdalo en un archivo .txt o .json"), /*#__PURE__*/React.createElement("textarea", {
+    readOnly: true,
+    value: exportJson,
+    rows: 6,
+    className: "w-full bg-slate-900 text-emerald-400 text-xs rounded-xl p-3 border border-slate-600 font-mono resize-none",
+    onFocus: function onFocus(e) {
+      return e.target.select();
+    }
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500"
+  }, "Toca el texto \u2192 Ctrl+A \u2192 Ctrl+C para copiar todo")), /*#__PURE__*/React.createElement("div", {
+    className: "border-t border-slate-700 pt-3"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-semibold mb-2"
+  }, "\u2B06\uFE0F Importar datos"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 mb-2"
+  }, "Pega aqu\xED el texto que exportaste anteriormente"), /*#__PURE__*/React.createElement("textarea", {
+    id: "import-textarea",
+    rows: 4,
+    placeholder: "Pega aqu\xED el JSON exportado...",
+    className: "w-full bg-slate-900 text-slate-300 text-xs rounded-xl p-3 border border-slate-600 font-mono resize-none mb-2"
+  }), /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "green",
+    onClick: function onClick() {
+      var _document$getElementB;
+      var txt = (_document$getElementB = document.getElementById("import-textarea")) === null || _document$getElementB === void 0 ? void 0 : _document$getElementB.value;
+      if (!txt) return;
+      try {
+        var parsed = JSON.parse(txt);
+        if (!parsed.incomes || !parsed.expenses) throw new Error();
+        onChange(_objectSpread(_objectSpread(_objectSpread({}, INIT), parsed), {}, {
+          savings: _objectSpread(_objectSpread({}, INIT.savings), parsed.savings || {}),
+          cards: parsed.cards || [],
+          purchases: parsed.purchases || [],
+          config: _objectSpread(_objectSpread({}, INIT.config), parsed.config || {})
+        }));
+        setImportSuccess(true);
+        setImportError("");
+        document.getElementById("import-textarea").value = "";
+        setTimeout(function () {
+          return setImportSuccess(false);
+        }, 3000);
+      } catch (_unused) {
+        setImportError("Texto inválido — asegúrate de pegar el JSON completo");
+      }
+    }
+  }, "Importar datos")), importError && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-rose-400 bg-rose-900/30 px-3 py-2 rounded-xl"
+  }, importError), importSuccess && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-emerald-400 bg-emerald-900/30 px-3 py-2 rounded-xl"
+  }, "\u2705 Datos importados correctamente")), /*#__PURE__*/React.createElement("div", {
+    className: "mt-4 p-3 bg-slate-700/40 rounded-xl"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 font-semibold mb-1"
+  }, "\xBFC\xF3mo sincronizar celular \u2194 PC?"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500"
+  }, "1. Exporta desde el celular \u2192 guarda el archivo en un lugar accesible (Drive, WhatsApp, email)"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 mt-1"
+  }, "2. Desde el PC, importa ese archivo y tendr\xE1s todo al d\xEDa"))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold text-white mb-1"
+  }, "Presupuesto base mensual"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 mb-3"
+  }, "Base para calcular el 50/30/20. Normalmente tu sueldo fijo garantizado."), /*#__PURE__*/React.createElement(Inp, {
+    label: "Monto base ($)",
+    type: "number",
+    min: "0",
+    step: "10000",
+    value: newBase,
+    onChange: setNewBase,
+    placeholder: "750000"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 space-y-1.5 text-sm"
+  }, [["🔵 Necesidades (50%)", 0.5], ["🟡 Estilo de vida (30%)", 0.3], ["🟢 Futuro (20%)", 0.2]].map(function (_ref35) {
+    var _ref36 = _slicedToArray(_ref35, 2),
+      l = _ref36[0],
+      p = _ref36[1];
+    return /*#__PURE__*/React.createElement("div", {
+      key: l,
+      className: "flex justify-between"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400"
+    }, l), /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-semibold"
+    }, CLP(Math.round((parseFloat(newBase) || 0) * p))));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "mt-4"
+  }, /*#__PURE__*/React.createElement(Btn, {
+    full: true,
+    color: "blue",
+    onClick: saveBase
+  }, "Guardar"))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold text-white mb-2"
+  }, "\uD83D\uDCB3 Ciclo CMR"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, "Corte el d\xEDa ", /*#__PURE__*/React.createElement("span", {
+    className: "text-amber-400 font-semibold"
+  }, "19"), " de cada mes (ajustado a viernes si cae fin de semana)."), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400 mt-1"
+  }, "Recomendaci\xF3n: CMR del 1 al 19 \xB7 D\xE9bito del 20 al 31")));
+}
+var TABS = [{
+  id: "dashboard",
+  icon: "🏠",
+  label: "Inicio"
+}, {
+  id: "ingresos",
+  icon: "💰",
+  label: "Ingresos"
+}, {
+  id: "gastos",
+  icon: "💸",
+  label: "Gastos"
+}, {
+  id: "alimentos",
+  icon: "🛒",
+  label: "Alimentos"
+}, {
+  id: "tarjetas",
+  icon: "💳",
+  label: "Tarjetas"
+}, {
+  id: "stats",
+  icon: "📊",
+  label: "Stats"
+}, {
+  id: "futuro",
+  icon: "🟢",
+  label: "Futuro"
+}, {
+  id: "config",
+  icon: "⚙️",
+  label: "Config"
+}];
+function App() {
+  var _useState55 = useState("dashboard"),
+    _useState56 = _slicedToArray(_useState55, 2),
+    tab = _useState56[0],
+    setTab = _useState56[1];
+  var _useState57 = useState(INIT),
+    _useState58 = _slicedToArray(_useState57, 2),
+    data = _useState58[0],
+    setData = _useState58[1];
+  var _useState59 = useState(false),
+    _useState60 = _slicedToArray(_useState59, 2),
+    loaded = _useState60[0],
+    setLoaded = _useState60[1];
+  var _useState61 = useState("loading"),
+    _useState62 = _slicedToArray(_useState61, 2),
+    gsStatus = _useState62[0],
+    setGsStatus = _useState62[1]; // "loading"|"ok"|"error"
+  var navRef = useRef(null);
+  useEffect(function () {
+    var link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var parsed, _t;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            _context.p = 0;
+            _context.n = 1;
+            return gsLoad();
+          case 1:
+            parsed = _context.v;
+            if (parsed) {
+              setData(_objectSpread(_objectSpread(_objectSpread({}, INIT), parsed), {}, {
+                savings: _objectSpread(_objectSpread({}, INIT.savings), parsed.savings || {}),
+                cards: parsed.cards || [],
+                purchases: parsed.purchases || []
+              }));
+            }
+            // Empty sheet is fine - just start fresh
+            setGsStatus("ok");
+            _context.n = 3;
+            break;
+          case 2:
+            _context.p = 2;
+            _t = _context.v;
+            console.error("gsLoad error:", _t);
+            setGsStatus("error");
+          case 3:
+            setLoaded(true);
+          case 4:
+            return _context.a(2);
+        }
+      }, _callee, null, [[0, 2]]);
+    }))();
+  }, []);
+  var onChange = useCallback(/*#__PURE__*/function () {
+    var _ref38 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(nd) {
+      var _t2;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            setData(nd);
+            _context2.p = 1;
+            _context2.n = 2;
+            return gsSave(nd);
+          case 2:
+            _context2.n = 4;
+            break;
+          case 3:
+            _context2.p = 3;
+            _t2 = _context2.v;
+          case 4:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[1, 3]]);
+    }));
+    return function (_x2) {
+      return _ref38.apply(this, arguments);
+    };
+  }(), []);
+  useEffect(function () {
+    if (!navRef.current) return;
+    var btn = navRef.current.querySelector("[data-tab=\"".concat(tab, "\"]"));
+    if (btn) btn.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center"
+    });
+  }, [tab]);
+  if (!loaded) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Sora',sans-serif"
+    },
+    className: "min-h-screen bg-slate-900 flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-sm"
+  }, "Cargando desde Google Sheets\u2026"));
+
+  // If GS failed to load, show a recovery screen instead of empty app
+  if (gsStatus === "error") {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'Sora',sans-serif"
+      },
+      className: "min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 gap-4"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-3xl"
+    }, "\u26A0\uFE0F"), /*#__PURE__*/React.createElement("p", {
+      className: "text-white font-bold text-center text-lg"
+    }, "No se pudo conectar con Google Sheets"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-sm text-center"
+    }, "Claude.ai bloquea las llamadas externas. Tus datos siguen en Sheets \u2014 no se perdieron."), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-2xl p-4 w-full max-w-sm border border-slate-700 space-y-2"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-300 text-sm font-semibold"
+    }, "\uD83D\uDCCB C\xF3mo recuperar tus datos:"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-xs"
+    }, "1. Abre tu Google Sheet"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-xs"
+    }, "2. Copia el contenido de la celda ", /*#__PURE__*/React.createElement("span", {
+      className: "text-amber-400 font-mono"
+    }, "B2"), " (es un JSON largo)"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-xs"
+    }, "3. Ve a \u2699\uFE0F Config \u2192 Importar datos \u2192 pega y guarda")), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setGsStatus("ok");
+      },
+      className: "mt-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-semibold text-sm transition-all"
+    }, "Continuar sin Sheets \u2192"));
+  }
+  var mo = curMo();
+  var dist = calcDistribution(data, mo);
+  var panels = {
+    dashboard: /*#__PURE__*/React.createElement(Dashboard, {
+      data: data
+    }),
+    ingresos: /*#__PURE__*/React.createElement(Ingresos, {
+      data: data,
+      onChange: onChange
+    }),
+    gastos: /*#__PURE__*/React.createElement(Gastos, {
+      data: data,
+      onChange: onChange
+    }),
+    alimentos: /*#__PURE__*/React.createElement(Alimentacion, {
+      data: data,
+      onChange: onChange
+    }),
+    tarjetas: /*#__PURE__*/React.createElement(Tarjetas, {
+      data: data,
+      onChange: onChange
+    }),
+    stats: /*#__PURE__*/React.createElement(Estadisticas, {
+      data: data
+    }),
+    futuro: /*#__PURE__*/React.createElement(Futuro, {
+      data: data,
+      onChange: onChange
+    }),
+    config: /*#__PURE__*/React.createElement(Config, {
+      data: data,
+      onChange: onChange
+    })
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Sora',sans-serif"
+    },
+    className: "min-h-screen bg-slate-900 text-white"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-slate-800/95 backdrop-blur border-b border-slate-700/80 px-4 py-3 sticky top-0 z-20"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center max-w-lg mx-auto"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "font-black text-white text-base"
+  }, "\uD83D\uDCB9 FinanzasHub"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-400"
+  }, new Date().toLocaleDateString("es-CL", {
+    weekday: "long",
+    day: "numeric",
+    month: "long"
+  }))), dist.totalIncome > 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-3 text-center"
+  }, [["necesidades", "pctNec", 50], ["estilo", "pctEst", 30], ["futuro", "pctFut", 20]].map(function (_ref39) {
+    var _ref40 = _slicedToArray(_ref39, 3),
+      k = _ref40[0],
+      pk = _ref40[1],
+      t = _ref40[2];
+    var b = BUCKETS[k];
+    var val = dist[pk];
+    var dev = val - t;
+    return /*#__PURE__*/React.createElement("div", {
+      key: k
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs font-black ".concat(Math.abs(dev) > 5 ? dev > 0 ? "text-rose-400" : "text-emerald-400" : b.text)
+    }, val, "%"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-600"
+    }, t, "%"));
+  })) : /*#__PURE__*/React.createElement("div", {
+    className: "text-right"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500"
+  }, "Balance mes"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold ".concat(dist.totalIncome - dist.totalSpent >= 0 ? "text-emerald-400" : "text-rose-400")
+  }, CLP(dist.totalIncome - dist.totalSpent))))), /*#__PURE__*/React.createElement("div", {
+    className: "p-4 pb-24 max-w-lg mx-auto"
+  }, panels[tab]), /*#__PURE__*/React.createElement("div", {
+    className: "fixed bottom-0 left-0 right-0 bg-slate-800/95 backdrop-blur border-t border-slate-700 z-20"
+  }, /*#__PURE__*/React.createElement("div", {
+    ref: navRef,
+    className: "flex overflow-x-auto max-w-lg mx-auto",
+    style: {
+      scrollbarWidth: "none",
+      msOverflowStyle: "none"
+    }
+  }, TABS.map(function (t) {
+    return /*#__PURE__*/React.createElement("button", {
+      key: t.id,
+      "data-tab": t.id,
+      onClick: function onClick() {
+        return setTab(t.id);
+      },
+      className: "flex flex-col items-center py-2.5 px-3 text-xs transition-all flex-shrink-0 ".concat(tab === t.id ? "text-blue-400" : "text-slate-500 hover:text-slate-300")
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-lg mb-0.5 transition-transform ".concat(tab === t.id ? "scale-110" : "")
+    }, t.icon), /*#__PURE__*/React.createElement("span", {
+      className: "font-medium whitespace-nowrap"
+    }, t.label), tab === t.id && /*#__PURE__*/React.createElement("span", {
+      className: "w-1 h-1 rounded-full bg-blue-400 mt-0.5"
+    }));
+  }))));
+}
+var root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+
+  </script>
+</body>
+</html>
