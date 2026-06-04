@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1780591446 -->
+  <!-- build: 1780597860 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -3498,43 +3498,175 @@ function Estadisticas(_ref25) {
       key: i,
       fill: e.balance >= 0 ? "#10B981" : "#EF4444"
     });
-  }))))), catData.length > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
-  }, "Por categor\xEDa \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-4 items-center"
-  }, /*#__PURE__*/React.createElement(PieChart, {
-    width: 120,
-    height: 120
-  }, /*#__PURE__*/React.createElement(Pie, {
-    data: catData,
-    cx: 55,
-    cy: 55,
-    innerRadius: 30,
-    outerRadius: 55,
-    dataKey: "value",
-    paddingAngle: 2
-  }, catData.map(function (_, i) {
-    return /*#__PURE__*/React.createElement(Cell, {
-      key: i,
-      fill: PIE_COLORS[i % PIE_COLORS.length]
+  }))))), function (_catTotals$) {
+    var catTotals = ALL_CATS.map(function (cat) {
+      var fromExp = data.expenses.filter(function (e) {
+        return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && e.catId === cat.id;
+      }).reduce(function (s, e) {
+        return s + e.amount;
+      }, 0);
+      var fromGroc = cat.id === "alimentos" ? data.groceries.filter(function (g) {
+        return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
+      }).reduce(function (s, g) {
+        return s + g.total;
+      }, 0) : 0;
+      var fromInst = data.purchases.filter(function (p) {
+        return !p.cancelled && !p.isWife && p.catId === cat.id;
+      }).reduce(function (s, p) {
+        var i = instForMonth(p, mo);
+        return s + (i ? i.amount : 0);
+      }, 0);
+      return {
+        name: cat.label.replace(/^\S+\s/, ""),
+        value: fromExp + fromGroc + fromInst,
+        bucket: getCatBucket(cat.id),
+        id: cat.id
+      };
+    }).filter(function (c) {
+      return c.value > 0;
+    }).sort(function (a, b) {
+      return b.value - a.value;
     });
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1 min-w-0"
-  }, catData.slice(0, 6).map(function (c, i) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      className: "flex items-center gap-2 mb-1.5"
+    var maxVal = ((_catTotals$ = catTotals[0]) === null || _catTotals$ === void 0 ? void 0 : _catTotals$.value) || 1;
+    var totalCat = catTotals.reduce(function (s, c) {
+      return s + c.value;
+    }, 0);
+    if (!catTotals.length) return null;
+    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+    }, "Por categor\xEDa \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, catTotals.map(function (c, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: i
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between items-center mb-1"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs text-slate-300 truncate flex-1 mr-2"
+      }, c.name), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-semibold text-white"
+      }, CLP(c.value)), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs text-slate-500 ml-2 w-8 text-right"
+      }, Math.round(c.value / totalCat * 100), "%")), /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700 rounded-full h-1.5"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "h-1.5 rounded-full transition-all",
+        style: {
+          width: "".concat(Math.round(c.value / maxVal * 100), "%"),
+          background: c.bucket === "necesidades" ? "#3B82F6" : "#F59E0B"
+        }
+      })));
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3 mt-4 pt-3 border-t border-slate-700"
     }, /*#__PURE__*/React.createElement("span", {
-      className: "w-2 h-2 rounded-full flex-shrink-0",
+      className: "flex items-center gap-1.5 text-xs text-slate-400"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "w-2 h-2 rounded-full bg-blue-500 inline-block"
+    }), "Necesidades"), /*#__PURE__*/React.createElement("span", {
+      className: "flex items-center gap-1.5 text-xs text-slate-400"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "w-2 h-2 rounded-full bg-amber-400 inline-block"
+    }), "Estilo")));
+  }(), function () {
+    var necTotal = data.purchases.filter(function (p) {
+      return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "necesidades";
+    }).reduce(function (s, p) {
+      var i = instForMonth(p, mo);
+      return s + (i ? i.amount : 0);
+    }, 0) + data.expenses.filter(function (e) {
+      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "necesidades";
+    }).reduce(function (s, e) {
+      return s + e.amount;
+    }, 0) + data.groceries.filter(function (g) {
+      return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
+    }).reduce(function (s, g) {
+      return s + g.total;
+    }, 0);
+    var estTotal = data.purchases.filter(function (p) {
+      return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "estilo";
+    }).reduce(function (s, p) {
+      var i = instForMonth(p, mo);
+      return s + (i ? i.amount : 0);
+    }, 0) + data.expenses.filter(function (e) {
+      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "estilo";
+    }).reduce(function (s, e) {
+      return s + e.amount;
+    }, 0);
+    var total = necTotal + estTotal || 1;
+    if (!necTotal && !estTotal) return null;
+    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
+    }, "Necesidades vs estilo \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between mb-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-sm text-slate-300"
+    }, "\uD83D\uDD35 Necesidades"), /*#__PURE__*/React.createElement("span", {
+      className: "text-sm font-semibold text-blue-400"
+    }, CLP(necTotal), " ", /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-500 font-normal"
+    }, Math.round(necTotal / total * 100), "%"))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-700 rounded-full h-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "h-2 rounded-full bg-blue-500",
       style: {
-        background: PIE_COLORS[i % PIE_COLORS.length]
+        width: "".concat(Math.round(necTotal / total * 100), "%")
       }
-    }), /*#__PURE__*/React.createElement("span", {
-      className: "text-xs text-slate-300 truncate flex-1"
-    }, c.name), /*#__PURE__*/React.createElement("span", {
-      className: "text-xs text-slate-400"
-    }, Math.round(c.value / totalExp * 100), "%"));
-  })))), dist.totalIncome > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between mb-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-sm text-slate-300"
+    }, "\uD83D\uDFE1 Estilo de vida"), /*#__PURE__*/React.createElement("span", {
+      className: "text-sm font-semibold text-amber-400"
+    }, CLP(estTotal), " ", /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-500 font-normal"
+    }, Math.round(estTotal / total * 100), "%"))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-700 rounded-full h-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "h-2 rounded-full bg-amber-400",
+      style: {
+        width: "".concat(Math.round(estTotal / total * 100), "%")
+      }
+    })))));
+  }(), function () {
+    var top = data.purchases.filter(function (p) {
+      return !p.cancelled && !p.isWife;
+    }).map(function (p) {
+      var _getCat;
+      var i = instForMonth(p, mo);
+      return i ? {
+        desc: p.desc,
+        amount: i.amount,
+        cat: ((_getCat = getCat(p.catId)) === null || _getCat === void 0 ? void 0 : _getCat.label) || ""
+      } : null;
+    }).filter(Boolean).sort(function (a, b) {
+      return b.amount - a.amount;
+    }).slice(0, 5);
+    if (!top.length) return null;
+    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+    }, "Top compras \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-0"
+    }, top.map(function (t, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "flex items-center justify-between py-2.5 border-b border-slate-700/50 last:border-0"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 flex-1 min-w-0"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs text-slate-500 w-4"
+      }, i + 1), /*#__PURE__*/React.createElement("div", {
+        className: "min-w-0"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-white truncate"
+      }, t.desc), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-500 truncate"
+      }, t.cat))), /*#__PURE__*/React.createElement("span", {
+        className: "text-sm font-semibold text-white ml-2"
+      }, CLP(t.amount)));
+    })));
+  }(), dist.totalIncome > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
   }, "Distribuci\xF3n detallada \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement(DistWidget, {
     dist: dist
