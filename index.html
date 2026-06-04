@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1780587892 -->
+  <!-- build: 1780589255 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2658,6 +2658,84 @@ function Tarjetas(_ref22) {
       var remaining = p.installments - paid;
       var balance = remainBal(p);
       var interest = Math.round(p.installmentAmt * p.installments - p.totalAmount);
+      if (cardEditId === p.id) return /*#__PURE__*/React.createElement(Card, {
+        key: p.id,
+        className: "!p-3 border border-blue-700/50"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+      }, "\u270F\uFE0F Editar compra"), /*#__PURE__*/React.createElement("div", {
+        className: "space-y-2"
+      }, /*#__PURE__*/React.createElement(Inp, {
+        label: "Descripci\xF3n",
+        value: cardEditF.desc,
+        onChange: function onChange(v) {
+          return setCardEditF(_objectSpread(_objectSpread({}, cardEditF), {}, {
+            desc: v
+          }));
+        }
+      }), /*#__PURE__*/React.createElement(Inp, {
+        label: "Monto total ($)",
+        type: "number",
+        value: cardEditF.totalAmount,
+        onChange: function onChange(v) {
+          return setCardEditF(_objectSpread(_objectSpread({}, cardEditF), {}, {
+            totalAmount: v
+          }));
+        }
+      }), /*#__PURE__*/React.createElement(Inp, {
+        label: "N\xFAmero de cuotas",
+        type: "number",
+        min: "1",
+        value: cardEditF.installments,
+        onChange: function onChange(v) {
+          return setCardEditF(_objectSpread(_objectSpread({}, cardEditF), {}, {
+            installments: v
+          }));
+        }
+      }), /*#__PURE__*/React.createElement(Inp, {
+        label: "Tasa anual (%)",
+        type: "number",
+        min: "0",
+        value: cardEditF.annualRate,
+        onChange: function onChange(v) {
+          return setCardEditF(_objectSpread(_objectSpread({}, cardEditF), {}, {
+            annualRate: v
+          }));
+        }
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "flex gap-2 pt-1"
+      }, /*#__PURE__*/React.createElement(Btn, {
+        sm: true,
+        full: true,
+        color: "blue",
+        onClick: function onClick() {
+          var total = parseFloat(cardEditF.totalAmount) || p.totalAmount;
+          var n = parseInt(cardEditF.installments) || p.installments;
+          var rate = parseFloat(cardEditF.annualRate) || 0;
+          var instAmt = calcInstAmt(total, rate, n);
+          onChange(_objectSpread(_objectSpread({}, data), {}, {
+            purchases: data.purchases.map(function (pu) {
+              return pu.id === p.id ? _objectSpread(_objectSpread({}, pu), {}, {
+                desc: cardEditF.desc,
+                totalAmount: total,
+                installments: n,
+                annualRate: rate,
+                installmentAmt: instAmt
+              }) : pu;
+            })
+          }));
+          setCardEditId(null);
+          setCardEditF(null);
+        }
+      }, "Guardar"), /*#__PURE__*/React.createElement(Btn, {
+        sm: true,
+        full: true,
+        color: "red",
+        onClick: function onClick() {
+          setCardEditId(null);
+          setCardEditF(null);
+        }
+      }, "Cancelar"))));
       return /*#__PURE__*/React.createElement(Card, {
         key: p.id,
         className: "!p-3"
@@ -2671,12 +2749,25 @@ function Tarjetas(_ref22) {
         className: "flex gap-1.5 mt-1"
       }, /*#__PURE__*/React.createElement(BucketPill, {
         bucketId: p.bucket
-      }))), /*#__PURE__*/React.createElement("button", {
+      }))), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2"
+      }, /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          setCardEditId(p.id);
+          setCardEditF({
+            desc: p.desc,
+            totalAmount: String(p.totalAmount),
+            installments: String(p.installments),
+            annualRate: String(p.annualRate || 0)
+          });
+        },
+        className: "text-slate-500 hover:text-blue-400 text-sm"
+      }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
         onClick: function onClick() {
           return cancelPurchase(p.id);
         },
-        className: "text-slate-600 hover:text-rose-400 text-xs ml-2"
-      }, "Cancelar")), /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-600 hover:text-rose-400 text-xs"
+      }, "Cancelar"))), /*#__PURE__*/React.createElement("div", {
         className: "flex justify-between text-xs text-slate-400 mb-2"
       }, /*#__PURE__*/React.createElement("span", null, "Cuota ", paid, "/", p.installments), /*#__PURE__*/React.createElement("span", null, CLP(p.installmentAmt), "/mes"), /*#__PURE__*/React.createElement("span", {
         className: "text-amber-400"
