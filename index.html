@@ -13,7 +13,6 @@
   <script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
   <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
   <script>
-    // Make globals available
     const { useState, useEffect, useCallback, useRef } = React;
     const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } = Recharts;
   </script>
@@ -3970,10 +3969,9 @@ function App() {
                 cards: parsed.cards || [],
                 purchases: parsed.purchases || []
               }));
-              setGsStatus("ok");
-            } else {
-              setGsStatus("error");
             }
+            // Empty sheet is fine - just start fresh
+            setGsStatus("ok");
             _context.n = 3;
             break;
           case 2:
