@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1780597860 -->
+  <!-- build: 1780669997 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -338,6 +338,23 @@ function paidInsts(p) {
   }
   var start = new Date(p.date + "T12:00");
   var diff = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  return Math.min(Math.max(0, diff), p.installments);
+}
+function paidInstsForMo(p, mo) {
+  var _mo$split$map = mo.split("-").map(Number),
+    _mo$split$map2 = _slicedToArray(_mo$split$map, 2),
+    ry = _mo$split$map2[0],
+    rm = _mo$split$map2[1];
+  if (p.firstPaymentMonth) {
+    var _p$firstPaymentMonth$3 = p.firstPaymentMonth.split("-").map(Number),
+      _p$firstPaymentMonth$4 = _slicedToArray(_p$firstPaymentMonth$3, 2),
+      fy = _p$firstPaymentMonth$4[0],
+      fm = _p$firstPaymentMonth$4[1];
+    var _diff2 = (ry - fy) * 12 + (rm - fm);
+    return Math.min(Math.max(0, _diff2), p.installments);
+  }
+  var start = new Date(p.date + "T12:00");
+  var diff = (ry - start.getFullYear()) * 12 + (rm - 1 - start.getMonth());
   return Math.min(Math.max(0, diff), p.installments);
 }
 function remainBal(p) {
@@ -1164,10 +1181,10 @@ function Dashboard(_ref12) {
 // ═══════════════════════════════════════════════════
 // Compute previous month helper
 function prevMonth(mo) {
-  var _mo$split$map = mo.split("-").map(Number),
-    _mo$split$map2 = _slicedToArray(_mo$split$map, 2),
-    y = _mo$split$map2[0],
-    m = _mo$split$map2[1];
+  var _mo$split$map3 = mo.split("-").map(Number),
+    _mo$split$map4 = _slicedToArray(_mo$split$map3, 2),
+    y = _mo$split$map4[0],
+    m = _mo$split$map4[1];
   return m === 1 ? "".concat(y - 1, "-12") : "".concat(y, "-").concat(String(m - 1).padStart(2, "0"));
 }
 function Ingresos(_ref16) {
@@ -3348,32 +3365,26 @@ function Estadisticas(_ref25) {
   });
   var mo = curMo();
   var dist = calcDistribution(data, mo);
-  var catData = ALL_CATS.map(function (cat) {
-    var v = data.expenses.filter(function (e) {
-      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && e.catId === cat.id;
-    }).reduce(function (s, e) {
-      return s + e.amount;
-    }, 0) + (cat.id === "alimentos" ? data.groceries.filter(function (g) {
-      return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
-    }).reduce(function (s, g) {
-      return s + g.total;
-    }, 0) : 0);
-    return {
-      name: cat.label.replace(/^\S+\s/, ""),
-      value: v,
-      bucket: getCatBucket(cat.id)
-    };
-  }).filter(function (c) {
-    return c.value > 0;
-  }).sort(function (a, b) {
-    return b.value - a.value;
-  });
-  var totalExp = catData.reduce(function (s, c) {
-    return s + c.value;
-  }, 0);
   var prevMo = lastNMonths(2)[0];
   var prevDist = calcDistribution(data, prevMo);
   var delta = prevDist.totalSpent > 0 ? Math.round((dist.totalSpent - prevDist.totalSpent) / prevDist.totalSpent * 100) : 0;
+
+  // Available months from all data sources
+  var allMonths = _toConsumableArray(new Set([].concat(_toConsumableArray(data.purchases.map(function (p) {
+    return p.firstPaymentMonth;
+  })), _toConsumableArray(data.expenses.map(function (e) {
+    return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards);
+  })), _toConsumableArray(data.groceries.map(function (g) {
+    return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards);
+  })), [curMo()]))).filter(Boolean).sort().reverse();
+  var _useState41 = useState(curMo()),
+    _useState42 = _slicedToArray(_useState41, 2),
+    detailMo = _useState42[0],
+    setDetailMo = _useState42[1];
+  var _useState43 = useState(null),
+    _useState44 = _slicedToArray(_useState43, 2),
+    expandedCat = _useState44[0],
+    setExpandedCat = _useState44[1];
   return /*#__PURE__*/React.createElement("div", {
     className: "space-y-4"
   }, /*#__PURE__*/React.createElement(SectionHeader, {
@@ -3501,26 +3512,68 @@ function Estadisticas(_ref25) {
   }))))), function (_catTotals$) {
     var catTotals = ALL_CATS.map(function (cat) {
       var fromExp = data.expenses.filter(function (e) {
-        return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && e.catId === cat.id;
+        return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === detailMo && e.catId === cat.id;
       }).reduce(function (s, e) {
         return s + e.amount;
       }, 0);
       var fromGroc = cat.id === "alimentos" ? data.groceries.filter(function (g) {
-        return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
+        return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === detailMo;
       }).reduce(function (s, g) {
         return s + g.total;
       }, 0) : 0;
       var fromInst = data.purchases.filter(function (p) {
         return !p.cancelled && !p.isWife && p.catId === cat.id;
       }).reduce(function (s, p) {
-        var i = instForMonth(p, mo);
+        var i = instForMonth(p, detailMo);
         return s + (i ? i.amount : 0);
       }, 0);
+      // items for detail
+      var items = [].concat(_toConsumableArray(data.purchases.filter(function (p) {
+        return !p.cancelled && !p.isWife && p.catId === cat.id;
+      }).map(function (p) {
+        var inst = instForMonth(p, detailMo);
+        if (!inst) return null;
+        var paid = paidInstsForMo(p, detailMo);
+        return {
+          desc: p.desc,
+          subcat: p.subcat || "",
+          cuota: "".concat(paid + 1, "/").concat(p.installments),
+          date: p.date,
+          amount: inst.amount,
+          type: "cuota"
+        };
+      }).filter(Boolean)), _toConsumableArray(data.expenses.filter(function (e) {
+        return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === detailMo && e.catId === cat.id;
+      }).map(function (e) {
+        return {
+          desc: e.desc || cat.label,
+          subcat: e.subcat || "",
+          cuota: "directo",
+          date: e.date,
+          amount: e.amount,
+          type: "gasto"
+        };
+      })), _toConsumableArray(cat.id === "alimentos" ? data.groceries.filter(function (g) {
+        return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === detailMo;
+      }).map(function (g) {
+        return {
+          desc: (g.storeType || "Compra") + (g.store ? " \u2014 ".concat(g.store) : ""),
+          subcat: "Supermercado",
+          cuota: "directo",
+          date: g.date,
+          amount: g.total,
+          type: "super"
+        };
+      }) : [])).sort(function (a, b) {
+        return b.amount - a.amount;
+      });
       return {
+        id: cat.id,
+        label: cat.label,
         name: cat.label.replace(/^\S+\s/, ""),
         value: fromExp + fromGroc + fromInst,
         bucket: getCatBucket(cat.id),
-        id: cat.id
+        items: items
       };
     }).filter(function (c) {
       return c.value > 0;
@@ -3531,33 +3584,90 @@ function Estadisticas(_ref25) {
     var totalCat = catTotals.reduce(function (s, c) {
       return s + c.value;
     }, 0);
-    if (!catTotals.length) return null;
-    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
-      className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
-    }, "Por categor\xEDa \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
-      className: "space-y-3"
-    }, catTotals.map(function (c, i) {
+    var necTotal = catTotals.filter(function (c) {
+      return c.bucket === "necesidades";
+    }).reduce(function (s, c) {
+      return s + c.value;
+    }, 0);
+    var estTotal = catTotals.filter(function (c) {
+      return c.bucket === "estilo";
+    }).reduce(function (s, c) {
+      return s + c.value;
+    }, 0);
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-400 font-medium uppercase tracking-wider"
+    }, "Detalle por categor\xEDa"), /*#__PURE__*/React.createElement("select", {
+      value: detailMo,
+      onChange: function onChange(e) {
+        return setDetailMo(e.target.value);
+      },
+      className: "bg-slate-700 text-white text-xs rounded-xl px-3 py-1.5 border border-slate-600 focus:border-blue-500 focus:outline-none"
+    }, allMonths.map(function (m) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: m,
+        value: m
+      }, fmtMo(m));
+    })))), catTotals.length > 0 ? /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("div", {
+      className: "space-y-1"
+    }, catTotals.map(function (c) {
+      var isOpen = expandedCat === c.id;
       return /*#__PURE__*/React.createElement("div", {
-        key: i
+        key: c.id
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "w-full",
+        onClick: function onClick() {
+          return setExpandedCat(isOpen ? null : c.id);
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 py-2.5 px-2 rounded-xl transition-all ".concat(isOpen ? "bg-slate-700/80" : "")
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex justify-between items-center mb-1"
       }, /*#__PURE__*/React.createElement("span", {
-        className: "text-xs text-slate-300 truncate flex-1 mr-2"
-      }, c.name), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs text-slate-300 truncate"
+      }, c.label), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 ml-2"
+      }, /*#__PURE__*/React.createElement("span", {
         className: "text-xs font-semibold text-white"
       }, CLP(c.value)), /*#__PURE__*/React.createElement("span", {
-        className: "text-xs text-slate-500 ml-2 w-8 text-right"
-      }, Math.round(c.value / totalCat * 100), "%")), /*#__PURE__*/React.createElement("div", {
+        className: "text-xs text-slate-500"
+      }, Math.round(c.value / totalCat * 100), "%"), /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-500 text-xs"
+      }, isOpen ? "▲" : "▼"))), /*#__PURE__*/React.createElement("div", {
         className: "bg-slate-700 rounded-full h-1.5"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "h-1.5 rounded-full transition-all",
+        className: "h-1.5 rounded-full",
         style: {
           width: "".concat(Math.round(c.value / maxVal * 100), "%"),
           background: c.bucket === "necesidades" ? "#3B82F6" : "#F59E0B"
         }
-      })));
+      }))))), isOpen && /*#__PURE__*/React.createElement("div", {
+        className: "mx-2 mb-2 border border-slate-600/50 rounded-xl overflow-hidden"
+      }, c.items.map(function (item, idx) {
+        return /*#__PURE__*/React.createElement("div", {
+          key: idx,
+          className: "flex justify-between items-start px-3 py-2.5 border-b border-slate-700/50 last:border-0"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex-1 min-w-0 mr-3"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "text-sm text-white truncate"
+        }, item.desc), /*#__PURE__*/React.createElement("p", {
+          className: "text-xs text-slate-500 mt-0.5"
+        }, item.subcat, item.subcat && " · ", item.cuota !== "directo" ? "cuota ".concat(item.cuota) : "gasto directo", " \xB7 ", fmt(item.date))), /*#__PURE__*/React.createElement("span", {
+          className: "text-sm font-semibold text-white whitespace-nowrap"
+        }, CLP(item.amount)));
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between px-3 py-2 bg-slate-700/50"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-semibold text-slate-300"
+      }, "Total ", c.name), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-bold text-white"
+      }, CLP(c.value)))));
     })), /*#__PURE__*/React.createElement("div", {
-      className: "flex gap-3 mt-4 pt-3 border-t border-slate-700"
+      className: "flex gap-3 mt-3 pt-3 border-t border-slate-700"
     }, /*#__PURE__*/React.createElement("span", {
       className: "flex items-center gap-1.5 text-xs text-slate-400"
     }, /*#__PURE__*/React.createElement("span", {
@@ -3566,37 +3676,11 @@ function Estadisticas(_ref25) {
       className: "flex items-center gap-1.5 text-xs text-slate-400"
     }, /*#__PURE__*/React.createElement("span", {
       className: "w-2 h-2 rounded-full bg-amber-400 inline-block"
-    }), "Estilo")));
-  }(), function () {
-    var necTotal = data.purchases.filter(function (p) {
-      return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "necesidades";
-    }).reduce(function (s, p) {
-      var i = instForMonth(p, mo);
-      return s + (i ? i.amount : 0);
-    }, 0) + data.expenses.filter(function (e) {
-      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "necesidades";
-    }).reduce(function (s, e) {
-      return s + e.amount;
-    }, 0) + data.groceries.filter(function (g) {
-      return expenseBillingMonth(g.date, g.payMethod, g.cardId, data.cards) === mo;
-    }).reduce(function (s, g) {
-      return s + g.total;
-    }, 0);
-    var estTotal = data.purchases.filter(function (p) {
-      return !p.cancelled && !p.isWife && getCatBucket(p.catId || "varios") === "estilo";
-    }).reduce(function (s, p) {
-      var i = instForMonth(p, mo);
-      return s + (i ? i.amount : 0);
-    }, 0) + data.expenses.filter(function (e) {
-      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === mo && !e.isWife && getCatBucket(e.catId) === "estilo";
-    }).reduce(function (s, e) {
-      return s + e.amount;
-    }, 0);
-    var total = necTotal + estTotal || 1;
-    if (!necTotal && !estTotal) return null;
-    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+    }), "Estilo"))) : /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-500 text-sm text-center py-6"
+    }, "Sin datos para ", fmtMo(detailMo))), (necTotal > 0 || estTotal > 0) && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
-    }, "Necesidades vs estilo \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
+    }, "Necesidades vs estilo \u2014 ", fmtMo(detailMo)), /*#__PURE__*/React.createElement("div", {
       className: "space-y-3"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "flex justify-between mb-1"
@@ -3606,12 +3690,12 @@ function Estadisticas(_ref25) {
       className: "text-sm font-semibold text-blue-400"
     }, CLP(necTotal), " ", /*#__PURE__*/React.createElement("span", {
       className: "text-slate-500 font-normal"
-    }, Math.round(necTotal / total * 100), "%"))), /*#__PURE__*/React.createElement("div", {
+    }, Math.round(necTotal / (necTotal + estTotal || 1) * 100), "%"))), /*#__PURE__*/React.createElement("div", {
       className: "bg-slate-700 rounded-full h-2"
     }, /*#__PURE__*/React.createElement("div", {
       className: "h-2 rounded-full bg-blue-500",
       style: {
-        width: "".concat(Math.round(necTotal / total * 100), "%")
+        width: "".concat(Math.round(necTotal / (necTotal + estTotal || 1) * 100), "%")
       }
     }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "flex justify-between mb-1"
@@ -3621,51 +3705,60 @@ function Estadisticas(_ref25) {
       className: "text-sm font-semibold text-amber-400"
     }, CLP(estTotal), " ", /*#__PURE__*/React.createElement("span", {
       className: "text-slate-500 font-normal"
-    }, Math.round(estTotal / total * 100), "%"))), /*#__PURE__*/React.createElement("div", {
+    }, Math.round(estTotal / (necTotal + estTotal || 1) * 100), "%"))), /*#__PURE__*/React.createElement("div", {
       className: "bg-slate-700 rounded-full h-2"
     }, /*#__PURE__*/React.createElement("div", {
       className: "h-2 rounded-full bg-amber-400",
       style: {
-        width: "".concat(Math.round(estTotal / total * 100), "%")
+        width: "".concat(Math.round(estTotal / (necTotal + estTotal || 1) * 100), "%")
       }
-    })))));
-  }(), function () {
-    var top = data.purchases.filter(function (p) {
-      return !p.cancelled && !p.isWife;
-    }).map(function (p) {
-      var _getCat;
-      var i = instForMonth(p, mo);
-      return i ? {
-        desc: p.desc,
-        amount: i.amount,
-        cat: ((_getCat = getCat(p.catId)) === null || _getCat === void 0 ? void 0 : _getCat.label) || ""
-      } : null;
-    }).filter(Boolean).sort(function (a, b) {
-      return b.amount - a.amount;
-    }).slice(0, 5);
-    if (!top.length) return null;
-    return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
-      className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
-    }, "Top compras \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement("div", {
-      className: "space-y-0"
-    }, top.map(function (t, i) {
-      return /*#__PURE__*/React.createElement("div", {
-        key: i,
-        className: "flex items-center justify-between py-2.5 border-b border-slate-700/50 last:border-0"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "flex items-center gap-2 flex-1 min-w-0"
-      }, /*#__PURE__*/React.createElement("span", {
-        className: "text-xs text-slate-500 w-4"
-      }, i + 1), /*#__PURE__*/React.createElement("div", {
-        className: "min-w-0"
-      }, /*#__PURE__*/React.createElement("p", {
-        className: "text-sm text-white truncate"
-      }, t.desc), /*#__PURE__*/React.createElement("p", {
-        className: "text-xs text-slate-500 truncate"
-      }, t.cat))), /*#__PURE__*/React.createElement("span", {
-        className: "text-sm font-semibold text-white ml-2"
-      }, CLP(t.amount)));
-    })));
+    }))))), function () {
+      var top = [].concat(_toConsumableArray(data.purchases.filter(function (p) {
+        return !p.cancelled && !p.isWife;
+      }).map(function (p) {
+        var _getCat;
+        var i = instForMonth(p, detailMo);
+        return i ? {
+          desc: p.desc,
+          amount: i.amount,
+          cat: ((_getCat = getCat(p.catId)) === null || _getCat === void 0 ? void 0 : _getCat.label) || ""
+        } : null;
+      }).filter(Boolean)), _toConsumableArray(data.expenses.filter(function (e) {
+        return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === detailMo && !e.isWife;
+      }).map(function (e) {
+        var _getCat2;
+        return {
+          desc: e.desc || "Gasto",
+          amount: e.amount,
+          cat: ((_getCat2 = getCat(e.catId)) === null || _getCat2 === void 0 ? void 0 : _getCat2.label) || ""
+        };
+      }))).sort(function (a, b) {
+        return b.amount - a.amount;
+      }).slice(0, 5);
+      if (!top.length) return null;
+      return /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
+      }, "Top compras \u2014 ", fmtMo(detailMo)), /*#__PURE__*/React.createElement("div", {
+        className: "space-y-0"
+      }, top.map(function (t, i) {
+        return /*#__PURE__*/React.createElement("div", {
+          key: i,
+          className: "flex items-center justify-between py-2.5 border-b border-slate-700/50 last:border-0"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-2 flex-1 min-w-0"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "text-xs text-slate-500 w-4"
+        }, i + 1), /*#__PURE__*/React.createElement("div", {
+          className: "min-w-0"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "text-sm text-white truncate"
+        }, t.desc), /*#__PURE__*/React.createElement("p", {
+          className: "text-xs text-slate-500 truncate"
+        }, t.cat))), /*#__PURE__*/React.createElement("span", {
+          className: "text-sm font-semibold text-white ml-2"
+        }, CLP(t.amount)));
+      })));
+    }());
   }(), dist.totalIncome > 0 && /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-400 font-medium mb-4 uppercase tracking-wider"
   }, "Distribuci\xF3n detallada \u2014 ", fmtMo(mo)), /*#__PURE__*/React.createElement(DistWidget, {
@@ -3679,35 +3772,35 @@ function Estadisticas(_ref25) {
 function Futuro(_ref29) {
   var data = _ref29.data,
     onChange = _ref29.onChange;
-  var _useState41 = useState("ahorro"),
-    _useState42 = _slicedToArray(_useState41, 2),
-    tab2 = _useState42[0],
-    setTab2 = _useState42[1];
-  var _useState43 = useState(null),
-    _useState44 = _slicedToArray(_useState43, 2),
-    activeF = _useState44[0],
-    setActiveF = _useState44[1];
-  var _useState45 = useState(null),
+  var _useState45 = useState("ahorro"),
     _useState46 = _slicedToArray(_useState45, 2),
-    confirmReset = _useState46[0],
-    setConfirmReset = _useState46[1];
-  var _useState47 = useState({
+    tab2 = _useState46[0],
+    setTab2 = _useState46[1];
+  var _useState47 = useState(null),
+    _useState48 = _slicedToArray(_useState47, 2),
+    activeF = _useState48[0],
+    setActiveF = _useState48[1];
+  var _useState49 = useState(null),
+    _useState50 = _slicedToArray(_useState49, 2),
+    confirmReset = _useState50[0],
+    setConfirmReset = _useState50[1];
+  var _useState51 = useState({
       amount: "",
       desc: "",
       type: "deposito"
     }),
-    _useState48 = _slicedToArray(_useState47, 2),
-    op = _useState48[0],
-    setOp = _useState48[1];
-  var _useState49 = useState({}),
-    _useState50 = _slicedToArray(_useState49, 2),
-    editTarget = _useState50[0],
-    setEditTarget = _useState50[1];
-  var _useState51 = useState(false),
     _useState52 = _slicedToArray(_useState51, 2),
-    showInv = _useState52[0],
-    setShowInv = _useState52[1];
-  var _useState53 = useState({
+    op = _useState52[0],
+    setOp = _useState52[1];
+  var _useState53 = useState({}),
+    _useState54 = _slicedToArray(_useState53, 2),
+    editTarget = _useState54[0],
+    setEditTarget = _useState54[1];
+  var _useState55 = useState(false),
+    _useState56 = _slicedToArray(_useState55, 2),
+    showInv = _useState56[0],
+    setShowInv = _useState56[1];
+  var _useState57 = useState({
       name: "",
       amount: "",
       returnAmount: "",
@@ -3715,9 +3808,9 @@ function Futuro(_ref29) {
       maturityDate: "",
       autoReinvest: false
     }),
-    _useState54 = _slicedToArray(_useState53, 2),
-    invF = _useState54[0],
-    setInvF = _useState54[1];
+    _useState58 = _slicedToArray(_useState57, 2),
+    invF = _useState58[0],
+    setInvF = _useState58[1];
   var mo = curMo();
   var totalAhorro = Object.values(data.savings).reduce(function (s, f) {
     return s + f.balance;
@@ -4213,23 +4306,23 @@ function Config(_ref34) {
   var _data$config2;
   var data = _ref34.data,
     onChange = _ref34.onChange;
-  var _useState55 = useState(""),
-    _useState56 = _slicedToArray(_useState55, 2),
-    importError = _useState56[0],
-    setImportError = _useState56[1];
-  var _useState57 = useState(false),
-    _useState58 = _slicedToArray(_useState57, 2),
-    importSuccess = _useState58[0],
-    setImportSuccess = _useState58[1];
-  var _useState59 = useState(false),
+  var _useState59 = useState(""),
     _useState60 = _slicedToArray(_useState59, 2),
-    showExport = _useState60[0],
-    setShowExport = _useState60[1];
-  var base = ((_data$config2 = data.config) === null || _data$config2 === void 0 ? void 0 : _data$config2.budgetBase) || 750000;
-  var _useState61 = useState(String(base)),
+    importError = _useState60[0],
+    setImportError = _useState60[1];
+  var _useState61 = useState(false),
     _useState62 = _slicedToArray(_useState61, 2),
-    newBase = _useState62[0],
-    setNewBase = _useState62[1];
+    importSuccess = _useState62[0],
+    setImportSuccess = _useState62[1];
+  var _useState63 = useState(false),
+    _useState64 = _slicedToArray(_useState63, 2),
+    showExport = _useState64[0],
+    setShowExport = _useState64[1];
+  var base = ((_data$config2 = data.config) === null || _data$config2 === void 0 ? void 0 : _data$config2.budgetBase) || 750000;
+  var _useState65 = useState(String(base)),
+    _useState66 = _slicedToArray(_useState65, 2),
+    newBase = _useState66[0],
+    setNewBase = _useState66[1];
   var saveBase = function saveBase() {
     return onChange(_objectSpread(_objectSpread({}, data), {}, {
       config: _objectSpread(_objectSpread({}, data.config || {}), {}, {
@@ -4393,22 +4486,22 @@ var TABS = [{
   label: "Config"
 }];
 function App() {
-  var _useState63 = useState("dashboard"),
-    _useState64 = _slicedToArray(_useState63, 2),
-    tab = _useState64[0],
-    setTab = _useState64[1];
-  var _useState65 = useState(INIT),
-    _useState66 = _slicedToArray(_useState65, 2),
-    data = _useState66[0],
-    setData = _useState66[1];
-  var _useState67 = useState(false),
+  var _useState67 = useState("dashboard"),
     _useState68 = _slicedToArray(_useState67, 2),
-    loaded = _useState68[0],
-    setLoaded = _useState68[1];
-  var _useState69 = useState("loading"),
+    tab = _useState68[0],
+    setTab = _useState68[1];
+  var _useState69 = useState(INIT),
     _useState70 = _slicedToArray(_useState69, 2),
-    gsStatus = _useState70[0],
-    setGsStatus = _useState70[1]; // "loading"|"ok"|"error"
+    data = _useState70[0],
+    setData = _useState70[1];
+  var _useState71 = useState(false),
+    _useState72 = _slicedToArray(_useState71, 2),
+    loaded = _useState72[0],
+    setLoaded = _useState72[1];
+  var _useState73 = useState("loading"),
+    _useState74 = _slicedToArray(_useState73, 2),
+    gsStatus = _useState74[0],
+    setGsStatus = _useState74[1]; // "loading"|"ok"|"error"
   var navRef = useRef(null);
   useEffect(function () {
     var link = document.createElement("link");
