@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1780669997 -->
+  <!-- build: 1781744366 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -18,6 +18,7 @@
     const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } = Recharts;
   </script>
   <script>
+
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -976,9 +977,12 @@ function Dashboard(_ref12) {
   var lastDate = allDates[0];
   var daysSince = lastDate ? Math.floor((new Date() - new Date(lastDate + "T12:00")) / 86400000) : null;
 
-  // Disponible real = presupuesto base - todo lo gastado
+  // Disponible real = presupuesto base + ingresos del mes (no destinados a fondo) - todo lo gastado
   var base = ((_data$config = data.config) === null || _data$config === void 0 ? void 0 : _data$config.budgetBase) || 750000;
-  var realAvailable = base - dist.totalSpent;
+  var monthIncomes = data.incomes.filter(function (i) {
+    return (i.budgetMonth || i.date.slice(0, 7)) === mo && i.destFund !== "fondo";
+  }).reduce(function (s, i) { return s + i.amount; }, 0);
+  var realAvailable = base + monthIncomes - dist.totalSpent;
   var instDue = data.purchases.filter(function (p) {
     return !p.cancelled;
   }).reduce(function (s, p) {
@@ -1113,7 +1117,11 @@ function Dashboard(_ref12) {
     className: "flex justify-between"
   }, /*#__PURE__*/React.createElement("span", null, "Presupuesto base"), /*#__PURE__*/React.createElement("span", {
     className: "text-white"
-  }, CLP(base))), /*#__PURE__*/React.createElement("div", {
+  }, CLP(base))), monthIncomes > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, "+ Ingresos del mes"), /*#__PURE__*/React.createElement("span", {
+    className: "text-emerald-400"
+  }, CLP(monthIncomes))), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between"
   }, /*#__PURE__*/React.createElement("span", null, "\u2212 Total gastado"), /*#__PURE__*/React.createElement("span", {
     className: "text-rose-400"
@@ -1200,7 +1208,8 @@ function Ingresos(_ref16) {
     date: toDay(),
     budgetMonth: prevMonth(curMo()),
     desc: "",
-    isWifeDebt: false
+    isWifeDebt: false,
+    destFund: "presupuesto"
   };
   var _useState3 = useState(BLANK),
     _useState4 = _slicedToArray(_useState3, 2),
@@ -1216,6 +1225,7 @@ function Ingresos(_ref16) {
     var newData = _objectSpread(_objectSpread({}, data), {}, {
       incomes: [].concat(_toConsumableArray(data.incomes), [inc])
     });
+    var destFund = f.destFund || "presupuesto";
     // If marked as wife debt payment, register it in wifePayments and don't add to budget
     if (f.isWifeDebt) {
       newData = _objectSpread(_objectSpread({}, newData), {}, {
@@ -1226,6 +1236,22 @@ function Ingresos(_ref16) {
           note: f.desc || "Pago deuda"
         }]),
         incomes: data.incomes // don't add to incomes — it's a debt repayment
+      });
+    } else if (destFund !== "presupuesto") {
+      // Route directly to savings fund, do NOT add to incomes/budget
+      var fund = data.savings[destFund];
+      newData = _objectSpread(_objectSpread({}, data), {}, {
+        incomes: data.incomes,
+        savings: _objectSpread(_objectSpread({}, data.savings), {}, _defineProperty({}, destFund, _objectSpread(_objectSpread({}, fund), {}, {
+          balance: fund.balance + amt,
+          history: [].concat(_toConsumableArray(fund.history), [{
+            id: uid(),
+            type: "deposito",
+            amount: amt,
+            date: f.date,
+            desc: f.desc || (TYPE[f.type] ? TYPE[f.type].label : "Ingreso")
+          }])
+        })))
       });
     } else {
       newData = _objectSpread(_objectSpread({}, newData), {}, {
@@ -1308,6 +1334,30 @@ function Ingresos(_ref16) {
     }, {
       value: "extra",
       label: "⭐ Ingreso extra"
+    }]
+  }), /*#__PURE__*/React.createElement(Sel, {
+    label: "¿A dónde va este dinero?",
+    value: f.destFund || "presupuesto",
+    onChange: function onChange(v) {
+      return setF(_objectSpread(_objectSpread({}, f), {}, {
+        destFund: v
+      }));
+    },
+    options: [{
+      value: "presupuesto",
+      label: "💰 Cubre presupuesto del mes"
+    }, {
+      value: "viaje",
+      label: "✈️ Fondo: Viaje 2027"
+    }, {
+      value: "emergencia",
+      label: "🛡️ Fondo: Emergencia"
+    }, {
+      value: "universidad",
+      label: "🎓 Fondo: Universidad"
+    }, {
+      value: "casa",
+      label: "🏡 Fondo: Casa"
     }]
   }), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-2 gap-3"
@@ -4722,6 +4772,7 @@ function App() {
 var root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(App));
 
+  
   </script>
 </body>
 </html>
