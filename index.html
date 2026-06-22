@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1781744366 -->
+  <!-- build: 1782102079 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -318,6 +318,79 @@ function cardCycle(card) {
       end: cutThis
     };
   }
+}
+
+// Returns cycle key "YYYY-MM" where MM is the month the cycle CLOSES (corte)
+// e.g. a purchase on May 30 → closes Jun 19 → cycleKey "2026-06"
+function dateToCycleKey(dateStr, billingDay) {
+  var bd = billingDay || 19;
+  var d = new Date(dateStr + "T12:00");
+  var cutDay = cutDateForBD(bd, d.getFullYear(), d.getMonth()).getDate();
+  if (d.getDate() > cutDay) {
+    // After cut → next month's cycle
+    var next = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+    return "".concat(next.getFullYear(), "-").concat(String(next.getMonth() + 1).padStart(2, "0"));
+  }
+  return "".concat(d.getFullYear(), "-").concat(String(d.getMonth() + 1).padStart(2, "0"));
+}
+
+// Returns vencimiento date string (day 5 of month after cycleKey)
+function cycleVencimiento(cycleKey) {
+  var _cycleKey$split = cycleKey.split("-").map(Number),
+    y = _cycleKey$split[0],
+    m = _cycleKey$split[1];
+  var nextM = m === 12 ? 1 : m + 1;
+  var nextY = m === 12 ? y + 1 : y;
+  return "".concat(nextY, "-").concat(String(nextM).padStart(2, "0"), "-05");
+}
+
+// Get all cycle keys that have activity for a card
+function getCardCycleKeys(card, purchases, expenses, groceries) {
+  var bd = card.billingDay || 19;
+  var keys = new Set();
+  purchases.filter(function(p) { return p.cardId === card.id && !p.cancelled; }).forEach(function(p) {
+    keys.add(p.firstPaymentMonth || dateToCycleKey(p.date, bd));
+  });
+  expenses.filter(function(e) { return e.cardId === card.id && e.payMethod === "CMR/Crédito"; }).forEach(function(e) {
+    keys.add(dateToCycleKey(e.date, bd));
+  });
+  groceries.filter(function(g) { return g.cardId === card.id && g.payMethod === "CMR/Crédito"; }).forEach(function(g) {
+    keys.add(dateToCycleKey(g.date, bd));
+  });
+  return Array.from(keys).sort();
+}
+
+// Calculate total charged in a specific cycle for a card
+function cycleTotalCharged(cycleKey, card, purchases, expenses, groceries) {
+  var bd = card.billingDay || 19;
+  // Installments due this cycle
+  var instTotal = purchases.filter(function(p) { return p.cardId === card.id && !p.cancelled; }).reduce(function(s, p) {
+    var inst = instForMonth(p, cycleKey);
+    return s + (inst ? inst.amount : 0);
+  }, 0);
+  // Direct expenses in this cycle
+  var expTotal = expenses.filter(function(e) {
+    return e.cardId === card.id && e.payMethod === "CMR/Crédito" && dateToCycleKey(e.date, bd) === cycleKey;
+  }).reduce(function(s, e) { return s + e.amount; }, 0);
+  // Groceries in this cycle
+  var grocTotal = groceries.filter(function(g) {
+    return g.cardId === card.id && g.payMethod === "CMR/Crédito" && dateToCycleKey(g.date, bd) === cycleKey;
+  }).reduce(function(s, g) { return s + g.total; }, 0);
+  return instTotal + expTotal + grocTotal;
+}
+
+// Calculate arrastre (unpaid balance carried from previous cycles)
+function calcArrastre(cycleKey, card, purchases, expenses, groceries, cardPayments) {
+  var bd = card.billingDay || 19;
+  var allKeys = getCardCycleKeys(card, purchases, expenses, groceries).filter(function(k) { return k < cycleKey; });
+  var totalArrastre = 0;
+  allKeys.forEach(function(k) {
+    var charged = cycleTotalCharged(k, card, purchases, expenses, groceries);
+    var paid = (cardPayments || []).filter(function(p) { return p.cardId === card.id && p.cycleKey === k; }).reduce(function(s, p) { return s + p.amount; }, 0);
+    var unpaid = charged - paid;
+    if (unpaid > 0) totalArrastre += unpaid;
+  });
+  return totalArrastre;
 }
 function calcInstAmt(principal, annualRate, n) {
   if (!annualRate || annualRate === 0) return Math.round(principal / n);
@@ -2702,7 +2775,8 @@ function Tarjetas(_ref22) {
               cardId: selCard,
               amount: amt,
               date: toDay(),
-              id: uid()
+              id: uid(),
+              cycleKey: dateToCycleKey(toDay(), card.billingDay || 19)
             }])
           }));
           if (inp) inp.value = "";
@@ -2825,7 +2899,39 @@ function Tarjetas(_ref22) {
       }, CLP(dc + instBal))))) : null;
     }(), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
-    }, "Cuotas por mes"), monthlyDue.filter(function (m) {
+    }, "Estado de cuenta"), function() {
+      var bd = card.billingDay || 19;
+      var currentCycleKey = dateToCycleKey(toDay(), bd);
+      var cyclePayments = (data.cardPayments || []).filter(function(p) { return p.cardId === selCard && p.cycleKey === currentCycleKey; });
+      var cyclePaid = cyclePayments.reduce(function(s,p) { return s + p.amount; }, 0);
+      var arrastre = calcArrastre(currentCycleKey, card, data.purchases, data.expenses, data.groceries, data.cardPayments);
+      var cycleCharged = cycleTotalCharged(currentCycleKey, card, data.purchases, data.expenses, data.groceries);
+      var totalDue = cycleCharged + arrastre;
+      var saldoPendiente = Math.max(0, totalDue - cyclePaid);
+      var venc = cycleVencimiento(currentCycleKey);
+      return /*#__PURE__*/React.createElement("div", { className: "space-y-1 mb-4" },
+        arrastre > 0 && /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
+          /*#__PURE__*/React.createElement("span", { className: "text-rose-300" }, "\u21A9 Arrastre ciclo anterior"),
+          /*#__PURE__*/React.createElement("span", { className: "text-rose-400 font-semibold" }, CLP(arrastre))
+        ),
+        /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
+          /*#__PURE__*/React.createElement("span", { className: "text-slate-300" }, "Cuotas ciclo actual"),
+          /*#__PURE__*/React.createElement("span", { className: "text-white font-semibold" }, CLP(cycleCharged))
+        ),
+        cyclePaid > 0 && /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
+          /*#__PURE__*/React.createElement("span", { className: "text-emerald-300" }, "\u2212 Abonado"),
+          /*#__PURE__*/React.createElement("span", { className: "text-emerald-400 font-semibold" }, CLP(cyclePaid))
+        ),
+        /*#__PURE__*/React.createElement("div", { className: "flex justify-between items-start pt-2 border-t border-slate-600" },
+          /*#__PURE__*/React.createElement("div", null,
+            /*#__PURE__*/React.createElement("p", { className: "text-white font-bold text-sm" }, "Total a pagar"),
+            /*#__PURE__*/React.createElement("p", { className: "text-xs text-slate-500" }, "Vence ".concat(fmt(venc)))
+          ),
+          /*#__PURE__*/React.createElement("span", { className: "text-amber-400 font-black text-xl" }, CLP(saldoPendiente))
+        )
+      );
+    }(), /*#__PURE__*/React.createElement("p", { className: "text-xs text-slate-400 font-medium mt-2 mb-2 uppercase tracking-wider" }, "Cuotas por mes"),
+    monthlyDue.filter(function (m) {
       return m.total > 0;
     }).map(function (_ref24) {
       var mo = _ref24.mo,
