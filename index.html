@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinanzasHub</title>
-  <!-- build: 1782135548 -->
+  <title>FinanzasHub</title><!-- build: 1782135966 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2870,6 +2869,12 @@ function Tarjetas(_ref22) {
       /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
         /*#__PURE__*/React.createElement("div", { className: "flex gap-2" },
           /*#__PURE__*/React.createElement("input", {
+            type: "date",
+            id: "pay-date-".concat(selCard),
+            defaultValue: toDay(),
+            className: "bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
+          }),
+          /*#__PURE__*/React.createElement("input", {
             type: "number",
             min: "0",
             step: "1000",
@@ -2881,13 +2886,15 @@ function Tarjetas(_ref22) {
             color: "green",
             onClick: function onClick() {
               var inp = document.getElementById("pay-".concat(selCard));
+              var dateInp = document.getElementById("pay-date-".concat(selCard));
               var amt = parseFloat((inp === null || inp === void 0 ? void 0 : inp.value) || 0);
+              var payDate = (dateInp === null || dateInp === void 0 ? void 0 : dateInp.value) || toDay();
               if (!amt) return;
               onChange(_objectSpread(_objectSpread({}, data), {}, {
                 cardPayments: [].concat(_toConsumableArray(data.cardPayments || []), [{
                   cardId: selCard,
                   amount: amt,
-                  date: toDay(),
+                  date: payDate,
                   id: uid(),
                   cycleKey: viewCycleKey
                 }])
