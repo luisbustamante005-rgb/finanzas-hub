@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1782104308 -->
+  <!-- build: 1782135548 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2868,13 +2868,6 @@ function Tarjetas(_ref22) {
         className: "text-emerald-400"
       }, CLP(totalPaid)))),
       /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
-        /*#__PURE__*/React.createElement("select", {
-          id: "cycle-".concat(selCard),
-          defaultValue: viewCycleKey,
-          className: "w-full bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
-        }, payableCycles.map(function(ck) {
-          return /*#__PURE__*/React.createElement("option", { key: ck, value: ck }, "Ciclo ".concat(fmtMo(ck), " (vence ").concat(fmt(cycleVencimiento(ck)), ")"));
-        })),
         /*#__PURE__*/React.createElement("div", { className: "flex gap-2" },
           /*#__PURE__*/React.createElement("input", {
             type: "number",
@@ -2888,9 +2881,7 @@ function Tarjetas(_ref22) {
             color: "green",
             onClick: function onClick() {
               var inp = document.getElementById("pay-".concat(selCard));
-              var cycleInp = document.getElementById("cycle-".concat(selCard));
               var amt = parseFloat((inp === null || inp === void 0 ? void 0 : inp.value) || 0);
-              var chosenCycle = (cycleInp === null || cycleInp === void 0 ? void 0 : cycleInp.value) || currentCycleKey;
               if (!amt) return;
               onChange(_objectSpread(_objectSpread({}, data), {}, {
                 cardPayments: [].concat(_toConsumableArray(data.cardPayments || []), [{
@@ -2898,7 +2889,7 @@ function Tarjetas(_ref22) {
                   amount: amt,
                   date: toDay(),
                   id: uid(),
-                  cycleKey: chosenCycle
+                  cycleKey: viewCycleKey
                 }])
               }));
               if (inp) inp.value = "";
