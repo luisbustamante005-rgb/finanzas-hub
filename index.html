@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1782103925 -->
+  <!-- build: 1782104308 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2742,14 +2742,25 @@ function Tarjetas(_ref22) {
       })
     ),
     /*#__PURE__*/React.createElement("div", { className: "flex items-center gap-2" },
-      /*#__PURE__*/React.createElement("span", { className: "text-xs text-slate-400" }, "Ciclo:"),
-      /*#__PURE__*/React.createElement("select", {
-        value: viewCycleKey,
-        onChange: function(e) { setSelCycle(e.target.value); },
-        className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-1.5 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none"
-      }, Array.from(new Set([currentCycleKey, addMonths(currentCycleKey+"-01",1).slice(0,7)].concat(allCycleKeys))).sort().reverse().map(function(ck) {
-        return /*#__PURE__*/React.createElement("option", { key: ck, value: ck }, fmtMo(ck).concat(" · vence ").concat(fmt(cycleVencimiento(ck))));
-      }))
+      /*#__PURE__*/React.createElement("button", {
+        onClick: function() {
+          var cycles = Array.from(new Set([currentCycleKey, addMonths(currentCycleKey+"-01",1).slice(0,7)].concat(allCycleKeys))).sort();
+          var idx = cycles.indexOf(viewCycleKey);
+          if (idx > 0) setSelCycle(cycles[idx - 1]);
+        },
+        className: "bg-slate-700 hover:bg-slate-600 text-white rounded-xl px-3 py-1.5 text-sm font-bold"
+      }, "←"),
+      /*#__PURE__*/React.createElement("span", { className: "flex-1 text-center text-sm text-white font-semibold" },
+        fmtMo(viewCycleKey), " · vence ", fmt(cycleVencimiento(viewCycleKey))
+      ),
+      /*#__PURE__*/React.createElement("button", {
+        onClick: function() {
+          var cycles = Array.from(new Set([currentCycleKey, addMonths(currentCycleKey+"-01",1).slice(0,7)].concat(allCycleKeys))).sort();
+          var idx = cycles.indexOf(viewCycleKey);
+          if (idx < cycles.length - 1) setSelCycle(cycles[idx + 1]);
+        },
+        className: "bg-slate-700 hover:bg-slate-600 text-white rounded-xl px-3 py-1.5 text-sm font-bold"
+      }, "→")
     ),
     cardTab === "historial" ? /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
       allCycleKeys.length === 0 ? /*#__PURE__*/React.createElement("p", { className: "text-slate-500 text-sm text-center py-6" }, "Sin ciclos registrados") :
