@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1782102676 -->
+  <!-- build: 1782103266 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2662,9 +2662,11 @@ function Tarjetas(_ref22) {
     var daysLeft = Math.max(0, Math.ceil((cycle.end - new Date()) / 86400000));
     var bd = card.billingDay || 19;
     var currentCycleKey = dateToCycleKey(toDay(), bd);
-    // Only show purchases whose firstPaymentMonth >= currentCycleKey (not from closed cycles)
+    // Show purchases that still have installments remaining in current or future cycles
     var activePurchases = data.purchases.filter(function (p) {
-      return p.cardId === selCard && !p.cancelled && (p.firstPaymentMonth || currentCycleKey) >= currentCycleKey;
+      if (p.cardId !== selCard || p.cancelled) return false;
+      var paid = paidInsts(p);
+      return paid < p.installments; // still has pending installments
     });
     // All cycle keys with activity
     var allCycleKeys = getCardCycleKeys(card, data.purchases, data.expenses, data.groceries).reverse();
@@ -2808,6 +2810,8 @@ function Tarjetas(_ref22) {
       var totalPaid = payments.reduce(function (s, p) {
         return s + p.amount;
       }, 0);
+      // Available cycles to pay (current + past with balance)
+      var payableCycles = allCycleKeys.length > 0 ? allCycleKeys : [currentCycleKey];
       return /*#__PURE__*/React.createElement(Card, {
         className: "border border-emerald-700/40"
       }, /*#__PURE__*/React.createElement("p", {
@@ -2818,9 +2822,10 @@ function Tarjetas(_ref22) {
         return /*#__PURE__*/React.createElement("div", {
           key: i,
           className: "flex justify-between text-sm"
-        }, /*#__PURE__*/React.createElement("span", {
-          className: "text-slate-400"
-        }, fmt(p.date)), /*#__PURE__*/React.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", null,
+          /*#__PURE__*/React.createElement("span", { className: "text-slate-400" }, fmt(p.date)),
+          p.cycleKey && /*#__PURE__*/React.createElement("span", { className: "text-xs text-slate-500 ml-2" }, "· ciclo ".concat(fmtMo(p.cycleKey)))
+        ), /*#__PURE__*/React.createElement("div", {
           className: "flex items-center gap-2"
         }, /*#__PURE__*/React.createElement("span", {
           className: "text-emerald-400 font-semibold"
@@ -2840,34 +2845,45 @@ function Tarjetas(_ref22) {
         className: "flex justify-between text-xs text-slate-500 pt-1 border-t border-slate-700"
       }, /*#__PURE__*/React.createElement("span", null, "Total pagado"), /*#__PURE__*/React.createElement("span", {
         className: "text-emerald-400"
-      }, CLP(totalPaid)))), /*#__PURE__*/React.createElement("div", {
-        className: "flex gap-2"
-      }, /*#__PURE__*/React.createElement("input", {
-        type: "number",
-        min: "0",
-        step: "1000",
-        id: "pay-".concat(selCard),
-        placeholder: "Monto pagado ($)",
-        className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
-      }), /*#__PURE__*/React.createElement(Btn, {
-        sm: true,
-        color: "green",
-        onClick: function onClick() {
-          var inp = document.getElementById("pay-".concat(selCard));
-          var amt = parseFloat((inp === null || inp === void 0 ? void 0 : inp.value) || 0);
-          if (!amt) return;
-          onChange(_objectSpread(_objectSpread({}, data), {}, {
-            cardPayments: [].concat(_toConsumableArray(data.cardPayments || []), [{
-              cardId: selCard,
-              amount: amt,
-              date: toDay(),
-              id: uid(),
-              cycleKey: dateToCycleKey(toDay(), card.billingDay || 19)
-            }])
-          }));
-          if (inp) inp.value = "";
-        }
-      }, "Registrar pago")));
+      }, CLP(totalPaid)))),
+      /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
+        /*#__PURE__*/React.createElement("select", {
+          id: "cycle-".concat(selCard),
+          className: "w-full bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
+        }, payableCycles.map(function(ck) {
+          return /*#__PURE__*/React.createElement("option", { key: ck, value: ck }, "Ciclo ".concat(fmtMo(ck), " (vence ").concat(fmt(cycleVencimiento(ck)), ")"));
+        })),
+        /*#__PURE__*/React.createElement("div", { className: "flex gap-2" },
+          /*#__PURE__*/React.createElement("input", {
+            type: "number",
+            min: "0",
+            step: "1000",
+            id: "pay-".concat(selCard),
+            placeholder: "Monto pagado ($)",
+            className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
+          }), /*#__PURE__*/React.createElement(Btn, {
+            sm: true,
+            color: "green",
+            onClick: function onClick() {
+              var inp = document.getElementById("pay-".concat(selCard));
+              var cycleInp = document.getElementById("cycle-".concat(selCard));
+              var amt = parseFloat((inp === null || inp === void 0 ? void 0 : inp.value) || 0);
+              var chosenCycle = (cycleInp === null || cycleInp === void 0 ? void 0 : cycleInp.value) || currentCycleKey;
+              if (!amt) return;
+              onChange(_objectSpread(_objectSpread({}, data), {}, {
+                cardPayments: [].concat(_toConsumableArray(data.cardPayments || []), [{
+                  cardId: selCard,
+                  amount: amt,
+                  date: toDay(),
+                  id: uid(),
+                  cycleKey: chosenCycle
+                }])
+              }));
+              if (inp) inp.value = "";
+            }
+          }, "Registrar pago")
+        )
+      ));
     }(), function () {
       var dc = cardDirectCharges(card, data.expenses, data.groceries);
       var instBal = cardUsed(card, data.purchases);
