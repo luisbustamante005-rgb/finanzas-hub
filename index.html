@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1782103266 -->
+  <!-- build: 1782103521 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2810,8 +2810,9 @@ function Tarjetas(_ref22) {
       var totalPaid = payments.reduce(function (s, p) {
         return s + p.amount;
       }, 0);
-      // Available cycles to pay (current + past with balance)
-      var payableCycles = allCycleKeys.length > 0 ? allCycleKeys : [currentCycleKey];
+      // Available cycles: current + next + past cycles with activity
+      var nextCycleKey = addMonths(currentCycleKey + "-01", 1).slice(0, 7);
+      var payableCycles = Array.from(new Set([currentCycleKey, nextCycleKey].concat(allCycleKeys))).sort().reverse();
       return /*#__PURE__*/React.createElement(Card, {
         className: "border border-emerald-700/40"
       }, /*#__PURE__*/React.createElement("p", {
