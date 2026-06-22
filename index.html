@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinanzasHub</title>
-  <!-- build: 1782103521 -->
+  <!-- build: 1782103925 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -18,7 +17,6 @@
     const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } = Recharts;
   </script>
   <script>
-
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -2662,11 +2660,12 @@ function Tarjetas(_ref22) {
     var daysLeft = Math.max(0, Math.ceil((cycle.end - new Date()) / 86400000));
     var bd = card.billingDay || 19;
     var currentCycleKey = dateToCycleKey(toDay(), bd);
-    // Show purchases that still have installments remaining in current or future cycles
+    var viewCycleKey = selCycle || currentCycleKey;
+    // Show purchases that have an installment in the viewed cycle
     var activePurchases = data.purchases.filter(function (p) {
       if (p.cardId !== selCard || p.cancelled) return false;
-      var paid = paidInsts(p);
-      return paid < p.installments; // still has pending installments
+      var inst = instForMonth(p, viewCycleKey);
+      return inst && inst.amount > 0;
     });
     // All cycle keys with activity
     var allCycleKeys = getCardCycleKeys(card, data.purchases, data.expenses, data.groceries).reverse();
@@ -2735,12 +2734,22 @@ function Tarjetas(_ref22) {
       ["activo", "historial"].map(function(t) {
         return /*#__PURE__*/React.createElement("button", {
           key: t,
-          onClick: function() { setCardTab(t); setSelCycle(null); },
+          onClick: function() { setCardTab(t); setSelCycle(t === "activo" ? currentCycleKey : (allCycleKeys[0] || currentCycleKey)); },
           className: "flex-1 py-2 rounded-xl text-sm font-semibold transition-all ".concat(
             cardTab === t ? "bg-blue-600 text-white" : "bg-slate-700 text-slate-400"
           )
         }, t === "activo" ? "Ciclo activo" : "Historial");
       })
+    ),
+    /*#__PURE__*/React.createElement("div", { className: "flex items-center gap-2" },
+      /*#__PURE__*/React.createElement("span", { className: "text-xs text-slate-400" }, "Ciclo:"),
+      /*#__PURE__*/React.createElement("select", {
+        value: viewCycleKey,
+        onChange: function(e) { setSelCycle(e.target.value); },
+        className: "flex-1 bg-slate-700 text-white rounded-xl px-3 py-1.5 text-sm border border-slate-600 focus:border-blue-500 focus:outline-none"
+      }, Array.from(new Set([currentCycleKey, addMonths(currentCycleKey+"-01",1).slice(0,7)].concat(allCycleKeys))).sort().reverse().map(function(ck) {
+        return /*#__PURE__*/React.createElement("option", { key: ck, value: ck }, fmtMo(ck).concat(" · vence ").concat(fmt(cycleVencimiento(ck))));
+      }))
     ),
     cardTab === "historial" ? /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
       allCycleKeys.length === 0 ? /*#__PURE__*/React.createElement("p", { className: "text-slate-500 text-sm text-center py-6" }, "Sin ciclos registrados") :
@@ -2850,6 +2859,7 @@ function Tarjetas(_ref22) {
       /*#__PURE__*/React.createElement("div", { className: "space-y-2" },
         /*#__PURE__*/React.createElement("select", {
           id: "cycle-".concat(selCard),
+          defaultValue: viewCycleKey,
           className: "w-full bg-slate-700 text-white rounded-xl px-3 py-2 text-sm border border-slate-600 focus:border-emerald-500 focus:outline-none"
         }, payableCycles.map(function(ck) {
           return /*#__PURE__*/React.createElement("option", { key: ck, value: ck }, "Ciclo ".concat(fmtMo(ck), " (vence ").concat(fmt(cycleVencimiento(ck)), ")"));
@@ -3003,22 +3013,21 @@ function Tarjetas(_ref22) {
     }(), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
     }, "Estado de cuenta"), function() {
-      var bd = card.billingDay || 19;
-      var currentCycleKey = dateToCycleKey(toDay(), bd);
-      var cyclePayments = (data.cardPayments || []).filter(function(p) { return p.cardId === selCard && p.cycleKey === currentCycleKey; });
+      var viewCycle = selCycle || currentCycleKey;
+      var cyclePayments = (data.cardPayments || []).filter(function(p) { return p.cardId === selCard && p.cycleKey === viewCycle; });
       var cyclePaid = cyclePayments.reduce(function(s,p) { return s + p.amount; }, 0);
-      var arrastre = calcArrastre(currentCycleKey, card, data.purchases, data.expenses, data.groceries, data.cardPayments);
-      var cycleCharged = cycleTotalCharged(currentCycleKey, card, data.purchases, data.expenses, data.groceries);
+      var arrastre = calcArrastre(viewCycle, card, data.purchases, data.expenses, data.groceries, data.cardPayments);
+      var cycleCharged = cycleTotalCharged(viewCycle, card, data.purchases, data.expenses, data.groceries);
       var totalDue = cycleCharged + arrastre;
       var saldoPendiente = Math.max(0, totalDue - cyclePaid);
-      var venc = cycleVencimiento(currentCycleKey);
+      var venc = cycleVencimiento(viewCycle);
       return /*#__PURE__*/React.createElement("div", { className: "space-y-1 mb-4" },
         arrastre > 0 && /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
           /*#__PURE__*/React.createElement("span", { className: "text-rose-300" }, "\u21A9 Arrastre ciclo anterior"),
           /*#__PURE__*/React.createElement("span", { className: "text-rose-400 font-semibold" }, CLP(arrastre))
         ),
         /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
-          /*#__PURE__*/React.createElement("span", { className: "text-slate-300" }, "Cuotas ciclo actual"),
+          /*#__PURE__*/React.createElement("span", { className: "text-slate-300" }, "Cuotas ciclo ".concat(fmtMo(viewCycle))),
           /*#__PURE__*/React.createElement("span", { className: "text-white font-semibold" }, CLP(cycleCharged))
         ),
         cyclePaid > 0 && /*#__PURE__*/React.createElement("div", { className: "flex justify-between text-sm py-1.5 border-b border-slate-700/50" },
@@ -3065,7 +3074,7 @@ function Tarjetas(_ref22) {
         setView("addPurchase");
       }
     }, "+ Compra")), activePurchases.map(function (p) {
-      var paid = paidInsts(p);
+      var paid = paidInstsForMo(p, viewCycleKey);
       var remaining = p.installments - paid;
       var balance = remainBal(p);
       var interest = Math.round(p.installmentAmt * p.installments - p.totalAmount);
@@ -4981,7 +4990,6 @@ function App() {
 var root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(App));
 
-  
   </script>
 </body>
 </html>
