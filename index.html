@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinanzasHub</title><!-- build: 1782854865 -->
+  <title>FinanzasHub</title><!-- build: 1782855222 -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body style="margin:0;background:#0f172a">
@@ -2010,14 +2010,19 @@ function Gastos(_ref19) {
     var wifePurchases = data.purchases.filter(function (p) {
       return p.isWife && !p.cancelled;
     });
-    var totalOwed = wifeExp.reduce(function (s, e) {
-      return s + e.amount;
-    }, 0) + wifePurchases.reduce(function (s, p) {
-      return s + p.totalAmount;
-    }, 0);
+    var currentMo = curMo();
+    // This month's wife charges
+    var wifeMonthlyCharges = wifePurchases.reduce(function(s, p) {
+      var inst = instForMonth(p, currentMo);
+      return s + (inst ? inst.amount : 0);
+    }, 0) + wifeExp.filter(function(e) {
+      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === currentMo;
+    }).reduce(function(s, e) { return s + e.amount; }, 0);
     var totalPaid = (data.wifePayments || []).reduce(function (s, p) {
       return s + p.amount;
     }, 0);
+    var totalOwed = wifePurchases.reduce(function(s, p) { return s + p.totalAmount; }, 0)
+      + wifeExp.reduce(function(s, e) { return s + e.amount; }, 0);
     var balance = totalOwed - totalPaid;
     if (wifeExp.length === 0 && wifePurchases.length === 0) return null;
     return /*#__PURE__*/React.createElement("div", {
@@ -2033,18 +2038,20 @@ function Gastos(_ref19) {
       className: "text-sm font-bold text-white"
     }, "\uD83D\uDC69 Tu esposa te debe"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-400"
-    }, (wifeExp.length + wifePurchases.length), " gasto", (wifeExp.length + wifePurchases.length) !== 1 ? "s" : "", " \xB7 toca para ver")), /*#__PURE__*/React.createElement("div", {
+    }, fmtMo(currentMo), " \xB7 toca para ver detalle")), /*#__PURE__*/React.createElement("div", {
       className: "text-right"
     }, /*#__PURE__*/React.createElement("p", {
-      className: "text-2xl font-black ".concat(balance > 0 ? "text-violet-400" : "text-emerald-400")
-    }, CLP(balance)), /*#__PURE__*/React.createElement("p", {
+      className: "text-2xl font-black ".concat(wifeMonthlyCharges > 0 ? "text-violet-400" : "text-emerald-400")
+    }, CLP(wifeMonthlyCharges)), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-500"
-    }, balance <= 0 ? "Al día ✅" : "pendiente")))), showWifeDetail && /*#__PURE__*/React.createElement(Card, {
+    }, "este mes · total pendiente: ", CLP(balance))))), showWifeDetail && /*#__PURE__*/React.createElement(Card, {
       className: "mt-2"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider"
-    }, "Detalle deuda esposa"), wifeExp.sort(function (a, b) {
-      return b.date.localeCompare(a.date);
+    }, "Detalle deuda esposa"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-slate-500 mb-3"
+    }, fmtMo(currentMo)), wifeExp.filter(function(e) {
+      return expenseBillingMonth(e.date, e.payMethod, e.cardId, data.cards) === currentMo;
     }).map(function (e) {
       return /*#__PURE__*/React.createElement("div", {
         key: e.id,
@@ -2057,6 +2064,9 @@ function Gastos(_ref19) {
         className: "text-violet-400 font-semibold"
       }, CLP(e.amount)));
     }), wifePurchases.map(function (p, i) {
+      var inst = instForMonth(p, currentMo);
+      if (!inst) return null;
+      var paid = paidInsts(p);
       return /*#__PURE__*/React.createElement("div", {
         key: "wp-".concat(i),
         className: "flex justify-between py-2 border-b border-slate-700/50 last:border-0"
@@ -2064,9 +2074,9 @@ function Gastos(_ref19) {
         className: "text-sm text-slate-300"
       }, p.desc), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-slate-500"
-      }, fmt(p.date), " \xB7 ", p.installments, " cuota", p.installments !== 1 ? "s" : "")), /*#__PURE__*/React.createElement("span", {
+      }, "cuota ", paid + 1, "/", p.installments)), /*#__PURE__*/React.createElement("span", {
         className: "text-violet-400 font-semibold"
-      }, CLP(p.totalAmount)));
+      }, CLP(inst.amount)));
     }), (data.wifePayments || []).map(function (p, i) {
       return /*#__PURE__*/React.createElement("div", {
         key: i,
